@@ -10,4 +10,6 @@ os.environ.setdefault("DX_ENV", "local")
 
 from app.main import create_app
 
-json.dump(create_app().openapi(), sys.stdout, ensure_ascii=False, indent=1, sort_keys=True)
+# Ghi bytes để không bị đổi xuống dòng thành CRLF trên Windows.
+body = json.dumps(create_app().openapi(), ensure_ascii=False, indent=1, sort_keys=True)
+sys.stdout.buffer.write(body.encode("utf-8") + b"\n")

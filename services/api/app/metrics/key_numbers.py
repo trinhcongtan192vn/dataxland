@@ -169,12 +169,14 @@ def key_numbers(
     }
 
 
-def number_text(n: dict[str, Any], *, scope: list[str] | None = None) -> str:
+def number_text(
+    n: dict[str, Any], *, scope: list[str] | None = None, scope_note: str = "ngoài phạm vi của nhóm"
+) -> str:
     """Định dạng một số chính cho tin nhắn; ngoài phạm vi nhóm Telegram thì "—" (spec 08 §3.6)."""
     from app.notify.render import f_change, f_unit
 
     if scope is not None and n.get("metric") not in scope:
-        return "— (ngoài phạm vi của nhóm)"
+        return f"— ({scope_note})"
     if n.get("value") is None:
         return n.get("note_vi") or "—"
     text = f_change(n["value"]) if n["key"] == "net_profit_change_pct" else f_unit(n["value"], n["unit"])
@@ -185,3 +187,28 @@ def number_text(n: dict[str, Any], *, scope: list[str] | None = None) -> str:
 
 def as_decimal(v: Any) -> Decimal | None:
     return None if v is None else Decimal(str(v))
+
+
+OUT_OF_SCOPE_VI = "Ngoài phạm vi được xem"
+
+
+def key_numbers_scoped(
+    ctx: AuthContext, period: str, *, db: Session | None = None, today: date | None = None, caller: str = "key_numbers"
+) -> dict[str, Any]:
+    """Ba số chính cho người chỉ được xem một phần chỉ số (member có allowlist, nhóm Telegram).
+
+    Ba số là số tổng hợp dùng chung (spec 03 §5): tính bằng ngữ cảnh nội bộ của đúng khách đó, rồi che số ngoài
+    phạm vi (`value = None`) để không lộ (spec 08 §3.6). Người xem mọi chỉ số đi thẳng qua `key_numbers`.
+    """
+    scope = ctx.metric_scope
+    if scope == "all":
+        return key_numbers(ctx, period, db=db, today=today, caller=caller)
+    from dataclasses import replace
+
+    inner = replace(ctx, role="internal", metric_scope="all")
+    out = key_numbers(inner, period, db=db, today=today, caller=caller)
+    for n in out["numbers"]:
+        if n["metric"] not in scope:
+            n.update(value=None, change_pct=None, note_vi=OUT_OF_SCOPE_VI, out_of_scope=True)
+    out["warnings"] = [w for w in out["warnings"] if not w.get("metrics") or set(w["metrics"]) & set(scope)]
+    return out

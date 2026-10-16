@@ -15,7 +15,7 @@ from app.db import get_db
 from app.errors import ApiError
 from app.metrics.engine import QueryIn, check_metric, query, visible_metrics
 from app.metrics.flags import compute_flags
-from app.metrics.key_numbers import key_numbers
+from app.metrics.key_numbers import key_numbers_scoped
 from app.metrics.registry import get_registry
 
 router = APIRouter(prefix="/v1/metrics", tags=["metrics"])
@@ -97,7 +97,7 @@ def get_key_numbers(
     period: str = Query(default="last_week"), ctx: AuthContext = Depends(get_ctx), db: Session = Depends(get_db)
 ) -> dict[str, Any]:
     require(ctx, "metrics.read")
-    return key_numbers(ctx, period, db=db)
+    return key_numbers_scoped(ctx, period, db=db)
 
 
 @router.get("/flags")
