@@ -155,3 +155,51 @@ def record_run(body: RunIn, _: ServiceCaller = Depends(require_service), db: Ses
         if s.status == "success":
             upd["last_success_at"] = now
         db.execute(stmt.on_conflict_do_update(index_elements=["tenant_id", "source", "account_id"], set_=upd))
+
+
+class LatestRunIn(BaseModel):
+    tenant_id: str
+    status: str = "success"
+    since: datetime | None = None
+    job: str = "tenant_pipeline"
+
+
+@router.post("/v1/internal/runs/latest")
+def latest_run(
+    body: LatestRunIn, _: ServiceCaller = Depends(require_service), db: Session = Depends(get_db)
+) -> dict[str, Any]:
+    """Lần chạy gần nhất theo trạng thái, cho job `weekly_report` chờ dữ liệu mới (spec 04 §3.3)."""
+    q = select(PipelineRun).where(
+        PipelineRun.tenant_id == body.tenant_id, PipelineRun.job == body.job, PipelineRun.status == body.status
+    )
+    if body.since:
+        q = q.where(PipelineRun.started_at >= body.since)
+    r = db.scalar(q.order_by(PipelineRun.started_at.desc()).limit(1))
+    if r is None:
+        return {}
+    return {"run_id": r.run_id, "started_at": r.started_at, "finished_at": r.finished_at, "data_as_of": r.data_as_of}
+
+
+class CleanupIn(BaseModel):
+    older_than_days: int = Field(default=90, ge=7)
+
+
+@router.post("/v1/internal/events/cleanup")
+def events_cleanup(
+    body: CleanupIn, _: ServiceCaller = Depends(require_service), db: Session = Depends(get_db)
+) -> dict[str, int]:
+    """Xóa sự kiện đã được mọi consumer xử lý và cũ hơn N ngày (spec 04 §3.4)."""
+    from datetime import timedelta
+
+    from sqlalchemy import delete, exists
+
+    from dx_common.events.tables import event_dead_letters, event_processed, events
+
+    cutoff = now_utc() - timedelta(days=body.older_than_days)
+    stale = select(events.c.event_id).where(events.c.occurred_at < cutoff)
+    pending_dead = exists().where(
+        event_dead_letters.c.event_id == events.c.event_id, event_dead_letters.c.dead.is_(False)
+    )
+    res = db.execute(delete(events).where(events.c.event_id.in_(stale), ~pending_dead))
+    db.execute(delete(event_processed).where(event_processed.c.processed_at < cutoff))
+    return {"deleted": int(res.rowcount or 0)}
