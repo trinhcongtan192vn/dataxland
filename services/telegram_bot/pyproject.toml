@@ -1,11 +1,10 @@
 [project]
 name = "dx-telegram-bot"
 version = "0.1.0"
-description = "services/telegram_bot – webhook, lệnh, chuyển câu hỏi sang API (spec 08)"
+description = "services/telegram_bot – webhook, lệnh, chuyển câu hỏi sang API (spec 08); gọi Bot API qua httpx"
 requires-python = ">=3.12,<3.13"
 dependencies = [
   "dx-common",
-  "aiogram>=3.15",
   "fastapi>=0.115",
   "uvicorn[standard]>=0.32",
   "httpx>=0.28",
