@@ -1,0 +1,1514 @@
+# Tự sinh bởi transform/scripts/gen_staging_yml.py từ hợp đồng spec 02 §3.2 – sửa ở script, không sửa tay.
+version: 2
+
+models:
+  - name: stg_fx__rates_daily
+    description: Tỷ giá theo ngày đã điền ngày trống (spec 02 §3.2).
+    config:
+      contract: {enforced: true}
+    columns:
+      - {name: date, data_type: date, data_tests: [not_null]}
+      - {name: currency, data_type: string, data_tests: [not_null]}
+      - {name: rate_vnd, data_type: numeric, data_tests: [not_null]}
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [date, currency]
+  - name: stg_portal__product_costs
+    config:
+      contract: {enforced: true}
+    columns:
+      - {name: source_id, data_type: string, data_tests: [not_null, unique]}
+      - {name: seller_sku, data_type: string, data_tests: [not_null]}
+      - {name: unit_cost_vnd, data_type: numeric, data_tests: [not_null]}
+      - {name: valid_from, data_type: date, data_tests: [not_null]}
+      - {name: deleted, data_type: boolean}
+  - name: stg_portal__ad_budgets
+    config:
+      contract: {enforced: true}
+    columns:
+      - {name: source_id, data_type: string, data_tests: [not_null, unique]}
+      - {name: platform, data_type: string, data_tests: [not_null]}
+      - {name: month, data_type: date, data_tests: [not_null]}
+      - {name: budget_vnd, data_type: numeric, data_tests: [not_null]}
+      - {name: deleted, data_type: boolean}
+  - name: stg_portal_file__product_costs
+    config:
+      contract: {enforced: true}
+    columns:
+      - {name: source_id, data_type: string, data_tests: [not_null, unique]}
+      - {name: seller_sku, data_type: string, data_tests: [not_null]}
+      - {name: unit_cost_vnd, data_type: numeric, data_tests: [not_null]}
+      - {name: valid_from, data_type: date, data_tests: [not_null]}
+      - {name: deleted, data_type: boolean}
+  - name: stg_shopee__orders
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: source_account
+        data_type: string
+      - name: ordered_at
+        data_type: timestamp
+      - name: updated_at
+        data_type: timestamp
+      - name: order_date
+        data_type: date
+        data_tests: [not_null]
+      - name: status_raw
+        data_type: string
+      - name: status
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['pending', 'confirmed', 'shipping', 'delivered', 'completed', 'cancelled', 'returned', 'failed_delivery']
+              config: {severity: error}
+      - name: buyer_ref
+        data_type: string
+      - name: buyer_phone_hash
+        data_type: string
+      - name: buyer_email_hash
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: gross_amount_original
+        data_type: numeric
+      - name: discount_amount_original
+        data_type: numeric
+      - name: seller_discount_original
+        data_type: numeric
+      - name: platform_discount_original
+        data_type: numeric
+      - name: gross_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: discount_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: net_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: settled_at
+        data_type: timestamp
+  - name: stg_shopee__order_lines
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+        data_tests: [not_null]
+      - name: seller_sku
+        data_type: string
+      - name: item_name
+        data_type: string
+      - name: quantity
+        data_type: bigint
+      - name: unit_price_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: line_gross_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: allocated_discount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_shopee__fees
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+      - name: source_account
+        data_type: string
+      - name: fee_date
+        data_type: date
+        data_tests: [not_null]
+      - name: fee_type_raw
+        data_type: string
+      - name: cost_type
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['platform_fee', 'payment_fee', 'shipping', 'ad_spend', 'other']
+      - name: amount_original
+        data_type: numeric
+      - name: currency
+        data_type: string
+      - name: amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_shopee__returns
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+        data_tests: [not_null]
+      - name: order_line_source_id
+        data_type: string
+      - name: returned_at
+        data_type: timestamp
+      - name: return_date
+        data_type: date
+        data_tests: [not_null]
+      - name: reason_raw
+        data_type: string
+      - name: reason
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['buyer_changed_mind', 'damaged', 'wrong_item', 'not_received', 'quality', 'failed_delivery', 'other']
+      - name: refund_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: return_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: status
+        data_type: string
+  - name: stg_shopee__products
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: seller_sku
+        data_type: string
+      - name: name
+        data_type: string
+      - name: barcode
+        data_type: string
+      - name: category_raw
+        data_type: string
+  - name: stg_shopee__daily_totals
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_account
+        data_type: string
+      - name: date
+        data_type: date
+        data_tests: [not_null]
+      - name: order_count
+        data_type: bigint
+      - name: gross_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['source_account', 'date']
+  - name: stg_tiktok_shop__orders
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: source_account
+        data_type: string
+      - name: ordered_at
+        data_type: timestamp
+      - name: updated_at
+        data_type: timestamp
+      - name: order_date
+        data_type: date
+        data_tests: [not_null]
+      - name: status_raw
+        data_type: string
+      - name: status
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['pending', 'confirmed', 'shipping', 'delivered', 'completed', 'cancelled', 'returned', 'failed_delivery']
+              config: {severity: error}
+      - name: buyer_ref
+        data_type: string
+      - name: buyer_phone_hash
+        data_type: string
+      - name: buyer_email_hash
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: gross_amount_original
+        data_type: numeric
+      - name: discount_amount_original
+        data_type: numeric
+      - name: seller_discount_original
+        data_type: numeric
+      - name: platform_discount_original
+        data_type: numeric
+      - name: gross_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: discount_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: net_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: settled_at
+        data_type: timestamp
+  - name: stg_tiktok_shop__order_lines
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+        data_tests: [not_null]
+      - name: seller_sku
+        data_type: string
+      - name: item_name
+        data_type: string
+      - name: quantity
+        data_type: bigint
+      - name: unit_price_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: line_gross_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: allocated_discount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_tiktok_shop__fees
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+      - name: source_account
+        data_type: string
+      - name: fee_date
+        data_type: date
+        data_tests: [not_null]
+      - name: fee_type_raw
+        data_type: string
+      - name: cost_type
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['platform_fee', 'payment_fee', 'shipping', 'ad_spend', 'other']
+      - name: amount_original
+        data_type: numeric
+      - name: currency
+        data_type: string
+      - name: amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_tiktok_shop__returns
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+        data_tests: [not_null]
+      - name: order_line_source_id
+        data_type: string
+      - name: returned_at
+        data_type: timestamp
+      - name: return_date
+        data_type: date
+        data_tests: [not_null]
+      - name: reason_raw
+        data_type: string
+      - name: reason
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['buyer_changed_mind', 'damaged', 'wrong_item', 'not_received', 'quality', 'failed_delivery', 'other']
+      - name: refund_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: return_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: status
+        data_type: string
+  - name: stg_tiktok_shop__products
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: seller_sku
+        data_type: string
+      - name: name
+        data_type: string
+      - name: barcode
+        data_type: string
+      - name: category_raw
+        data_type: string
+  - name: stg_tiktok_shop__daily_totals
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_account
+        data_type: string
+      - name: date
+        data_type: date
+        data_tests: [not_null]
+      - name: order_count
+        data_type: bigint
+      - name: gross_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['source_account', 'date']
+  - name: stg_lazada__orders
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: source_account
+        data_type: string
+      - name: ordered_at
+        data_type: timestamp
+      - name: updated_at
+        data_type: timestamp
+      - name: order_date
+        data_type: date
+        data_tests: [not_null]
+      - name: status_raw
+        data_type: string
+      - name: status
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['pending', 'confirmed', 'shipping', 'delivered', 'completed', 'cancelled', 'returned', 'failed_delivery']
+              config: {severity: error}
+      - name: buyer_ref
+        data_type: string
+      - name: buyer_phone_hash
+        data_type: string
+      - name: buyer_email_hash
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: gross_amount_original
+        data_type: numeric
+      - name: discount_amount_original
+        data_type: numeric
+      - name: seller_discount_original
+        data_type: numeric
+      - name: platform_discount_original
+        data_type: numeric
+      - name: gross_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: discount_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: net_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: settled_at
+        data_type: timestamp
+  - name: stg_lazada__order_lines
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+        data_tests: [not_null]
+      - name: seller_sku
+        data_type: string
+      - name: item_name
+        data_type: string
+      - name: quantity
+        data_type: bigint
+      - name: unit_price_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: line_gross_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: allocated_discount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_lazada__fees
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+      - name: source_account
+        data_type: string
+      - name: fee_date
+        data_type: date
+        data_tests: [not_null]
+      - name: fee_type_raw
+        data_type: string
+      - name: cost_type
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['platform_fee', 'payment_fee', 'shipping', 'ad_spend', 'other']
+      - name: amount_original
+        data_type: numeric
+      - name: currency
+        data_type: string
+      - name: amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_lazada__returns
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+        data_tests: [not_null]
+      - name: order_line_source_id
+        data_type: string
+      - name: returned_at
+        data_type: timestamp
+      - name: return_date
+        data_type: date
+        data_tests: [not_null]
+      - name: reason_raw
+        data_type: string
+      - name: reason
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['buyer_changed_mind', 'damaged', 'wrong_item', 'not_received', 'quality', 'failed_delivery', 'other']
+      - name: refund_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: return_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: status
+        data_type: string
+  - name: stg_lazada__products
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: seller_sku
+        data_type: string
+      - name: name
+        data_type: string
+      - name: barcode
+        data_type: string
+      - name: category_raw
+        data_type: string
+  - name: stg_lazada__daily_totals
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_account
+        data_type: string
+      - name: date
+        data_type: date
+        data_tests: [not_null]
+      - name: order_count
+        data_type: bigint
+      - name: gross_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['source_account', 'date']
+  - name: stg_amazon_seller__orders
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: source_account
+        data_type: string
+      - name: ordered_at
+        data_type: timestamp
+      - name: updated_at
+        data_type: timestamp
+      - name: order_date
+        data_type: date
+        data_tests: [not_null]
+      - name: status_raw
+        data_type: string
+      - name: status
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['pending', 'confirmed', 'shipping', 'delivered', 'completed', 'cancelled', 'returned', 'failed_delivery']
+              config: {severity: error}
+      - name: buyer_ref
+        data_type: string
+      - name: buyer_phone_hash
+        data_type: string
+      - name: buyer_email_hash
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: gross_amount_original
+        data_type: numeric
+      - name: discount_amount_original
+        data_type: numeric
+      - name: seller_discount_original
+        data_type: numeric
+      - name: platform_discount_original
+        data_type: numeric
+      - name: gross_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: discount_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: net_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: settled_at
+        data_type: timestamp
+  - name: stg_amazon_seller__order_lines
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+        data_tests: [not_null]
+      - name: seller_sku
+        data_type: string
+      - name: item_name
+        data_type: string
+      - name: quantity
+        data_type: bigint
+      - name: unit_price_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: line_gross_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: allocated_discount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_amazon_seller__fees
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+      - name: source_account
+        data_type: string
+      - name: fee_date
+        data_type: date
+        data_tests: [not_null]
+      - name: fee_type_raw
+        data_type: string
+      - name: cost_type
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['platform_fee', 'payment_fee', 'shipping', 'ad_spend', 'other']
+      - name: amount_original
+        data_type: numeric
+      - name: currency
+        data_type: string
+      - name: amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_amazon_seller__returns
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+        data_tests: [not_null]
+      - name: order_line_source_id
+        data_type: string
+      - name: returned_at
+        data_type: timestamp
+      - name: return_date
+        data_type: date
+        data_tests: [not_null]
+      - name: reason_raw
+        data_type: string
+      - name: reason
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['buyer_changed_mind', 'damaged', 'wrong_item', 'not_received', 'quality', 'failed_delivery', 'other']
+      - name: refund_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: return_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: status
+        data_type: string
+  - name: stg_amazon_seller__products
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: seller_sku
+        data_type: string
+      - name: name
+        data_type: string
+      - name: barcode
+        data_type: string
+      - name: category_raw
+        data_type: string
+  - name: stg_amazon_seller__daily_totals
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_account
+        data_type: string
+      - name: date
+        data_type: date
+        data_tests: [not_null]
+      - name: order_count
+        data_type: bigint
+      - name: gross_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['source_account', 'date']
+  - name: stg_meta_ads__ad_insights_daily
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_account
+        data_type: string
+      - name: date
+        data_type: date
+        data_tests: [not_null]
+      - name: campaign_id
+        data_type: string
+      - name: campaign_name
+        data_type: string
+      - name: adgroup_id
+        data_type: string
+      - name: adgroup_name
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: spend_original
+        data_type: numeric
+      - name: spend_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: impressions
+        data_type: bigint
+      - name: clicks
+        data_type: bigint
+      - name: conversions
+        data_type: numeric
+      - name: conversion_value_original
+        data_type: numeric
+      - name: conversion_value_vnd
+        data_type: numeric
+        data_tests: [not_null]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['source_account', 'date', 'campaign_id', 'adgroup_id']
+  - name: stg_tiktok_ads__ad_insights_daily
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_account
+        data_type: string
+      - name: date
+        data_type: date
+        data_tests: [not_null]
+      - name: campaign_id
+        data_type: string
+      - name: campaign_name
+        data_type: string
+      - name: adgroup_id
+        data_type: string
+      - name: adgroup_name
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: spend_original
+        data_type: numeric
+      - name: spend_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: impressions
+        data_type: bigint
+      - name: clicks
+        data_type: bigint
+      - name: conversions
+        data_type: numeric
+      - name: conversion_value_original
+        data_type: numeric
+      - name: conversion_value_vnd
+        data_type: numeric
+        data_tests: [not_null]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['source_account', 'date', 'campaign_id', 'adgroup_id']
+  - name: stg_google_ads__ad_insights_daily
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_account
+        data_type: string
+      - name: date
+        data_type: date
+        data_tests: [not_null]
+      - name: campaign_id
+        data_type: string
+      - name: campaign_name
+        data_type: string
+      - name: adgroup_id
+        data_type: string
+      - name: adgroup_name
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: spend_original
+        data_type: numeric
+      - name: spend_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: impressions
+        data_type: bigint
+      - name: clicks
+        data_type: bigint
+      - name: conversions
+        data_type: numeric
+      - name: conversion_value_original
+        data_type: numeric
+      - name: conversion_value_vnd
+        data_type: numeric
+        data_tests: [not_null]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['source_account', 'date', 'campaign_id', 'adgroup_id']
+  - name: stg_amazon_ads__ad_insights_daily
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_account
+        data_type: string
+      - name: date
+        data_type: date
+        data_tests: [not_null]
+      - name: campaign_id
+        data_type: string
+      - name: campaign_name
+        data_type: string
+      - name: adgroup_id
+        data_type: string
+      - name: adgroup_name
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: spend_original
+        data_type: numeric
+      - name: spend_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: impressions
+        data_type: bigint
+      - name: clicks
+        data_type: bigint
+      - name: conversions
+        data_type: numeric
+      - name: conversion_value_original
+        data_type: numeric
+      - name: conversion_value_vnd
+        data_type: numeric
+        data_tests: [not_null]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['source_account', 'date', 'campaign_id', 'adgroup_id']
+  - name: stg_shopee_file__orders
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: source_account
+        data_type: string
+      - name: ordered_at
+        data_type: timestamp
+      - name: updated_at
+        data_type: timestamp
+      - name: order_date
+        data_type: date
+        data_tests: [not_null]
+      - name: status_raw
+        data_type: string
+      - name: status
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['pending', 'confirmed', 'shipping', 'delivered', 'completed', 'cancelled', 'returned', 'failed_delivery']
+              config: {severity: error}
+      - name: buyer_ref
+        data_type: string
+      - name: buyer_phone_hash
+        data_type: string
+      - name: buyer_email_hash
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: gross_amount_original
+        data_type: numeric
+      - name: discount_amount_original
+        data_type: numeric
+      - name: seller_discount_original
+        data_type: numeric
+      - name: platform_discount_original
+        data_type: numeric
+      - name: gross_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: discount_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: net_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: settled_at
+        data_type: timestamp
+  - name: stg_shopee_file__order_lines
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+        data_tests: [not_null]
+      - name: seller_sku
+        data_type: string
+      - name: item_name
+        data_type: string
+      - name: quantity
+        data_type: bigint
+      - name: unit_price_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: line_gross_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: allocated_discount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_shopee_file__fees
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+      - name: source_account
+        data_type: string
+      - name: fee_date
+        data_type: date
+        data_tests: [not_null]
+      - name: fee_type_raw
+        data_type: string
+      - name: cost_type
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['platform_fee', 'payment_fee', 'shipping', 'ad_spend', 'other']
+      - name: amount_original
+        data_type: numeric
+      - name: currency
+        data_type: string
+      - name: amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_shopee_file__products
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: seller_sku
+        data_type: string
+      - name: name
+        data_type: string
+      - name: barcode
+        data_type: string
+      - name: category_raw
+        data_type: string
+  - name: stg_tiktok_shop_file__orders
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: source_account
+        data_type: string
+      - name: ordered_at
+        data_type: timestamp
+      - name: updated_at
+        data_type: timestamp
+      - name: order_date
+        data_type: date
+        data_tests: [not_null]
+      - name: status_raw
+        data_type: string
+      - name: status
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['pending', 'confirmed', 'shipping', 'delivered', 'completed', 'cancelled', 'returned', 'failed_delivery']
+              config: {severity: error}
+      - name: buyer_ref
+        data_type: string
+      - name: buyer_phone_hash
+        data_type: string
+      - name: buyer_email_hash
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: gross_amount_original
+        data_type: numeric
+      - name: discount_amount_original
+        data_type: numeric
+      - name: seller_discount_original
+        data_type: numeric
+      - name: platform_discount_original
+        data_type: numeric
+      - name: gross_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: discount_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: net_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: settled_at
+        data_type: timestamp
+  - name: stg_tiktok_shop_file__order_lines
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+        data_tests: [not_null]
+      - name: seller_sku
+        data_type: string
+      - name: item_name
+        data_type: string
+      - name: quantity
+        data_type: bigint
+      - name: unit_price_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: line_gross_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: allocated_discount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_tiktok_shop_file__fees
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+      - name: source_account
+        data_type: string
+      - name: fee_date
+        data_type: date
+        data_tests: [not_null]
+      - name: fee_type_raw
+        data_type: string
+      - name: cost_type
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['platform_fee', 'payment_fee', 'shipping', 'ad_spend', 'other']
+      - name: amount_original
+        data_type: numeric
+      - name: currency
+        data_type: string
+      - name: amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_tiktok_shop_file__products
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: seller_sku
+        data_type: string
+      - name: name
+        data_type: string
+      - name: barcode
+        data_type: string
+      - name: category_raw
+        data_type: string
+  - name: stg_lazada_file__orders
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: source_account
+        data_type: string
+      - name: ordered_at
+        data_type: timestamp
+      - name: updated_at
+        data_type: timestamp
+      - name: order_date
+        data_type: date
+        data_tests: [not_null]
+      - name: status_raw
+        data_type: string
+      - name: status
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['pending', 'confirmed', 'shipping', 'delivered', 'completed', 'cancelled', 'returned', 'failed_delivery']
+              config: {severity: error}
+      - name: buyer_ref
+        data_type: string
+      - name: buyer_phone_hash
+        data_type: string
+      - name: buyer_email_hash
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: gross_amount_original
+        data_type: numeric
+      - name: discount_amount_original
+        data_type: numeric
+      - name: seller_discount_original
+        data_type: numeric
+      - name: platform_discount_original
+        data_type: numeric
+      - name: gross_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: discount_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: net_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: settled_at
+        data_type: timestamp
+  - name: stg_lazada_file__order_lines
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+        data_tests: [not_null]
+      - name: seller_sku
+        data_type: string
+      - name: item_name
+        data_type: string
+      - name: quantity
+        data_type: bigint
+      - name: unit_price_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: line_gross_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: allocated_discount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_lazada_file__fees
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+      - name: source_account
+        data_type: string
+      - name: fee_date
+        data_type: date
+        data_tests: [not_null]
+      - name: fee_type_raw
+        data_type: string
+      - name: cost_type
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['platform_fee', 'payment_fee', 'shipping', 'ad_spend', 'other']
+      - name: amount_original
+        data_type: numeric
+      - name: currency
+        data_type: string
+      - name: amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_lazada_file__products
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: seller_sku
+        data_type: string
+      - name: name
+        data_type: string
+      - name: barcode
+        data_type: string
+      - name: category_raw
+        data_type: string
+  - name: stg_meta_ads_file__ad_insights_daily
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_account
+        data_type: string
+      - name: date
+        data_type: date
+        data_tests: [not_null]
+      - name: campaign_id
+        data_type: string
+      - name: campaign_name
+        data_type: string
+      - name: adgroup_id
+        data_type: string
+      - name: adgroup_name
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: spend_original
+        data_type: numeric
+      - name: spend_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: impressions
+        data_type: bigint
+      - name: clicks
+        data_type: bigint
+      - name: conversions
+        data_type: numeric
+      - name: conversion_value_original
+        data_type: numeric
+      - name: conversion_value_vnd
+        data_type: numeric
+        data_tests: [not_null]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['source_account', 'date', 'campaign_id', 'adgroup_id']
+  - name: stg_tiktok_ads_file__ad_insights_daily
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_account
+        data_type: string
+      - name: date
+        data_type: date
+        data_tests: [not_null]
+      - name: campaign_id
+        data_type: string
+      - name: campaign_name
+        data_type: string
+      - name: adgroup_id
+        data_type: string
+      - name: adgroup_name
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: spend_original
+        data_type: numeric
+      - name: spend_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: impressions
+        data_type: bigint
+      - name: clicks
+        data_type: bigint
+      - name: conversions
+        data_type: numeric
+      - name: conversion_value_original
+        data_type: numeric
+      - name: conversion_value_vnd
+        data_type: numeric
+        data_tests: [not_null]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['source_account', 'date', 'campaign_id', 'adgroup_id']
+  - name: stg_google_ads_file__ad_insights_daily
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_account
+        data_type: string
+      - name: date
+        data_type: date
+        data_tests: [not_null]
+      - name: campaign_id
+        data_type: string
+      - name: campaign_name
+        data_type: string
+      - name: adgroup_id
+        data_type: string
+      - name: adgroup_name
+        data_type: string
+      - name: currency
+        data_type: string
+      - name: spend_original
+        data_type: numeric
+      - name: spend_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: impressions
+        data_type: bigint
+      - name: clicks
+        data_type: bigint
+      - name: conversions
+        data_type: numeric
+      - name: conversion_value_original
+        data_type: numeric
+      - name: conversion_value_vnd
+        data_type: numeric
+        data_tests: [not_null]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: ['source_account', 'date', 'campaign_id', 'adgroup_id']

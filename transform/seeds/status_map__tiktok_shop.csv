@@ -1,0 +1,10 @@
+status_raw,status
+UNPAID,pending
+ON_HOLD,pending
+AWAITING_SHIPMENT,confirmed
+AWAITING_COLLECTION,confirmed
+PARTIALLY_SHIPPING,shipping
+IN_TRANSIT,shipping
+DELIVERED,delivered
+COMPLETED,completed
+CANCELLED,cancelled

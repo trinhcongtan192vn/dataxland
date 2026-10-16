@@ -1,0 +1,5 @@
+fee_type_raw,cost_type
+commission_fee,platform_fee
+service_fee,platform_fee
+seller_transaction_fee,payment_fee
+net_shipping_fee,shipping

@@ -4,6 +4,7 @@ SHELL := bash
 COMPOSE := docker compose -f infra/compose/docker-compose.yml --env-file .env
 TENANT ?= demo_seller
 PY := uv run
+export PYTHONUTF8 := 1
 
 .PHONY: setup up down seed-local dbt-build semantic test test-py test-dbt test-web lint e2e sync-tenants api bot web cube dagster
 

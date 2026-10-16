@@ -1,0 +1,59 @@
+# Dự án dbt của DataxLand (spec 02 §1). Một dự án, chạy riêng cho từng khách qua biến `dataset_prefix`.
+name: dx
+version: "1.0.0"
+config-version: 2
+profile: dx
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+vars:
+  tenant_id: demo_seller
+  pack: seller
+  sources: []
+  cost_allocation: by_revenue
+  freshness_hours: 8
+  reconcile_tolerance_pct: {default: 1.0}
+  provisional_window_days: {default: 14}
+  dataset_prefix: t_demo_seller
+  today: null
+  run_id: local
+  healthcheck: false
+
+# Nhãn chi phí theo khách cho job BigQuery (NFR-08, spec 04 §7).
+query-comment:
+  comment: "{{ dx_query_comment(node) }}"
+  job-label: true
+
+models:
+  dx:
+    +persist_docs:
+      relation: true
+    staging:
+      +materialized: view
+      +schema: stg
+    core:
+      +materialized: table
+      +schema: core
+    marts:
+      +materialized: table
+      +schema: marts
+  # Elementary: phát hiện bất thường khối lượng (FR-DQ-03), lưu trong `<dataset_prefix>_elementary`.
+  # Chỉ bật trên BigQuery; trên DuckDB dùng test `dx_volume_anomaly` (docs/adr/0003-elementary-tren-duckdb.md).
+  elementary:
+    +schema: elementary
+    +enabled: "{{ target.type == 'bigquery' and not var('healthcheck', false) }}"
+
+seeds:
+  dx:
+    +schema: core
+    +quote_columns: false
+
+data_tests:
+  dx:
+    +schema: audit
+    +store_failures: false

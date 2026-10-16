@@ -1,0 +1,12 @@
+reason_raw,reason
+CHANGE_MIND,buyer_changed_mind
+DAMAGED_PRODUCT,damaged
+FUNCTIONAL_DMG,damaged
+WRONG_ITEM,wrong_item
+NOT_RECEIPT,not_received
+ITEM_MISSING,not_received
+DIFFERENT_DESCRIPTION,quality
+EXPIRED_PRODUCT,quality
+FAKE_PRODUCT,quality
+NONE,other
+OTHER,other

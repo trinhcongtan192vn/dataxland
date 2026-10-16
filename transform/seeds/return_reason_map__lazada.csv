@@ -1,0 +1,8 @@
+reason_raw,reason
+Change of mind,buyer_changed_mind
+Damaged item,damaged
+Wrong item,wrong_item
+Not as described,quality
+Item not received,not_received
+Failed delivery,failed_delivery
+Other,other

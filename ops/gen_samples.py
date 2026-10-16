@@ -240,7 +240,9 @@ class Gen:
         for d in self.days():
             totals_count = 0
             totals_gross = 0
-            for _ in range(self.daily_volume(d, base)):
+            # demo_agency: doanh thu 7 ngày gần nhất giảm để bật cờ ROAS_DROP (spec 03 §7).
+            cut = 0.75 if tenant == "demo_agency" and self.age(d) < 7 else 1.0
+            for _ in range(self.daily_volume(d, base, cut)):
                 seq += 1
                 order_sn = f"{d:%y%m%d}{acct[-2:]}{seq:05d}SP"
                 created = self.order_time(d)
@@ -734,7 +736,7 @@ class Gen:
         }
         seq = 0
         for d in self.days():
-            cut = 0.8 if self.age(d) < 7 else 1.0
+            cut = 0.75 if self.age(d) < 7 else 1.0
             cnt = 0
             gross_c = 0
             for _ in range(self.daily_volume(d, base, cut)):
@@ -940,10 +942,10 @@ class Gen:
         budgets = {
             "demo_seller": {"meta_ads": 45_000_000},
             "demo_agency": {
-                "meta_ads": 100_000_000,
-                "tiktok_ads": 80_000_000,
-                "google_ads": 60_000_000,
-                "amazon_ads": 65_000_000,
+                "meta_ads": 50_000_000,
+                "tiktok_ads": 40_000_000,
+                "google_ads": 30_000_000,
+                "amazon_ads": 33_000_000,
             },
         }
         months = sorted({d.replace(day=1) for d in self.days()})
@@ -995,12 +997,13 @@ class Gen:
         self.tiktok_shop("demo_seller", SELLER_PRODUCTS[:9] + TIKTOK_ONLY + SELLER_PRODUCTS[9:], 4.0)
         self.lazada("demo_seller", SELLER_PRODUCTS, 3.2)
         self.ads("meta_ads", "demo_seller", 1_500_000, 3.1)
-        self.shopee("demo_agency", AGENCY_PRODUCTS, 3.0, unknown_status=False)
-        self.amazon_seller("demo_agency", 3.0)
-        self.ads("meta_ads", "demo_agency", 3_100_000, 4.6, october_boost=1.45)
-        self.ads("tiktok_ads", "demo_agency", 2_500_000, 2.6)
-        self.ads("google_ads", "demo_agency", 1_900_000, 2.3)
-        self.ads("amazon_ads", "demo_agency", 80.0, 3.0, currency="USD")
+        # demo_agency: Meta chi vượt tiến độ tháng hiện tại (OVERSPEND) và báo ROAS cao hơn thật (PLATFORM_OVERCLAIM).
+        self.shopee("demo_agency", AGENCY_PRODUCTS, 10.0, unknown_status=False)
+        self.amazon_seller("demo_agency", 8.0)
+        self.ads("meta_ads", "demo_agency", 1_600_000, 4.6, october_boost=1.45)
+        self.ads("tiktok_ads", "demo_agency", 1_200_000, 2.6)
+        self.ads("google_ads", "demo_agency", 900_000, 2.3)
+        self.ads("amazon_ads", "demo_agency", 40.0, 3.0, currency="USD")
         self.portal()
         self.fx()
 

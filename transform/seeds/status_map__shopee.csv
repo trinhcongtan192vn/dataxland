@@ -1,0 +1,12 @@
+status_raw,status
+UNPAID,pending
+INVOICE_PENDING,pending
+READY_TO_SHIP,confirmed
+PROCESSED,confirmed
+RETRY_SHIP,shipping
+SHIPPED,shipping
+TO_CONFIRM_RECEIVE,delivered
+COMPLETED,completed
+IN_CANCEL,cancelled
+CANCELLED,cancelled
+TO_RETURN,returned

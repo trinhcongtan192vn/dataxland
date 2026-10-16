@@ -1,0 +1,222 @@
+# Tự sinh bởi transform/scripts/gen_sources.py – sửa ở đó, không sửa tay.
+version: 2
+
+sources:
+  - name: raw
+    schema: "{{ var('dataset_prefix') }}_raw"
+    loaded_at_field: _dx_loaded_at
+    tables:
+      - name: dx__status_map_override
+        description: Ghi đè ánh xạ trạng thái theo khách, Dagster nạp trước dbt build (spec 02 §3.3).
+      - name: shopee__orders
+        config:
+          enabled: "{{ 'shopee' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: shopee__order_items
+        config:
+          enabled: "{{ 'shopee' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: shopee__escrow
+        config:
+          enabled: "{{ 'shopee' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: shopee__returns
+        config:
+          enabled: "{{ 'shopee' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: shopee__products
+        config:
+          enabled: "{{ 'shopee' in var('sources', []) }}"
+          freshness: null
+      - name: shopee__daily_totals
+        config:
+          enabled: "{{ 'shopee' in var('sources', []) }}"
+          freshness: null
+      - name: tiktok_shop__orders
+        config:
+          enabled: "{{ 'tiktok_shop' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: tiktok_shop__order_items
+        config:
+          enabled: "{{ 'tiktok_shop' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: tiktok_shop__settlements
+        config:
+          enabled: "{{ 'tiktok_shop' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: tiktok_shop__returns
+        config:
+          enabled: "{{ 'tiktok_shop' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: tiktok_shop__products
+        config:
+          enabled: "{{ 'tiktok_shop' in var('sources', []) }}"
+          freshness: null
+      - name: tiktok_shop__daily_totals
+        config:
+          enabled: "{{ 'tiktok_shop' in var('sources', []) }}"
+          freshness: null
+      - name: lazada__orders
+        config:
+          enabled: "{{ 'lazada' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: lazada__order_items
+        config:
+          enabled: "{{ 'lazada' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: lazada__transactions
+        config:
+          enabled: "{{ 'lazada' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: lazada__returns
+        config:
+          enabled: "{{ 'lazada' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: lazada__products
+        config:
+          enabled: "{{ 'lazada' in var('sources', []) }}"
+          freshness: null
+      - name: lazada__daily_totals
+        config:
+          enabled: "{{ 'lazada' in var('sources', []) }}"
+          freshness: null
+      - name: amazon_seller__orders
+        config:
+          enabled: "{{ 'amazon_seller' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: amazon_seller__order_items
+        config:
+          enabled: "{{ 'amazon_seller' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: amazon_seller__financial_events
+        config:
+          enabled: "{{ 'amazon_seller' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: amazon_seller__daily_totals
+        config:
+          enabled: "{{ 'amazon_seller' in var('sources', []) }}"
+          freshness: null
+      - name: meta_ads__ad_insights_daily
+        config:
+          enabled: "{{ 'meta_ads' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: tiktok_ads__ad_insights_daily
+        config:
+          enabled: "{{ 'tiktok_ads' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: google_ads__ad_insights_daily
+        config:
+          enabled: "{{ 'google_ads' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: amazon_ads__ad_insights_daily
+        config:
+          enabled: "{{ 'amazon_ads' in var('sources', []) }}"
+          tags: [freshness]
+          freshness:
+            error_after: {count: "{{ var('freshness_hours') | int }}", period: hour}
+      - name: portal__product_costs
+        config:
+          enabled: "{{ 'portal' in var('sources', []) }}"
+          freshness: null
+      - name: portal__ad_budgets
+        config:
+          enabled: "{{ 'portal' in var('sources', []) }}"
+          freshness: null
+      - name: shopee_file__orders
+        config:
+          enabled: "{{ 'shopee_file' in var('sources', []) }}"
+          freshness: null
+      - name: shopee_file__order_lines
+        config:
+          enabled: "{{ 'shopee_file' in var('sources', []) }}"
+          freshness: null
+      - name: shopee_file__fees
+        config:
+          enabled: "{{ 'shopee_file' in var('sources', []) }}"
+          freshness: null
+      - name: tiktok_shop_file__orders
+        config:
+          enabled: "{{ 'tiktok_shop_file' in var('sources', []) }}"
+          freshness: null
+      - name: tiktok_shop_file__order_lines
+        config:
+          enabled: "{{ 'tiktok_shop_file' in var('sources', []) }}"
+          freshness: null
+      - name: tiktok_shop_file__fees
+        config:
+          enabled: "{{ 'tiktok_shop_file' in var('sources', []) }}"
+          freshness: null
+      - name: lazada_file__orders
+        config:
+          enabled: "{{ 'lazada_file' in var('sources', []) }}"
+          freshness: null
+      - name: lazada_file__order_lines
+        config:
+          enabled: "{{ 'lazada_file' in var('sources', []) }}"
+          freshness: null
+      - name: lazada_file__fees
+        config:
+          enabled: "{{ 'lazada_file' in var('sources', []) }}"
+          freshness: null
+      - name: meta_ads_file__ad_insights_daily
+        config:
+          enabled: "{{ 'meta_ads_file' in var('sources', []) }}"
+          freshness: null
+      - name: tiktok_ads_file__ad_insights_daily
+        config:
+          enabled: "{{ 'tiktok_ads_file' in var('sources', []) }}"
+          freshness: null
+      - name: google_ads_file__ad_insights_daily
+        config:
+          enabled: "{{ 'google_ads_file' in var('sources', []) }}"
+          freshness: null
+      - name: portal_file__product_costs
+        config:
+          enabled: "{{ 'portal_file' in var('sources', []) }}"
+          freshness: null
+  - name: identity
+    schema: "{{ var('dataset_prefix') }}_core"
+    tables:
+      - name: identity_map
+        description: Cặp ghép đã duyệt từ S3 (spec 10 §6); Dagster tạo bảng trống nếu chưa có.
+  - name: dx_ref
+    schema: dx_ref
+    tables:
+      - name: fx_rates
+        description: Tỷ giá Vietcombank và tỷ giá nhập tay (spec 01 §6).

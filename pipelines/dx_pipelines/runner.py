@@ -236,8 +236,10 @@ class TenantPipeline:
     def dbt_build(self) -> None:
         env = self._env()
         self.freshness_result = self.s.dbt.freshness(self._vars(), self.target_path, env)
+        # Unit test dbt chạy trong CI (`make test-dbt`), không cần chạy ở mỗi lần đồng bộ.
         self.build_result = self.s.dbt.build(
-            self._vars(), self.target_path, env, full_refresh=self.full_refresh, select=self.select
+            self._vars(), self.target_path, env, full_refresh=self.full_refresh, select=self.select,
+            exclude=["resource_type:unit_test"],
         )
         if self.build_result.runtime_error:
             raise StepFailed("dbt_error", _dbt_error_detail(self.build_result))

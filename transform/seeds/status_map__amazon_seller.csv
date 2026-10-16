@@ -1,0 +1,9 @@
+status_raw,status
+Pending,pending
+PendingAvailability,pending
+InvoiceUnconfirmed,pending
+Unshipped,confirmed
+PartiallyShipped,shipping
+Shipped,completed
+Canceled,cancelled
+Unfulfillable,failed_delivery

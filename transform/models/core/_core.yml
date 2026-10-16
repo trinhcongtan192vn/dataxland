@@ -1,0 +1,468 @@
+version: 2
+
+models:
+  - name: int_union__orders
+  - name: int_orders
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+  - name: int_order_lines
+  - name: int_order_revenue
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+
+  - name: dim_channel
+    description: Một gian hàng hoặc một tài khoản quảng cáo (architecture §5.3).
+    columns:
+      - name: channel_id
+        data_tests: [unique, not_null]
+      - name: channel_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [marketplace, ads, website, pos, other]
+
+  - name: dim_product
+    description: >
+      Một SKU sau khi ghép xuyên kênh. GĐ1 khóa theo `seller_sku` chuẩn hóa; GĐ2 áp `identity_map`. Khi nhiều SKU gộp
+      thành một sản phẩm, mỗi SKU vẫn dùng giá vốn của chính nó (spec 10 §7).
+    columns:
+      - name: product_id
+        data_tests: [unique, not_null]
+
+  - name: dim_product_cost
+    description: Giá vốn theo SKU có ngày hiệu lực; khóa (`product_id`, `seller_sku`, `valid_from`).
+    columns:
+      - name: product_id
+        data_tests: [not_null]
+      - name: valid_from
+        data_tests: [not_null]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [product_id, seller_sku, valid_from]
+
+  - name: dim_ad_budget
+    description: >
+      Ngân sách nhập theo `platform`; nếu khách có nhiều tài khoản trên một nền tảng thì gán cho các `channel_id`
+      của nền tảng đó và chia đều (spec 02 §4).
+    columns:
+      - name: channel_id
+        data_tests: [not_null]
+      - name: month
+        data_tests: [not_null]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns: [channel_id, month]
+
+  - name: dim_customer
+    description: Người mua sau khi ghép; chỉ có dạng băm (NFR-03).
+    columns:
+      - name: customer_id
+        data_tests: [unique, not_null]
+
+  - name: fct_order
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+      - name: channel_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_channel')
+                field: channel_id
+      - name: status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [pending, confirmed, shipping, delivered, completed, cancelled, returned, failed_delivery]
+    data_tests:
+      - reconcile_daily_totals:
+          name: reconcile_daily_totals_shopee
+          arguments: {source_name: shopee}
+          config: {enabled: "{{ 'shopee' in var('sources', []) }}", store_failures: true, tags: [reconcile]}
+      - reconcile_daily_totals:
+          name: reconcile_daily_totals_tiktok_shop
+          arguments: {source_name: tiktok_shop}
+          config: {enabled: "{{ 'tiktok_shop' in var('sources', []) }}", store_failures: true, tags: [reconcile]}
+      - reconcile_daily_totals:
+          name: reconcile_daily_totals_lazada
+          arguments: {source_name: lazada}
+          config: {enabled: "{{ 'lazada' in var('sources', []) }}", store_failures: true, tags: [reconcile]}
+      - reconcile_daily_totals:
+          name: reconcile_daily_totals_amazon_seller
+          arguments: {source_name: amazon_seller}
+          config: {enabled: "{{ 'amazon_seller' in var('sources', []) }}", store_failures: true, tags: [reconcile]}
+      - dx_volume_anomaly:
+          name: volume_anomalies_fct_order
+          arguments: {timestamp_column: ordered_at}
+          config: {severity: warn, enabled: "{{ target.type != 'bigquery' }}", tags: [anomaly]}
+      - elementary.volume_anomalies:
+          name: elementary_volume_anomalies_fct_order
+          arguments: {timestamp_column: ordered_at, time_bucket: {period: day, count: 1}}
+          config: {severity: warn, enabled: "{{ target.type == 'bigquery' and not var('healthcheck', false) }}", tags: [anomaly]}
+
+  - name: fct_order_line
+    columns:
+      - name: order_line_id
+        data_tests: [unique, not_null]
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fct_order')
+                field: order_id
+      - name: product_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_product')
+                field: product_id
+
+  - name: fct_cost
+    columns:
+      - name: cost_id
+        data_tests: [unique, not_null]
+      - name: amount_vnd
+        data_tests: [not_null]
+      - name: cost_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [platform_fee, payment_fee, shipping, ad_spend, other]
+      - name: order_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('fct_order')
+                field: order_id
+
+  - name: fct_return
+    columns:
+      - name: return_id
+        data_tests: [unique, not_null]
+      - name: order_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('fct_order')
+                field: order_id
+      - name: order_line_id
+        data_tests:
+          - relationships:
+              arguments:
+                to: ref('fct_order_line')
+                field: order_line_id
+      - name: reason
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [buyer_changed_mind, damaged, wrong_item, not_received, quality, failed_delivery, other]
+
+  - name: fct_ad_performance_daily
+    columns:
+      - name: ad_performance_id
+        data_tests: [unique, not_null]
+      - name: channel_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_channel')
+                field: channel_id
+      - name: spend_vnd
+        data_tests: [not_null]
+    data_tests:
+      - dx_volume_anomaly:
+          name: volume_anomalies_fct_ad_performance_daily
+          arguments: {timestamp_column: date}
+          config: {severity: warn, enabled: "{{ target.type != 'bigquery' }}", tags: [anomaly]}
+      - elementary.volume_anomalies:
+          name: elementary_volume_anomalies_fct_ad_performance_daily
+          arguments: {timestamp_column: date, time_bucket: {period: day, count: 1}}
+          config: {severity: warn, enabled: "{{ target.type == 'bigquery' and not var('healthcheck', false) }}", tags: [anomaly]}
+
+  - name: fct_cost_allocated
+    columns:
+      - name: allocation_id
+        data_tests: [unique, not_null]
+      - name: allocated_amount_vnd
+        data_tests:
+          - not_null
+          - sum_preserved:
+              arguments:
+                compare_model: ref('fct_cost')
+                compare_column: amount_vnd
+
+unit_tests:
+  - name: test_fr_inp_01_cost_effective_date
+    description: Giá vốn mới từ một ngày chỉ ảnh hưởng đơn từ ngày đó (FR-INP-01).
+    model: int_order_lines
+    given:
+      - input: ref('int_union__order_lines')
+        rows:
+          - {source: shopee, source_id: l1, order_source_id: o1, seller_sku: SKU1, item_name: A, quantity: 2, unit_price_vnd: 100, line_gross_vnd: 200, allocated_discount_vnd: 0}
+          - {source: shopee, source_id: l2, order_source_id: o2, seller_sku: SKU1, item_name: A, quantity: 1, unit_price_vnd: 100, line_gross_vnd: 100, allocated_discount_vnd: 0}
+          - {source: shopee, source_id: l3, order_source_id: o2, seller_sku: SKU9, item_name: B, quantity: 1, unit_price_vnd: 50, line_gross_vnd: 50, allocated_discount_vnd: 10}
+      - input: ref('int_orders')
+        rows:
+          - {order_id: O1, channel_id: C, source: shopee, source_id: o1, order_date: '2026-09-30'}
+          - {order_id: O2, channel_id: C, source: shopee, source_id: o2, order_date: '2026-10-01'}
+      - input: ref('int_identity__product')
+        format: sql
+        rows: "select cast(null as varchar) as sku_key, cast(null as varchar) as canonical_id where 1 = 0"
+      - input: ref('dim_product_cost')
+        rows:
+          - {sku_key: sku1, valid_from: '2026-09-01', valid_to: '2026-09-30', unit_cost_vnd: 40}
+          - {sku_key: sku1, valid_from: '2026-10-01', valid_to: null, unit_cost_vnd: 60}
+    expect:
+      rows:
+        - {order_id: O1, seller_sku: SKU1, unit_cost_vnd: 40, cogs_vnd: 80, has_missing_cogs: false, line_net_vnd: 200}
+        - {order_id: O2, seller_sku: SKU1, unit_cost_vnd: 60, cogs_vnd: 60, has_missing_cogs: false, line_net_vnd: 100}
+        - {order_id: O2, seller_sku: SKU9, unit_cost_vnd: null, cogs_vnd: null, has_missing_cogs: true, line_net_vnd: 40}
+
+  - name: test_fr_mod_05_allocation_by_revenue
+    description: Chi quảng cáo chưa gắn đơn chia cho đơn không hủy cùng ngày theo doanh thu; ngày không có đơn giữ một dòng order_id null.
+    model: fct_cost_allocated
+    overrides:
+      vars: {cost_allocation: by_revenue}
+    given:
+      - input: ref('fct_cost')
+        rows:
+          - {cost_id: F1, cost_type: platform_fee, amount_vnd: 10, order_id: O1, channel_id: SHOP, cost_date: '2026-10-01'}
+          - {cost_id: AD1, cost_type: ad_spend, amount_vnd: 90, order_id: null, channel_id: META, cost_date: '2026-10-01'}
+          - {cost_id: AD2, cost_type: ad_spend, amount_vnd: 7, order_id: null, channel_id: META, cost_date: '2026-10-02'}
+      - input: ref('dim_channel')
+        rows:
+          - {channel_id: SHOP, channel_type: marketplace}
+          - {channel_id: META, channel_type: ads}
+      - input: ref('fct_order')
+        rows:
+          - {order_id: O1, order_date: '2026-10-01', channel_id: SHOP, net_amount_vnd: 200, is_cancelled: false}
+          - {order_id: O2, order_date: '2026-10-01', channel_id: SHOP, net_amount_vnd: 100, is_cancelled: false}
+          - {order_id: O3, order_date: '2026-10-01', channel_id: SHOP, net_amount_vnd: 500, is_cancelled: true}
+    expect:
+      rows:
+        - {cost_id: F1, order_id: O1, allocated_amount_vnd: 10}
+        - {cost_id: AD1, order_id: O1, allocated_amount_vnd: 60}
+        - {cost_id: AD1, order_id: O2, allocated_amount_vnd: 30}
+        - {cost_id: AD2, order_id: null, allocated_amount_vnd: 7}
+
+  - name: test_fr_mod_05_allocation_by_order
+    model: fct_cost_allocated
+    overrides:
+      vars: {cost_allocation: by_order}
+    given:
+      - input: ref('fct_cost')
+        rows:
+          - {cost_id: AD1, cost_type: ad_spend, amount_vnd: 90, order_id: null, channel_id: META, cost_date: '2026-10-01'}
+      - input: ref('dim_channel')
+        rows:
+          - {channel_id: META, channel_type: ads}
+      - input: ref('fct_order')
+        rows:
+          - {order_id: O1, order_date: '2026-10-01', channel_id: SHOP, net_amount_vnd: 200, is_cancelled: false}
+          - {order_id: O2, order_date: '2026-10-01', channel_id: SHOP, net_amount_vnd: 100, is_cancelled: false}
+    expect:
+      rows:
+        - {cost_id: AD1, order_id: O1, allocated_amount_vnd: 45}
+        - {cost_id: AD1, order_id: O2, allocated_amount_vnd: 45}
+
+  - name: test_fr_mod_05_allocation_none
+    model: fct_cost_allocated
+    overrides:
+      vars: {cost_allocation: none}
+    given:
+      - input: ref('fct_cost')
+        rows:
+          - {cost_id: AD1, cost_type: ad_spend, amount_vnd: 90, order_id: null, channel_id: META, cost_date: '2026-10-01'}
+      - input: ref('dim_channel')
+        rows:
+          - {channel_id: META, channel_type: ads}
+      - input: ref('fct_order')
+        rows:
+          - {order_id: O1, order_date: '2026-10-01', channel_id: SHOP, net_amount_vnd: 200, is_cancelled: false}
+    expect:
+      rows:
+        - {cost_id: AD1, order_id: null, allocated_amount_vnd: 90}
+
+  - name: test_is_provisional_and_cogs
+    description: Đơn chưa quyết toán trong cửa sổ tạm tính là tạm tính; có dòng thiếu giá vốn thì cogs_vnd null (spec 02 §4.1).
+    model: fct_order
+    overrides:
+      vars: {today: '2026-10-16'}
+    given:
+      - input: ref('int_orders')
+        rows:
+          - {order_id: A, source: shopee, order_date: '2026-10-10', settled_at: null, status: delivered}
+          - {order_id: B, source: shopee, order_date: '2026-09-20', settled_at: null, status: cancelled}
+          - {order_id: C, source: shopee, order_date: '2026-10-10', settled_at: '2026-10-12 00:00:00', status: completed}
+          - {order_id: D, source: lazada, order_date: '2026-09-25', settled_at: null, status: delivered}
+      - input: ref('int_order_lines')
+        rows:
+          - {order_id: A, cogs_vnd: 10, has_missing_cogs: false}
+          - {order_id: A, cogs_vnd: null, has_missing_cogs: true}
+          - {order_id: C, cogs_vnd: 30, has_missing_cogs: false}
+    expect:
+      rows:
+        - {order_id: A, is_provisional: true, is_settled: false, has_missing_cogs: true, cogs_vnd: null, cogs_known_vnd: 10, is_cancelled: false}
+        - {order_id: B, is_provisional: false, is_settled: false, has_missing_cogs: false, cogs_vnd: 0, cogs_known_vnd: 0, is_cancelled: true}
+        - {order_id: C, is_provisional: false, is_settled: true, has_missing_cogs: false, cogs_vnd: 30, cogs_known_vnd: 30, is_cancelled: false}
+        - {order_id: D, is_provisional: false, is_settled: false, has_missing_cogs: false, cogs_vnd: 0, cogs_known_vnd: 0, is_cancelled: false}
+
+  - name: test_net_revenue_with_refund
+    description: Doanh thu thực nhận = net_amount − tiền hoàn; đơn hủy là 0 (spec 02 §5).
+    model: int_order_revenue
+    given:
+      - input: ref('fct_order')
+        rows:
+          - {order_id: A, status: completed, net_amount_vnd: 300}
+          - {order_id: B, status: cancelled, net_amount_vnd: 500}
+          - {order_id: C, status: returned, net_amount_vnd: 200}
+      - input: ref('fct_return')
+        rows:
+          - {order_id: C, refund_amount_vnd: 200, return_fee_vnd: 22}
+    expect:
+      rows:
+        - {order_id: A, net_revenue_vnd: 300, refund_vnd: 0, return_fee_vnd: 0, is_returned: false}
+        - {order_id: B, net_revenue_vnd: 0, refund_vnd: 0, return_fee_vnd: 0, is_returned: false}
+        - {order_id: C, net_revenue_vnd: 0, refund_vnd: 200, return_fee_vnd: 22, is_returned: true}
+
+  - name: test_dim_channel_from_orders_and_ads
+    model: dim_channel
+    given:
+      - input: ref('int_union__orders')
+        rows:
+          - {source: shopee, source_account: '100001', currency: VND}
+          - {source: shopee, source_account: '100001', currency: VND}
+      - input: ref('int_union__ad_insights_daily')
+        rows:
+          - {source: amazon_ads, source_account: E1, currency: USD}
+      - input: ref('platform_map')
+        rows:
+          - {source: shopee, platform: shopee, channel_type: marketplace, name_vi: Shopee}
+          - {source: amazon_ads, platform: amazon_ads, channel_type: ads, name_vi: Amazon Ads}
+    expect:
+      rows:
+        - {source: shopee, platform: shopee, channel_type: marketplace, name: 'Shopee · 100001', currency: VND}
+        - {source: amazon_ads, platform: amazon_ads, channel_type: ads, name: 'Amazon Ads · E1', currency: USD}
+
+  - name: test_dim_product_sku_key
+    description: Cùng SKU (khác hoa thường, khoảng trắng) trên hai sàn là một sản phẩm (spec 02 §4).
+    model: dim_product
+    given:
+      - input: ref('int_union__products')
+        rows:
+          - {source: shopee, source_id: '1-1', seller_sku: 'SKU-A', name: Serum, barcode: '893', category_raw: Làm đẹp}
+          - {source: tiktok_shop, source_id: '9-9', seller_sku: ' sku-a ', name: Serum TT, barcode: null, category_raw: null}
+      - input: ref('int_union__order_lines')
+        rows:
+          - {source: lazada, source_id: L1, seller_sku: '', item_name: Không SKU}
+      - input: ref('int_identity__product')
+        format: sql
+        rows: "select cast(null as varchar) as sku_key, cast(null as varchar) as canonical_id where 1 = 0"
+    expect:
+      rows:
+        - {source: shopee, seller_sku: SKU-A, canonical_name: Serum, barcode: '893'}
+        - {source: lazada, seller_sku: '', canonical_name: Không SKU, barcode: null}
+
+  - name: test_dim_product_cost_valid_to
+    model: dim_product_cost
+    overrides:
+      vars: {sources: [portal]}
+    given:
+      - input: ref('stg_portal__product_costs')
+        rows:
+          - {source_id: p1, seller_sku: SKU1, unit_cost_vnd: 40, valid_from: '2026-09-01', deleted: false}
+          - {source_id: p2, seller_sku: SKU1, unit_cost_vnd: 60, valid_from: '2026-10-01', deleted: false}
+          - {source_id: p3, seller_sku: SKU1, unit_cost_vnd: 99, valid_from: '2026-09-15', deleted: true}
+      - input: ref('int_identity__product')
+        format: sql
+        rows: "select cast(null as varchar) as sku_key, cast(null as varchar) as canonical_id where 1 = 0"
+    expect:
+      rows:
+        - {source_id: p1, valid_from: '2026-09-01', valid_to: '2026-09-30', unit_cost_vnd: 40}
+        - {source_id: p2, valid_from: '2026-10-01', valid_to: null, unit_cost_vnd: 60}
+
+  - name: test_dim_ad_budget_split_accounts
+    model: dim_ad_budget
+    overrides:
+      vars: {sources: [portal]}
+    given:
+      - input: ref('stg_portal__ad_budgets')
+        rows:
+          - {source_id: b1, platform: meta_ads, month: '2026-10-01', budget_vnd: 100, deleted: false}
+          - {source_id: b2, platform: google_ads, month: '2026-10-01', budget_vnd: 50, deleted: false}
+      - input: ref('dim_channel')
+        rows:
+          - {channel_id: M1, platform: meta_ads, channel_type: ads}
+          - {channel_id: M2, platform: meta_ads, channel_type: ads}
+    expect:
+      rows:
+        - {platform: meta_ads, budget_vnd: 50}
+        - {platform: meta_ads, budget_vnd: 50}
+        - {platform: google_ads, budget_vnd: 50}
+
+  - name: test_dim_customer_first_order
+    model: dim_customer
+    given:
+      - input: ref('int_orders')
+        rows:
+          - {customer_id: K1, source: shopee, source_id: o2, channel_id: C2, ordered_at: '2026-10-02 00:00:00', buyer_phone_hash: h1, buyer_email_hash: null}
+          - {customer_id: K1, source: tiktok_shop, source_id: o1, channel_id: C1, ordered_at: '2026-10-01 00:00:00', buyer_phone_hash: h1, buyer_email_hash: e1}
+          - {customer_id: null, source: lazada, source_id: o3, channel_id: C3, ordered_at: '2026-10-01 00:00:00', buyer_phone_hash: null, buyer_email_hash: null}
+    expect:
+      rows:
+        - {customer_id: K1, first_channel_id: C1, order_count_lifetime: 2, phone_hash: h1, email_hash: e1}
+
+  - name: test_fct_return_keys
+    model: fct_return
+    given:
+      - input: ref('int_union__returns')
+        rows:
+          - {source: shopee, source_id: R1, order_source_id: o1, order_line_source_id: null, reason: damaged, refund_amount_vnd: 10, return_fee_vnd: 2}
+    expect:
+      rows:
+        - {source: shopee, source_id: R1, order_line_id: null, reason: damaged, refund_amount_vnd: 10}
+
+  - name: test_fct_cost_adds_ad_spend
+    description: Chi quảng cáo trong fct_cost sinh từ fct_ad_performance_daily theo kênh và ngày (architecture §5.3).
+    model: fct_cost
+    given:
+      - input: ref('int_union__fees')
+        rows:
+          - {source: shopee, source_id: F1, order_source_id: o1, source_account: '1', fee_date: '2026-10-01', cost_type: platform_fee, amount_vnd: 10}
+      - input: ref('fct_ad_performance_daily')
+        rows:
+          - {channel_id: M, date: '2026-10-01', source: meta_ads, spend_vnd: 30}
+          - {channel_id: M, date: '2026-10-01', source: meta_ads, spend_vnd: 20}
+          - {channel_id: M, date: '2026-10-02', source: meta_ads, spend_vnd: 0}
+    expect:
+      rows:
+        - {source: shopee, cost_type: platform_fee, amount_vnd: 10}
+        - {source: meta_ads, cost_type: ad_spend, amount_vnd: 50}
+
+  - name: test_fct_ad_performance_daily_passthrough
+    model: fct_ad_performance_daily
+    given:
+      - input: ref('int_union__ad_insights_daily')
+        rows:
+          - {source: amazon_ads, source_account: E1, date: '2026-10-01', campaign_id: c1, adgroup_id: a1, spend_vnd: 2600000, conversion_value_vnd: 7800000, impressions: 1000, clicks: 10, conversions: 2}
+    expect:
+      rows:
+        - {source: amazon_ads, campaign_id: c1, spend_vnd: 2600000, conversion_value_vnd: 7800000, clicks: 10}
+
+  - name: test_fct_order_line_passthrough
+    model: fct_order_line
+    given:
+      - input: ref('int_order_lines')
+        rows:
+          - {order_line_id: L1, order_id: O1, product_id: P1, seller_sku: S, quantity: 2, line_net_vnd: 180, cogs_vnd: 80, has_missing_cogs: false}
+    expect:
+      rows:
+        - {order_line_id: L1, order_id: O1, product_id: P1, line_net_vnd: 180, cogs_vnd: 80}

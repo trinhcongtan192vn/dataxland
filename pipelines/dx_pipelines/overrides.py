@@ -39,7 +39,22 @@ def read_overrides(tenant: TenantConfig, repo_root: Path) -> list[dict[str, str]
     return rows
 
 
+IDENTITY_COLUMNS = {
+    "entity": "string", "source": "string", "source_id": "string", "canonical_id": "string", "method": "string",
+    "approved_by": "string", "approved_at": "timestamp",
+}
+
+
 def load_overrides(tenant: TenantConfig, repo_root: Path, warehouse: object, raw_dataset: str) -> int:
     rows = read_overrides(tenant, repo_root)
     warehouse.ensure_dataset(raw_dataset, {"tenant_id": tenant.tenant_id})  # type: ignore[attr-defined]
-    return int(warehouse.write_rows(raw_dataset, "dx__status_map_override", COLUMNS, rows))  # type: ignore[attr-defined]
+    n = int(warehouse.write_rows(raw_dataset, "dx__status_map_override", COLUMNS, rows))  # type: ignore[attr-defined]
+    ensure_identity_map(tenant.tenant_id, warehouse, raw_dataset[: -len("_raw")] + "_core")
+    return n
+
+
+def ensure_identity_map(tenant_id: str, warehouse: object, core_dataset: str) -> None:
+    """`identity_map` do S3 ghi (spec 10 §6); dbt đọc như một nguồn có thể trống (spec 10 §7)."""
+    warehouse.ensure_dataset(core_dataset, {"tenant_id": tenant_id})  # type: ignore[attr-defined]
+    if "identity_map" not in warehouse.list_tables(core_dataset):  # type: ignore[attr-defined]
+        warehouse.write_rows(core_dataset, "identity_map", IDENTITY_COLUMNS, [])  # type: ignore[attr-defined]
