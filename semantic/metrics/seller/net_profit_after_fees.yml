@@ -1,0 +1,39 @@
+metric: net_profit_after_fees
+name_vi: Lãi sau phí
+description_vi: Doanh thu thực nhận trừ giá vốn, phí sàn, phí thanh toán, quảng cáo, vận chuyển, hoàn hàng và chi phí khác.
+version: 1.0.0
+type: derived
+formula: contribution_margin - allocated_ad_spend - other_costs
+dimensions:
+- channel
+- date
+- is_provisional
+- order_status
+- platform
+- product
+- product_name
+- sku
+unit: VND
+good_direction: up
+packs:
+- seller
+anomaly:
+  compare: trailing_4_weeks
+  threshold_pct: 30
+  grain: week
+synonyms_vi:
+- lãi
+- lời
+- lợi nhuận
+- lãi ròng
+- lãi thật
+source_note_vi: Tính từ các chỉ số thành phần.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

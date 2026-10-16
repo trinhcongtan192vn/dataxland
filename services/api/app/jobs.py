@@ -50,7 +50,7 @@ def alert_dead_letters(db: Session) -> int:
                 )
                 .on_conflict_do_nothing(index_elements=["event_id", "channel", "recipient_key"])
             )
-            n += res.rowcount or 0
+            n += getattr(res, "rowcount", 0) or 0
     return n
 
 

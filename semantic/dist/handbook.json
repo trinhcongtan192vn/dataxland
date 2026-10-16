@@ -1,0 +1,1793 @@
+{
+  "metrics": [
+    {
+      "description_vi": "Chi quảng cáo Amazon chia doanh thu từ quảng cáo Amazon.",
+      "dimensions": [
+        {
+          "name": "adgroup",
+          "name_vi": "Nhóm quảng cáo"
+        },
+        {
+          "name": "campaign",
+          "name_vi": "Chiến dịch"
+        },
+        {
+          "name": "campaign_name",
+          "name_vi": "Tên chiến dịch"
+        },
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Chi quảng cáo Amazon ÷ Doanh thu từ quảng cáo Amazon",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "acos",
+      "name_vi": "ACOS (Amazon)",
+      "packs": [
+        "agency"
+      ],
+      "requires": [
+        "amazon"
+      ],
+      "source_note_vi": "Amazon Ads qua Windsor.ai.",
+      "synonyms_vi": [
+        "acos"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Tổng tiền đã chi cho quảng cáo trên các nền tảng, quy đổi về VND theo tỷ giá ngày chi.",
+      "dimensions": [
+        {
+          "name": "adgroup",
+          "name_vi": "Nhóm quảng cáo"
+        },
+        {
+          "name": "campaign",
+          "name_vi": "Chiến dịch"
+        },
+        {
+          "name": "campaign_name",
+          "name_vi": "Tên chiến dịch"
+        },
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Tổng spend trên quảng cáo theo ngày",
+      "good_direction": "none",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "ad_spend",
+      "name_vi": "Chi phí quảng cáo",
+      "packs": [
+        "agency",
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Số chi tiêu do Meta, TikTok, Google, Amazon Ads báo về qua Windsor.ai.",
+      "synonyms_vi": [
+        "chi quảng cáo",
+        "tiền quảng cáo",
+        "ads",
+        "chi tiêu quảng cáo",
+        "spend"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Doanh thu thực nhận chia số đơn không hủy.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Doanh thu thực nhận ÷ Số đơn",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "aov",
+      "name_vi": "Giá trị đơn trung bình",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Tính từ doanh thu thực nhận và số đơn.",
+      "synonyms_vi": [
+        "aov",
+        "giá trị đơn trung bình"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Đã chi trong tháng chia mức chi đúng tiến độ (ngân sách × số ngày đã qua ÷ số ngày của tháng). 1,0 là đúng tiến độ; trên 1 là chi nhanh hơn kế hoạch.",
+      "dimensions": [
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Đã chi trong tháng ÷ Mức chi đúng tiến độ",
+      "good_direction": "none",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "budget_pacing",
+      "name_vi": "Tiến độ ngân sách",
+      "packs": [
+        "agency"
+      ],
+      "requires": [],
+      "source_note_vi": "Ngân sách khách nhập và chi tiêu nền tảng báo.",
+      "synonyms_vi": [
+        "tiến độ ngân sách",
+        "pacing",
+        "chi có vượt không"
+      ],
+      "time_grains": [
+        "month"
+      ],
+      "unit": "ratio",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Đã chi trong tháng chia ngân sách tháng.",
+      "dimensions": [
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Đã chi trong tháng ÷ Ngân sách quảng cáo",
+      "good_direction": "none",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "budget_used_pct",
+      "name_vi": "Tỷ lệ ngân sách đã dùng",
+      "packs": [
+        "agency"
+      ],
+      "requires": [],
+      "source_note_vi": "Ngân sách khách nhập và chi tiêu nền tảng báo.",
+      "synonyms_vi": [
+        "đã dùng bao nhiêu ngân sách"
+      ],
+      "time_grains": [
+        "month"
+      ],
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Số đơn hủy chia số đơn đã đặt.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Số đơn hủy ÷ Số đơn đặt",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "cancel_rate",
+      "name_vi": "Tỷ lệ hủy",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Đơn trên các sàn.",
+      "synonyms_vi": [
+        "tỷ lệ hủy",
+        "đơn hủy"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Tổng lượt nhấp do nền tảng quảng cáo báo.",
+      "dimensions": [
+        {
+          "name": "adgroup",
+          "name_vi": "Nhóm quảng cáo"
+        },
+        {
+          "name": "campaign",
+          "name_vi": "Chiến dịch"
+        },
+        {
+          "name": "campaign_name",
+          "name_vi": "Tên chiến dịch"
+        },
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Tổng clicks trên quảng cáo theo ngày",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "clicks",
+      "name_vi": "Lượt nhấp",
+      "packs": [
+        "agency"
+      ],
+      "requires": [],
+      "source_note_vi": "Số do nền tảng quảng cáo báo về qua Windsor.ai.",
+      "synonyms_vi": [
+        "click",
+        "nhấp"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "count",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Số lượng bán nhân giá vốn hiệu lực tại ngày đặt. SKU chưa có giá vốn tạm tính là 0.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        },
+        {
+          "name": "product",
+          "name_vi": "Sản phẩm"
+        },
+        {
+          "name": "product_name",
+          "name_vi": "Tên sản phẩm"
+        },
+        {
+          "name": "sku",
+          "name_vi": "SKU"
+        }
+      ],
+      "formula_vi": "Tổng cogs trên đơn hàng (gói seller)",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "cogs",
+      "name_vi": "Giá vốn hàng bán",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Giá vốn khách nhập trên cổng DataxLand.",
+      "synonyms_vi": [
+        "giá vốn",
+        "cogs",
+        "tiền hàng"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Doanh thu thực nhận trừ giá vốn, phí sàn, phí thanh toán, vận chuyển và hoàn hàng (chưa trừ quảng cáo).",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        },
+        {
+          "name": "product",
+          "name_vi": "Sản phẩm"
+        },
+        {
+          "name": "product_name",
+          "name_vi": "Tên sản phẩm"
+        },
+        {
+          "name": "sku",
+          "name_vi": "SKU"
+        }
+      ],
+      "formula_vi": "Doanh thu thực nhận - Giá vốn hàng bán - Phí sàn - Phí thanh toán - Phí vận chuyển - Chi phí hoàn hàng",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "contribution_margin",
+      "name_vi": "Biên đóng góp",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Tính từ các chỉ số thành phần.",
+      "synonyms_vi": [
+        "biên đóng góp",
+        "lãi gộp sau phí"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Tổng chuyển đổi do nền tảng quảng cáo báo.",
+      "dimensions": [
+        {
+          "name": "adgroup",
+          "name_vi": "Nhóm quảng cáo"
+        },
+        {
+          "name": "campaign",
+          "name_vi": "Chiến dịch"
+        },
+        {
+          "name": "campaign_name",
+          "name_vi": "Tên chiến dịch"
+        },
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Tổng conversions trên quảng cáo theo ngày",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "conversions",
+      "name_vi": "Chuyển đổi",
+      "packs": [
+        "agency"
+      ],
+      "requires": [],
+      "source_note_vi": "Số do nền tảng quảng cáo báo về qua Windsor.ai.",
+      "synonyms_vi": [
+        "chuyển đổi",
+        "conversion",
+        "kết quả"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "count",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Chi quảng cáo chia số chuyển đổi nền tảng báo.",
+      "dimensions": [
+        {
+          "name": "adgroup",
+          "name_vi": "Nhóm quảng cáo"
+        },
+        {
+          "name": "campaign",
+          "name_vi": "Chiến dịch"
+        },
+        {
+          "name": "campaign_name",
+          "name_vi": "Tên chiến dịch"
+        },
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Chi phí quảng cáo ÷ Chuyển đổi",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "cpa",
+      "name_vi": "Chi phí mỗi chuyển đổi (CPA)",
+      "packs": [
+        "agency"
+      ],
+      "requires": [],
+      "source_note_vi": "Số do nền tảng quảng cáo báo.",
+      "synonyms_vi": [
+        "cpa",
+        "giá mỗi chuyển đổi"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Chi quảng cáo chia lượt nhấp.",
+      "dimensions": [
+        {
+          "name": "adgroup",
+          "name_vi": "Nhóm quảng cáo"
+        },
+        {
+          "name": "campaign",
+          "name_vi": "Chiến dịch"
+        },
+        {
+          "name": "campaign_name",
+          "name_vi": "Tên chiến dịch"
+        },
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Chi phí quảng cáo ÷ Lượt nhấp",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "cpc",
+      "name_vi": "Chi phí mỗi lượt nhấp (CPC)",
+      "packs": [
+        "agency"
+      ],
+      "requires": [],
+      "source_note_vi": "Số do nền tảng quảng cáo báo.",
+      "synonyms_vi": [
+        "cpc",
+        "giá mỗi click"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Chi quảng cáo chia lượt hiển thị, nhân 1.000.",
+      "dimensions": [
+        {
+          "name": "adgroup",
+          "name_vi": "Nhóm quảng cáo"
+        },
+        {
+          "name": "campaign",
+          "name_vi": "Chiến dịch"
+        },
+        {
+          "name": "campaign_name",
+          "name_vi": "Tên chiến dịch"
+        },
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Chi phí quảng cáo ÷ Lượt hiển thị × 1000",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "cpm",
+      "name_vi": "Chi phí mỗi nghìn lượt hiển thị (CPM)",
+      "packs": [
+        "agency"
+      ],
+      "requires": [],
+      "source_note_vi": "Số do nền tảng quảng cáo báo.",
+      "synonyms_vi": [
+        "cpm"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Lượt nhấp chia lượt hiển thị.",
+      "dimensions": [
+        {
+          "name": "adgroup",
+          "name_vi": "Nhóm quảng cáo"
+        },
+        {
+          "name": "campaign",
+          "name_vi": "Chiến dịch"
+        },
+        {
+          "name": "campaign_name",
+          "name_vi": "Tên chiến dịch"
+        },
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Lượt nhấp ÷ Lượt hiển thị",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "ctr",
+      "name_vi": "Tỷ lệ nhấp (CTR)",
+      "packs": [
+        "agency"
+      ],
+      "requires": [],
+      "source_note_vi": "Số do nền tảng quảng cáo báo.",
+      "synonyms_vi": [
+        "ctr",
+        "tỷ lệ nhấp"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Tổng giá trị các đơn đã đặt, trước mọi giảm giá, kể cả đơn hủy.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Tổng gross amount trên đơn hàng (gói seller) (row_type = order)",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "gmv",
+      "name_vi": "Tổng giá trị đơn (GMV)",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Đơn trên Shopee, TikTok Shop, Lazada, Amazon.",
+      "synonyms_vi": [
+        "gmv",
+        "doanh số",
+        "tổng giá trị đơn"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Tổng lượt hiển thị do nền tảng quảng cáo báo.",
+      "dimensions": [
+        {
+          "name": "adgroup",
+          "name_vi": "Nhóm quảng cáo"
+        },
+        {
+          "name": "campaign",
+          "name_vi": "Chiến dịch"
+        },
+        {
+          "name": "campaign_name",
+          "name_vi": "Tên chiến dịch"
+        },
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Tổng impressions trên quảng cáo theo ngày",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "impressions",
+      "name_vi": "Lượt hiển thị",
+      "packs": [
+        "agency"
+      ],
+      "requires": [],
+      "source_note_vi": "Số do nền tảng quảng cáo báo về qua Windsor.ai.",
+      "synonyms_vi": [
+        "hiển thị",
+        "impression"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "count",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Tổng giá trị bán thực tế chia tổng chi quảng cáo.",
+      "dimensions": [
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        }
+      ],
+      "formula_vi": "Tổng giá trị bán (theo ngày bán) ÷ Chi phí quảng cáo",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "mer",
+      "name_vi": "MER (doanh thu trên chi quảng cáo)",
+      "packs": [
+        "agency"
+      ],
+      "requires": [],
+      "source_note_vi": "Doanh số từ đơn trên sàn; chi phí từ nền tảng quảng cáo.",
+      "synonyms_vi": [
+        "mer",
+        "marketing efficiency ratio"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "ratio",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Lãi sau phí chia doanh thu thực nhận.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        },
+        {
+          "name": "product",
+          "name_vi": "Sản phẩm"
+        },
+        {
+          "name": "product_name",
+          "name_vi": "Tên sản phẩm"
+        },
+        {
+          "name": "sku",
+          "name_vi": "SKU"
+        }
+      ],
+      "formula_vi": "Lãi sau phí ÷ Doanh thu thực nhận",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "net_margin_pct",
+      "name_vi": "Biên lãi",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Tính từ lãi sau phí và doanh thu.",
+      "synonyms_vi": [
+        "biên lãi",
+        "tỷ suất lợi nhuận",
+        "margin"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Doanh thu thực nhận trừ giá vốn, phí sàn, phí thanh toán, quảng cáo, vận chuyển, hoàn hàng và chi phí khác.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        },
+        {
+          "name": "product",
+          "name_vi": "Sản phẩm"
+        },
+        {
+          "name": "product_name",
+          "name_vi": "Tên sản phẩm"
+        },
+        {
+          "name": "sku",
+          "name_vi": "SKU"
+        }
+      ],
+      "formula_vi": "Biên đóng góp - Chi quảng cáo phân bổ - Chi phí khác",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "net_profit_after_fees",
+      "name_vi": "Lãi sau phí",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Tính từ các chỉ số thành phần.",
+      "synonyms_vi": [
+        "lãi",
+        "lời",
+        "lợi nhuận",
+        "lãi ròng",
+        "lãi thật"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Doanh thu sau giảm giá do shop chịu và sau tiền hoàn cho người mua. Đơn hủy tính là 0.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        },
+        {
+          "name": "product",
+          "name_vi": "Sản phẩm"
+        },
+        {
+          "name": "product_name",
+          "name_vi": "Tên sản phẩm"
+        },
+        {
+          "name": "sku",
+          "name_vi": "SKU"
+        }
+      ],
+      "formula_vi": "Tổng net revenue trên đơn hàng (gói seller)",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "net_revenue",
+      "name_vi": "Doanh thu thực nhận",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Đơn trên các sàn; giảm giá do sàn tài trợ không bị trừ vì sàn trả lại cho shop.",
+      "synonyms_vi": [
+        "doanh thu",
+        "doanh thu thật",
+        "tiền về",
+        "doanh thu thực"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Số đơn không bị hủy.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        },
+        {
+          "name": "product",
+          "name_vi": "Sản phẩm"
+        },
+        {
+          "name": "product_name",
+          "name_vi": "Tên sản phẩm"
+        },
+        {
+          "name": "sku",
+          "name_vi": "SKU"
+        }
+      ],
+      "formula_vi": "Số order id trên đơn hàng (gói seller) (row_type = order, is_cancelled = False)",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "order_count",
+      "name_vi": "Số đơn",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Đơn trên các sàn, bỏ đơn hủy.",
+      "synonyms_vi": [
+        "số đơn",
+        "đơn hàng",
+        "lượng đơn"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "count",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Chi phí khác gắn với đơn, ví dụ hoa hồng tiếp thị liên kết.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        },
+        {
+          "name": "product",
+          "name_vi": "Sản phẩm"
+        },
+        {
+          "name": "product_name",
+          "name_vi": "Tên sản phẩm"
+        },
+        {
+          "name": "sku",
+          "name_vi": "SKU"
+        }
+      ],
+      "formula_vi": "Tổng other cost trên đơn hàng (gói seller)",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "other_costs",
+      "name_vi": "Chi phí khác",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Báo cáo quyết toán của sàn; đơn chưa quyết toán là số tạm tính.",
+      "synonyms_vi": [
+        "chi phí khác",
+        "affiliate"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Phí giao dịch, phí thanh toán sàn thu trên đơn.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        },
+        {
+          "name": "product",
+          "name_vi": "Sản phẩm"
+        },
+        {
+          "name": "product_name",
+          "name_vi": "Tên sản phẩm"
+        },
+        {
+          "name": "sku",
+          "name_vi": "SKU"
+        }
+      ],
+      "formula_vi": "Tổng payment fee trên đơn hàng (gói seller)",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "payment_fees",
+      "name_vi": "Phí thanh toán",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Báo cáo quyết toán của sàn; đơn chưa quyết toán là số tạm tính.",
+      "synonyms_vi": [
+        "phí thanh toán",
+        "phí giao dịch"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Hoa hồng và phí dịch vụ sàn thu trên đơn.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        },
+        {
+          "name": "product",
+          "name_vi": "Sản phẩm"
+        },
+        {
+          "name": "product_name",
+          "name_vi": "Tên sản phẩm"
+        },
+        {
+          "name": "sku",
+          "name_vi": "SKU"
+        }
+      ],
+      "formula_vi": "Tổng platform fee trên đơn hàng (gói seller)",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "platform_fees",
+      "name_vi": "Phí sàn",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Báo cáo quyết toán của sàn; đơn chưa quyết toán là số tạm tính.",
+      "synonyms_vi": [
+        "phí sàn",
+        "hoa hồng",
+        "phí cố định"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Doanh thu nền tảng quảng cáo báo trừ doanh thu thật trên sàn, chia doanh thu thật. Dương nghĩa là nền tảng báo cao hơn thực tế.",
+      "dimensions": [
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        }
+      ],
+      "formula_vi": "(Giá trị chuyển đổi (nền tảng báo) - Doanh thu thực nhận (theo ngày bán)) ÷ Doanh thu thực nhận (theo ngày bán)",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "platform_vs_actual_gap",
+      "name_vi": "Chênh lệch nền tảng báo và thực tế",
+      "packs": [
+        "agency"
+      ],
+      "requires": [],
+      "source_note_vi": "So số nền tảng quảng cáo báo với đơn thật trên sàn.",
+      "synonyms_vi": [
+        "chênh lệch roas",
+        "nền tảng báo cao"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Phí vận chuyển và xử lý khi người mua trả hàng.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        },
+        {
+          "name": "product",
+          "name_vi": "Sản phẩm"
+        },
+        {
+          "name": "product_name",
+          "name_vi": "Tên sản phẩm"
+        },
+        {
+          "name": "sku",
+          "name_vi": "SKU"
+        }
+      ],
+      "formula_vi": "Tổng return cost trên đơn hàng (gói seller)",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "return_cost",
+      "name_vi": "Chi phí hoàn hàng",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Báo cáo quyết toán của sàn; đơn chưa quyết toán là số tạm tính.",
+      "synonyms_vi": [
+        "chi phí hoàn",
+        "phí trả hàng"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Số đơn có hoàn chia số đơn không hủy.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        },
+        {
+          "name": "product",
+          "name_vi": "Sản phẩm"
+        },
+        {
+          "name": "product_name",
+          "name_vi": "Tên sản phẩm"
+        },
+        {
+          "name": "sku",
+          "name_vi": "SKU"
+        }
+      ],
+      "formula_vi": "Số đơn hoàn ÷ Số đơn",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "return_rate",
+      "name_vi": "Tỷ lệ hoàn",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Hoàn hàng và đơn trên các sàn.",
+      "synonyms_vi": [
+        "tỷ lệ hoàn",
+        "hoàn hàng",
+        "trả hàng"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Doanh thu thực nhận trên các sàn chia cho tổng chi quảng cáo. Cho biết mỗi đồng quảng cáo mang về bao nhiêu đồng doanh thu thật.",
+      "dimensions": [
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        }
+      ],
+      "formula_vi": "Doanh thu thực nhận (theo ngày bán) ÷ Chi phí quảng cáo",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "roas_blended",
+      "name_vi": "ROAS thật",
+      "packs": [
+        "agency",
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Doanh thu từ dữ liệu đơn của sàn; chi phí từ các nền tảng quảng cáo.",
+      "synonyms_vi": [
+        "roas thật",
+        "roas tổng",
+        "hiệu quả quảng cáo thật",
+        "blended roas"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "ratio",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Giá trị chuyển đổi nền tảng báo chia chi quảng cáo. Thường cao hơn ROAS thật vì nền tảng tự ghi công.",
+      "dimensions": [
+        {
+          "name": "adgroup",
+          "name_vi": "Nhóm quảng cáo"
+        },
+        {
+          "name": "campaign",
+          "name_vi": "Chiến dịch"
+        },
+        {
+          "name": "campaign_name",
+          "name_vi": "Tên chiến dịch"
+        },
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Giá trị chuyển đổi (nền tảng báo) ÷ Chi phí quảng cáo",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "roas_platform",
+      "name_vi": "ROAS nền tảng",
+      "packs": [
+        "agency"
+      ],
+      "requires": [],
+      "source_note_vi": "Số do nền tảng quảng cáo báo.",
+      "synonyms_vi": [
+        "roas nền tảng",
+        "roas facebook",
+        "roas ads",
+        "roas"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "ratio",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Phí vận chuyển người bán chịu (sau trợ giá và phần người mua trả).",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        },
+        {
+          "name": "product",
+          "name_vi": "Sản phẩm"
+        },
+        {
+          "name": "product_name",
+          "name_vi": "Tên sản phẩm"
+        },
+        {
+          "name": "sku",
+          "name_vi": "SKU"
+        }
+      ],
+      "formula_vi": "Tổng shipping cost trên đơn hàng (gói seller)",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "shipping_cost",
+      "name_vi": "Phí vận chuyển",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Báo cáo quyết toán của sàn; đơn chưa quyết toán là số tạm tính.",
+      "synonyms_vi": [
+        "phí ship",
+        "vận chuyển"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Lãi sau phí tính riêng cho từng SKU, để tìm sản phẩm đang lỗ.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        },
+        {
+          "name": "product",
+          "name_vi": "Sản phẩm"
+        },
+        {
+          "name": "product_name",
+          "name_vi": "Tên sản phẩm"
+        },
+        {
+          "name": "sku",
+          "name_vi": "SKU"
+        }
+      ],
+      "formula_vi": "Thành phần lãi theo SKU (net_revenue_vnd) - Thành phần lãi theo SKU (cogs_vnd) - Thành phần lãi theo SKU (platform_fee_vnd) - Thành phần lãi theo SKU (payment_fee_vnd) - Thành phần lãi theo SKU (shipping_cost_vnd) - Thành phần lãi theo SKU (return_cost_vnd) - Thành phần lãi theo SKU (allocated_ad_spend_vnd) - Thành phần lãi theo SKU (other_cost_vnd)",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "sku_profit",
+      "name_vi": "Lãi theo SKU",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Phí của đơn phân bổ xuống sản phẩm theo tỷ lệ doanh thu dòng.",
+      "synonyms_vi": [
+        "lãi sku",
+        "sản phẩm lỗ",
+        "lãi từng sản phẩm",
+        "sku lỗ"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Chi quảng cáo Amazon chia tổng doanh thu Amazon.",
+      "dimensions": [
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        }
+      ],
+      "formula_vi": "Chi quảng cáo Amazon ÷ Tổng doanh thu Amazon",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "tacos",
+      "name_vi": "TACOS (Amazon)",
+      "packs": [
+        "agency"
+      ],
+      "requires": [
+        "amazon"
+      ],
+      "source_note_vi": "Amazon Ads và Amazon Seller Central qua Windsor.ai.",
+      "synonyms_vi": [
+        "tacos",
+        "tổng chi quảng cáo trên doanh thu amazon"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "percent",
+      "version": "1.0.0"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+metric: cancelled_orders
+name_vi: Số đơn hủy
+description_vi: Số đơn bị hủy.
+version: 1.0.0
+type: simple
+hidden: true
+source: mrt_seller__orders
+measure:
+  agg: count
+  column: order_id
+  filters:
+  - column: row_type
+    op: eq
+    value: order
+  - column: is_cancelled
+    op: eq
+    value: true
+dimensions:
+- date
+- platform
+- channel
+- order_status
+- is_provisional
+unit: count
+packs:
+- seller
+source_note_vi: Đơn trên các sàn có trạng thái hủy.
+time_grains:
+- day
+- week
+- month
+good_direction: none
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

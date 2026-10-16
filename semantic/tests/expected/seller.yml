@@ -1,0 +1,9 @@
+# Ba số chính của demo_seller trên transform/samples cố định (make dbt-build TENANT=demo_seller --fixed-samples),
+# hôm nay = 2026-10-16. Dùng cho test_key_numbers_seller_agency (spec 03 §11).
+tenant: demo_seller
+period: last_week
+from: "2026-10-05"
+to: "2026-10-11"
+numbers:
+  net_revenue: 34228000
+  net_profit_after_fees: 10171271

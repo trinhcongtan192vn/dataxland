@@ -1,0 +1,32 @@
+metric: line_payment_fees
+name_vi: Thành phần lãi theo SKU (payment_fee_vnd)
+description_vi: Cột của mart dòng đơn dùng để tính lãi theo SKU.
+version: 1.0.0
+type: simple
+hidden: true
+source: mrt_seller__order_lines
+measure:
+  agg: sum
+  column: payment_fee_vnd
+dimensions:
+- date
+- platform
+- channel
+- product
+- product_name
+- sku
+- is_provisional
+unit: VND
+packs:
+- seller
+source_note_vi: Mart dòng đơn; phí của đơn phân bổ xuống dòng theo doanh thu dòng.
+time_grains:
+- day
+- week
+- month
+good_direction: none
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

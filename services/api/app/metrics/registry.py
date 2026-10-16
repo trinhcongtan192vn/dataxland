@@ -41,6 +41,7 @@ class MetricDef:
     required_dimensions: tuple[str, ...]
     anomaly: dict[str, Any] | None
     synonyms_vi: tuple[str, ...]
+    realizations: tuple[str, ...] = ()
     handbook: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
@@ -66,6 +67,9 @@ class MetricDef:
             required_dimensions=tuple(d.get("required_dimensions", [])),
             anomaly=d.get("anomaly"),
             synonyms_vi=tuple(d.get("synonyms_vi", [])),
+            realizations=tuple(
+                dict.fromkeys([*([d["cube"]] if d.get("cube") else []), *sorted(d.get("realizations") or {})])
+            ),
             handbook=handbook or {},
         )
 
@@ -79,6 +83,7 @@ class Registry:
         }
         self.dimensions: dict[str, dict[str, Any]] = data.get("dimensions", {})
         self.cubes: dict[str, dict[str, Any]] = data.get("cubes", {})
+        self.status_cube: str = data.get("status_cube", "mrt_common__data_status")
 
     def get(self, name: str) -> MetricDef | None:
         return self.metrics.get(name)

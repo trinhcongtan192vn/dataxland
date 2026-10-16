@@ -12,7 +12,7 @@ with daily as (
 ),
 
 train as (
-    select avg(cast(n as {{ dbt.type_float() }})) as mu, stddev_samp(cast(n as {{ dbt.type_float() }})) as sd, count(*) as k
+    select avg(cast(n as {{ dx_type_float() }})) as mu, stddev_samp(cast(n as {{ dx_type_float() }})) as sd, count(*) as k
     from daily
     where d < cast({{ y }} as date)
 ),

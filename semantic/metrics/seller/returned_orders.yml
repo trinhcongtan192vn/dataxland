@@ -1,0 +1,49 @@
+metric: returned_orders
+name_vi: Số đơn hoàn
+description_vi: Số đơn có hoàn hàng hoặc hoàn tiền.
+version: 1.0.0
+type: simple
+hidden: true
+source: mrt_seller__orders
+measure:
+  agg: count
+  column: order_id
+  filters:
+  - column: row_type
+    op: eq
+    value: order
+  - column: is_returned
+    op: eq
+    value: true
+variants:
+- source: mrt_seller__order_lines
+  measure:
+    agg: count_distinct
+    column: order_id
+    filters:
+    - column: is_returned
+      op: eq
+      value: true
+dimensions:
+- channel
+- date
+- is_provisional
+- order_status
+- platform
+- product
+- product_name
+- sku
+unit: count
+packs:
+- seller
+source_note_vi: Hoàn hàng trên các sàn.
+time_grains:
+- day
+- week
+- month
+good_direction: none
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

@@ -1,0 +1,38 @@
+metric: return_rate
+name_vi: Tỷ lệ hoàn
+description_vi: Số đơn có hoàn chia số đơn không hủy.
+version: 1.0.0
+type: ratio
+numerator: returned_orders
+denominator: order_count
+dimensions:
+- channel
+- date
+- is_provisional
+- order_status
+- platform
+- product
+- product_name
+- sku
+unit: percent
+good_direction: down
+packs:
+- seller
+anomaly:
+  compare: trailing_4_weeks
+  threshold_pct: 50
+  grain: week
+synonyms_vi:
+- tỷ lệ hoàn
+- hoàn hàng
+- trả hàng
+source_note_vi: Hoàn hàng và đơn trên các sàn.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

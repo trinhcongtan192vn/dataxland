@@ -1,0 +1,41 @@
+metric: cogs
+name_vi: Giá vốn hàng bán
+description_vi: Số lượng bán nhân giá vốn hiệu lực tại ngày đặt. SKU chưa có giá vốn tạm tính là 0.
+version: 1.0.0
+type: simple
+source: mrt_seller__orders
+measure:
+  agg: sum
+  column: cogs_vnd
+variants:
+- source: mrt_seller__order_lines
+  measure:
+    agg: sum
+    column: cogs_vnd
+dimensions:
+- channel
+- date
+- is_provisional
+- order_status
+- platform
+- product
+- product_name
+- sku
+unit: VND
+good_direction: down
+packs:
+- seller
+synonyms_vi:
+- giá vốn
+- cogs
+- tiền hàng
+source_note_vi: Giá vốn khách nhập trên cổng DataxLand.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

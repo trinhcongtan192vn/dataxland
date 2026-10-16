@@ -1,0 +1,68 @@
+date:
+  name_vi: Ngày
+  type: time
+  columns:
+    mrt_seller__orders: order_date
+    mrt_seller__order_lines: order_date
+    mrt_common__ad_daily: date
+    mrt_common__sales_daily: date
+    mrt_agency__budget_monthly: month
+platform:
+  name_vi: Nền tảng
+  type: string
+  columns:
+    mrt_seller__orders: platform
+    mrt_seller__order_lines: platform
+    mrt_common__ad_daily: platform
+    mrt_common__sales_daily: platform
+    mrt_agency__budget_monthly: platform
+channel:
+  name_vi: Kênh
+  type: string
+  columns:
+    mrt_seller__orders: channel_id
+    mrt_seller__order_lines: channel_id
+    mrt_common__ad_daily: channel_id
+    mrt_common__sales_daily: channel_id
+product:
+  name_vi: Sản phẩm
+  type: string
+  columns:
+    mrt_seller__order_lines: product_id
+product_name:
+  name_vi: Tên sản phẩm
+  type: string
+  columns:
+    mrt_seller__order_lines: product_name
+sku:
+  name_vi: SKU
+  type: string
+  columns:
+    mrt_seller__order_lines: seller_sku
+campaign:
+  name_vi: Chiến dịch
+  type: string
+  columns:
+    mrt_common__ad_daily: campaign_id
+campaign_name:
+  name_vi: Tên chiến dịch
+  type: string
+  columns:
+    mrt_common__ad_daily: campaign_name
+adgroup:
+  name_vi: Nhóm quảng cáo
+  type: string
+  columns:
+    mrt_common__ad_daily: adgroup_id
+order_status:
+  name_vi: Trạng thái đơn
+  type: string
+  columns:
+    mrt_seller__orders: status
+    mrt_seller__order_lines: status
+is_provisional:
+  name_vi: Tạm tính
+  type: boolean
+  columns:
+    mrt_seller__orders: is_provisional
+    mrt_seller__order_lines: is_provisional

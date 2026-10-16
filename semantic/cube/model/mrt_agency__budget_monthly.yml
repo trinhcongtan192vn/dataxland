@@ -1,0 +1,67 @@
+# SINH RA bởi semantic/build.py – không sửa tay.
+cubes:
+- dimensions:
+  - name: budget_monthly_id
+    primary_key: true
+    public: false
+    sql: budget_monthly_id
+    type: string
+  - name: date
+    sql: month
+    title: Ngày
+    type: time
+  - name: platform
+    sql: platform
+    title: Nền tảng
+    type: string
+  measures:
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: budget
+    sql: budget_vnd
+    title: Ngân sách quảng cáo
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: budget_expected
+    sql: budget_expected_mtd_vnd
+    title: Mức chi đúng tiến độ
+    type: sum
+  - meta:
+      unit: ratio
+      version: 1.0.0
+    name: budget_pacing
+    sql: 1.0 * {spend_mtd} / NULLIF({budget_expected}, 0)
+    title: Tiến độ ngân sách
+    type: number
+  - meta:
+      unit: percent
+      version: 1.0.0
+    name: budget_used_pct
+    sql: 1.0 * {spend_mtd} / NULLIF({budget}, 0)
+    title: Tỷ lệ ngân sách đã dùng
+    type: number
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: spend_mtd
+    sql: spend_mtd_vnd
+    title: Đã chi trong tháng
+    type: sum
+  name: mrt_agency__budget_monthly
+  pre_aggregations:
+  - dimensions:
+    - platform
+    granularity: month
+    measures:
+    - budget
+    - budget_expected
+    - spend_mtd
+    name: daily
+    refresh_key:
+      sql: SELECT MAX(_dx_updated_at) FROM {{ COMPILE_CONTEXT.securityContext.dataset_prefix | safe }}_marts.mrt_agency__budget_monthly
+    time_dimension: date
+  sql_table: '{{ COMPILE_CONTEXT.securityContext.dataset_prefix | safe }}_marts.mrt_agency__budget_monthly'
+  title: Ngân sách quảng cáo theo tháng

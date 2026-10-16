@@ -6,14 +6,10 @@ Mỗi phiên test dựng một file DuckDB tạm, nạp `transform/samples/`, ch
 from __future__ import annotations
 
 import os
-import shutil
 import sys
-from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
-
-import pytest
 
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "pipelines"))
@@ -35,8 +31,16 @@ class Built:
         return duckdb.connect(str(self.path), read_only=True)
 
 
-def dbt_run(duckdb_path: Path, tenant: str, *, extra_vars: dict[str, Any] | None = None, select: list[str] | None = None,
-            target_name: str = "t", swap: bool = True, exclude: list[str] | None = None) -> Any:
+def dbt_run(
+    duckdb_path: Path,
+    tenant: str,
+    *,
+    extra_vars: dict[str, Any] | None = None,
+    select: list[str] | None = None,
+    target_name: str = "t",
+    swap: bool = True,
+    exclude: list[str] | None = None,
+) -> Any:
     from dx_common.tenants import validate_dir
     from dx_pipelines.dbt import DbtProject
     from dx_pipelines.overrides import load_overrides
@@ -65,5 +69,3 @@ def seed(duckdb_path: Path, samples: Path | None = None) -> None:
 
     tenants, _ = validate_dir(REPO / "tenants")
     seed_local.seed_duckdb(duckdb_path, samples or REPO / "transform" / "samples", tenants)
-
-

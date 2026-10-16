@@ -1,0 +1,34 @@
+metric: amazon_total_sales
+name_vi: Tổng doanh thu Amazon
+description_vi: Doanh thu thực nhận trên Amazon Seller Central.
+version: 1.0.0
+type: simple
+hidden: true
+source: mrt_common__sales_daily
+measure:
+  agg: sum
+  column: net_revenue_vnd
+  filters:
+  - column: platform
+    op: eq
+    value: amazon_seller
+dimensions:
+- date
+- platform
+- channel
+unit: VND
+packs:
+- agency
+requires:
+- amazon
+source_note_vi: Amazon Seller Central qua Windsor.ai.
+time_grains:
+- day
+- week
+- month
+good_direction: none
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

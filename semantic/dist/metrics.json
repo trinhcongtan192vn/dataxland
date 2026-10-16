@@ -1,0 +1,2496 @@
+{
+  "cubes": {
+    "mrt_agency__budget_monthly": {
+      "dimensions": {
+        "budget_monthly_id": "budget_monthly_id",
+        "date": "month",
+        "platform": "platform"
+      },
+      "measures": [
+        "budget",
+        "budget_expected",
+        "budget_pacing",
+        "budget_used_pct",
+        "spend_mtd"
+      ]
+    },
+    "mrt_common__ad_daily": {
+      "dimensions": {
+        "ad_performance_id": "ad_performance_id",
+        "adgroup": "adgroup_id",
+        "campaign": "campaign_id",
+        "campaign_name": "campaign_name",
+        "channel": "channel_id",
+        "date": "date",
+        "platform": "platform"
+      },
+      "measures": [
+        "acos",
+        "ad_spend",
+        "amazon_ad_sales",
+        "amazon_ad_spend",
+        "clicks",
+        "conversion_value",
+        "conversions",
+        "cpa",
+        "cpc",
+        "cpm",
+        "ctr",
+        "impressions",
+        "roas_platform"
+      ]
+    },
+    "mrt_common__data_status": {
+      "dimensions": {
+        "data_as_of": "data_as_of",
+        "missing_cogs_revenue_vnd": "missing_cogs_revenue_vnd",
+        "missing_cogs_sku_count": "missing_cogs_sku_count",
+        "provisional_revenue_share": "provisional_revenue_share",
+        "run_id": "run_id",
+        "tenant_id": "tenant_id"
+      },
+      "measures": [
+        "rows"
+      ]
+    },
+    "mrt_common__sales_daily": {
+      "dimensions": {
+        "channel": "channel_id",
+        "date": "date",
+        "platform": "platform",
+        "sales_daily_id": "sales_daily_id"
+      },
+      "measures": [
+        "amazon_total_sales",
+        "gross_sales",
+        "net_revenue_sales"
+      ]
+    },
+    "mrt_seller__order_lines": {
+      "dimensions": {
+        "channel": "channel_id",
+        "date": "order_date",
+        "is_provisional": "is_provisional",
+        "order_line_id": "order_line_id",
+        "order_status": "status",
+        "platform": "platform",
+        "product": "product_id",
+        "product_name": "product_name",
+        "sku": "seller_sku"
+      },
+      "measures": [
+        "allocated_ad_spend",
+        "aov",
+        "cogs",
+        "contribution_margin",
+        "line_allocated_ad_spend",
+        "line_cogs",
+        "line_net_revenue",
+        "line_other_costs",
+        "line_payment_fees",
+        "line_platform_fees",
+        "line_return_cost",
+        "line_shipping_cost",
+        "missing_cogs_revenue",
+        "net_margin_pct",
+        "net_profit_after_fees",
+        "net_revenue",
+        "order_count",
+        "other_costs",
+        "payment_fees",
+        "platform_fees",
+        "return_cost",
+        "return_rate",
+        "returned_orders",
+        "shipping_cost",
+        "sku_profit"
+      ]
+    },
+    "mrt_seller__orders": {
+      "dimensions": {
+        "channel": "channel_id",
+        "date": "order_date",
+        "is_provisional": "is_provisional",
+        "order_id": "order_id",
+        "order_status": "status",
+        "platform": "platform"
+      },
+      "measures": [
+        "allocated_ad_spend",
+        "aov",
+        "cancel_rate",
+        "cancelled_orders",
+        "cogs",
+        "contribution_margin",
+        "gmv",
+        "net_margin_pct",
+        "net_profit_after_fees",
+        "net_revenue",
+        "order_count",
+        "orders_placed",
+        "other_costs",
+        "payment_fees",
+        "platform_fees",
+        "return_cost",
+        "return_rate",
+        "returned_orders",
+        "shipping_cost"
+      ]
+    }
+  },
+  "dimensions": {
+    "adgroup": {
+      "columns": {
+        "mrt_common__ad_daily": "adgroup_id"
+      },
+      "name_vi": "Nhóm quảng cáo",
+      "type": "string"
+    },
+    "campaign": {
+      "columns": {
+        "mrt_common__ad_daily": "campaign_id"
+      },
+      "name_vi": "Chiến dịch",
+      "type": "string"
+    },
+    "campaign_name": {
+      "columns": {
+        "mrt_common__ad_daily": "campaign_name"
+      },
+      "name_vi": "Tên chiến dịch",
+      "type": "string"
+    },
+    "channel": {
+      "columns": {
+        "mrt_common__ad_daily": "channel_id",
+        "mrt_common__sales_daily": "channel_id",
+        "mrt_seller__order_lines": "channel_id",
+        "mrt_seller__orders": "channel_id"
+      },
+      "name_vi": "Kênh",
+      "type": "string"
+    },
+    "date": {
+      "columns": {
+        "mrt_agency__budget_monthly": "month",
+        "mrt_common__ad_daily": "date",
+        "mrt_common__sales_daily": "date",
+        "mrt_seller__order_lines": "order_date",
+        "mrt_seller__orders": "order_date"
+      },
+      "name_vi": "Ngày",
+      "type": "time"
+    },
+    "is_provisional": {
+      "columns": {
+        "mrt_seller__order_lines": "is_provisional",
+        "mrt_seller__orders": "is_provisional"
+      },
+      "name_vi": "Tạm tính",
+      "type": "boolean"
+    },
+    "order_status": {
+      "columns": {
+        "mrt_seller__order_lines": "status",
+        "mrt_seller__orders": "status"
+      },
+      "name_vi": "Trạng thái đơn",
+      "type": "string"
+    },
+    "platform": {
+      "columns": {
+        "mrt_agency__budget_monthly": "platform",
+        "mrt_common__ad_daily": "platform",
+        "mrt_common__sales_daily": "platform",
+        "mrt_seller__order_lines": "platform",
+        "mrt_seller__orders": "platform"
+      },
+      "name_vi": "Nền tảng",
+      "type": "string"
+    },
+    "product": {
+      "columns": {
+        "mrt_seller__order_lines": "product_id"
+      },
+      "name_vi": "Sản phẩm",
+      "type": "string"
+    },
+    "product_name": {
+      "columns": {
+        "mrt_seller__order_lines": "product_name"
+      },
+      "name_vi": "Tên sản phẩm",
+      "type": "string"
+    },
+    "sku": {
+      "columns": {
+        "mrt_seller__order_lines": "seller_sku"
+      },
+      "name_vi": "SKU",
+      "type": "string"
+    }
+  },
+  "library_version": "d3b3749361e0b43f",
+  "metrics": {
+    "acos": {
+      "anomaly": null,
+      "components": [
+        "amazon_ad_spend",
+        "amazon_ad_sales"
+      ],
+      "cube": "mrt_common__ad_daily",
+      "description_vi": "Chi quảng cáo Amazon chia doanh thu từ quảng cáo Amazon.",
+      "dimensions": [
+        "adgroup",
+        "campaign",
+        "campaign_name",
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": "amazon_ad_spend / amazon_ad_sales",
+      "good_direction": "down",
+      "hidden": false,
+      "measure": "mrt_common__ad_daily.acos",
+      "metric": "acos",
+      "mode": "cube",
+      "name_vi": "ACOS (Amazon)",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_common__ad_daily": "mrt_common__ad_daily.acos"
+      },
+      "required_dimensions": [],
+      "requires": [
+        "amazon"
+      ],
+      "synonyms_vi": [
+        "acos"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "ratio",
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    "ad_spend": {
+      "anomaly": {
+        "compare": "trailing_4_weeks",
+        "grain": "day",
+        "threshold_pct": 40
+      },
+      "components": [],
+      "cube": "mrt_common__ad_daily",
+      "description_vi": "Tổng tiền đã chi cho quảng cáo trên các nền tảng, quy đổi về VND theo tỷ giá ngày chi.",
+      "dimensions": [
+        "adgroup",
+        "campaign",
+        "campaign_name",
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": false,
+      "measure": "mrt_common__ad_daily.ad_spend",
+      "metric": "ad_spend",
+      "mode": "cube",
+      "name_vi": "Chi phí quảng cáo",
+      "packs": [
+        "agency",
+        "seller"
+      ],
+      "realizations": {
+        "mrt_common__ad_daily": "mrt_common__ad_daily.ad_spend"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "chi quảng cáo",
+        "tiền quảng cáo",
+        "ads",
+        "chi tiêu quảng cáo",
+        "spend"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "allocated_ad_spend": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Chi quảng cáo phân bổ xuống đơn theo quy tắc của khách.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "down",
+      "hidden": true,
+      "measure": "mrt_seller__orders.allocated_ad_spend",
+      "metric": "allocated_ad_spend",
+      "mode": "cube",
+      "name_vi": "Chi quảng cáo phân bổ",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.allocated_ad_spend",
+        "mrt_seller__orders": "mrt_seller__orders.allocated_ad_spend"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "amazon_ad_sales": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_common__ad_daily",
+      "description_vi": "Doanh thu Amazon Ads ghi nhận cho quảng cáo.",
+      "dimensions": [
+        "adgroup",
+        "campaign",
+        "campaign_name",
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_common__ad_daily.amazon_ad_sales",
+      "metric": "amazon_ad_sales",
+      "mode": "cube",
+      "name_vi": "Doanh thu từ quảng cáo Amazon",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_common__ad_daily": "mrt_common__ad_daily.amazon_ad_sales"
+      },
+      "required_dimensions": [],
+      "requires": [
+        "amazon"
+      ],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "amazon_ad_spend": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_common__ad_daily",
+      "description_vi": "Chi quảng cáo trên Amazon Ads.",
+      "dimensions": [
+        "adgroup",
+        "campaign",
+        "campaign_name",
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_common__ad_daily.amazon_ad_spend",
+      "metric": "amazon_ad_spend",
+      "mode": "cube",
+      "name_vi": "Chi quảng cáo Amazon",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_common__ad_daily": "mrt_common__ad_daily.amazon_ad_spend"
+      },
+      "required_dimensions": [],
+      "requires": [
+        "amazon"
+      ],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "amazon_total_sales": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_common__sales_daily",
+      "description_vi": "Doanh thu thực nhận trên Amazon Seller Central.",
+      "dimensions": [
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_common__sales_daily.amazon_total_sales",
+      "metric": "amazon_total_sales",
+      "mode": "cube",
+      "name_vi": "Tổng doanh thu Amazon",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_common__sales_daily": "mrt_common__sales_daily.amazon_total_sales"
+      },
+      "required_dimensions": [],
+      "requires": [
+        "amazon"
+      ],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "aov": {
+      "anomaly": null,
+      "components": [
+        "net_revenue",
+        "order_count"
+      ],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Doanh thu thực nhận chia số đơn không hủy.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform"
+      ],
+      "formula": "net_revenue / order_count",
+      "good_direction": "up",
+      "hidden": false,
+      "measure": "mrt_seller__orders.aov",
+      "metric": "aov",
+      "mode": "cube",
+      "name_vi": "Giá trị đơn trung bình",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.aov",
+        "mrt_seller__orders": "mrt_seller__orders.aov"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "aov",
+        "giá trị đơn trung bình"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "ratio",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "budget": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_agency__budget_monthly",
+      "description_vi": "Ngân sách tháng khách nhập trên cổng.",
+      "dimensions": [
+        "date",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_agency__budget_monthly.budget",
+      "metric": "budget",
+      "mode": "cube",
+      "name_vi": "Ngân sách quảng cáo",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_agency__budget_monthly": "mrt_agency__budget_monthly.budget"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "ngân sách"
+      ],
+      "time_grains": [
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "budget_expected": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_agency__budget_monthly",
+      "description_vi": "Ngân sách tháng nhân số ngày đã qua chia số ngày của tháng.",
+      "dimensions": [
+        "date",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_agency__budget_monthly.budget_expected",
+      "metric": "budget_expected",
+      "mode": "cube",
+      "name_vi": "Mức chi đúng tiến độ",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_agency__budget_monthly": "mrt_agency__budget_monthly.budget_expected"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "budget_pacing": {
+      "anomaly": null,
+      "components": [
+        "spend_mtd",
+        "budget_expected"
+      ],
+      "cube": "mrt_agency__budget_monthly",
+      "description_vi": "Đã chi trong tháng chia mức chi đúng tiến độ (ngân sách × số ngày đã qua ÷ số ngày của tháng). 1,0 là đúng tiến độ; trên 1 là chi nhanh hơn kế hoạch.",
+      "dimensions": [
+        "date",
+        "platform"
+      ],
+      "formula": "spend_mtd / budget_expected",
+      "good_direction": "none",
+      "hidden": false,
+      "measure": "mrt_agency__budget_monthly.budget_pacing",
+      "metric": "budget_pacing",
+      "mode": "cube",
+      "name_vi": "Tiến độ ngân sách",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_agency__budget_monthly": "mrt_agency__budget_monthly.budget_pacing"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "tiến độ ngân sách",
+        "pacing",
+        "chi có vượt không"
+      ],
+      "time_grains": [
+        "month"
+      ],
+      "type": "derived",
+      "unit": "ratio",
+      "version": "1.0.0"
+    },
+    "budget_used_pct": {
+      "anomaly": null,
+      "components": [
+        "spend_mtd",
+        "budget"
+      ],
+      "cube": "mrt_agency__budget_monthly",
+      "description_vi": "Đã chi trong tháng chia ngân sách tháng.",
+      "dimensions": [
+        "date",
+        "platform"
+      ],
+      "formula": "spend_mtd / budget",
+      "good_direction": "none",
+      "hidden": false,
+      "measure": "mrt_agency__budget_monthly.budget_used_pct",
+      "metric": "budget_used_pct",
+      "mode": "cube",
+      "name_vi": "Tỷ lệ ngân sách đã dùng",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_agency__budget_monthly": "mrt_agency__budget_monthly.budget_used_pct"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "đã dùng bao nhiêu ngân sách"
+      ],
+      "time_grains": [
+        "month"
+      ],
+      "type": "ratio",
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    "cancel_rate": {
+      "anomaly": null,
+      "components": [
+        "cancelled_orders",
+        "orders_placed"
+      ],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Số đơn hủy chia số đơn đã đặt.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform"
+      ],
+      "formula": "cancelled_orders / orders_placed",
+      "good_direction": "down",
+      "hidden": false,
+      "measure": "mrt_seller__orders.cancel_rate",
+      "metric": "cancel_rate",
+      "mode": "cube",
+      "name_vi": "Tỷ lệ hủy",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__orders": "mrt_seller__orders.cancel_rate"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "tỷ lệ hủy",
+        "đơn hủy"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "ratio",
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    "cancelled_orders": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Số đơn bị hủy.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_seller__orders.cancelled_orders",
+      "metric": "cancelled_orders",
+      "mode": "cube",
+      "name_vi": "Số đơn hủy",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__orders": "mrt_seller__orders.cancelled_orders"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "count",
+      "version": "1.0.0"
+    },
+    "clicks": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_common__ad_daily",
+      "description_vi": "Tổng lượt nhấp do nền tảng quảng cáo báo.",
+      "dimensions": [
+        "adgroup",
+        "campaign",
+        "campaign_name",
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "up",
+      "hidden": false,
+      "measure": "mrt_common__ad_daily.clicks",
+      "metric": "clicks",
+      "mode": "cube",
+      "name_vi": "Lượt nhấp",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_common__ad_daily": "mrt_common__ad_daily.clicks"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "click",
+        "nhấp"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "count",
+      "version": "1.0.0"
+    },
+    "cogs": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Số lượng bán nhân giá vốn hiệu lực tại ngày đặt. SKU chưa có giá vốn tạm tính là 0.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "down",
+      "hidden": false,
+      "measure": "mrt_seller__orders.cogs",
+      "metric": "cogs",
+      "mode": "cube",
+      "name_vi": "Giá vốn hàng bán",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.cogs",
+        "mrt_seller__orders": "mrt_seller__orders.cogs"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "giá vốn",
+        "cogs",
+        "tiền hàng"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "contribution_margin": {
+      "anomaly": null,
+      "components": [
+        "net_revenue",
+        "cogs",
+        "platform_fees",
+        "payment_fees",
+        "shipping_cost",
+        "return_cost"
+      ],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Doanh thu thực nhận trừ giá vốn, phí sàn, phí thanh toán, vận chuyển và hoàn hàng (chưa trừ quảng cáo).",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": "net_revenue - cogs - platform_fees - payment_fees - shipping_cost - return_cost",
+      "good_direction": "up",
+      "hidden": false,
+      "measure": "mrt_seller__orders.contribution_margin",
+      "metric": "contribution_margin",
+      "mode": "cube",
+      "name_vi": "Biên đóng góp",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.contribution_margin",
+        "mrt_seller__orders": "mrt_seller__orders.contribution_margin"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "biên đóng góp",
+        "lãi gộp sau phí"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "derived",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "conversion_value": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_common__ad_daily",
+      "description_vi": "Doanh thu do nền tảng quảng cáo ghi nhận.",
+      "dimensions": [
+        "adgroup",
+        "campaign",
+        "campaign_name",
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_common__ad_daily.conversion_value",
+      "metric": "conversion_value",
+      "mode": "cube",
+      "name_vi": "Giá trị chuyển đổi (nền tảng báo)",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_common__ad_daily": "mrt_common__ad_daily.conversion_value"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "conversions": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_common__ad_daily",
+      "description_vi": "Tổng chuyển đổi do nền tảng quảng cáo báo.",
+      "dimensions": [
+        "adgroup",
+        "campaign",
+        "campaign_name",
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "up",
+      "hidden": false,
+      "measure": "mrt_common__ad_daily.conversions",
+      "metric": "conversions",
+      "mode": "cube",
+      "name_vi": "Chuyển đổi",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_common__ad_daily": "mrt_common__ad_daily.conversions"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "chuyển đổi",
+        "conversion",
+        "kết quả"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "count",
+      "version": "1.0.0"
+    },
+    "cpa": {
+      "anomaly": null,
+      "components": [
+        "ad_spend",
+        "conversions"
+      ],
+      "cube": "mrt_common__ad_daily",
+      "description_vi": "Chi quảng cáo chia số chuyển đổi nền tảng báo.",
+      "dimensions": [
+        "adgroup",
+        "campaign",
+        "campaign_name",
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": "ad_spend / conversions",
+      "good_direction": "down",
+      "hidden": false,
+      "measure": "mrt_common__ad_daily.cpa",
+      "metric": "cpa",
+      "mode": "cube",
+      "name_vi": "Chi phí mỗi chuyển đổi (CPA)",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_common__ad_daily": "mrt_common__ad_daily.cpa"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "cpa",
+        "giá mỗi chuyển đổi"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "ratio",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "cpc": {
+      "anomaly": null,
+      "components": [
+        "ad_spend",
+        "clicks"
+      ],
+      "cube": "mrt_common__ad_daily",
+      "description_vi": "Chi quảng cáo chia lượt nhấp.",
+      "dimensions": [
+        "adgroup",
+        "campaign",
+        "campaign_name",
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": "ad_spend / clicks",
+      "good_direction": "down",
+      "hidden": false,
+      "measure": "mrt_common__ad_daily.cpc",
+      "metric": "cpc",
+      "mode": "cube",
+      "name_vi": "Chi phí mỗi lượt nhấp (CPC)",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_common__ad_daily": "mrt_common__ad_daily.cpc"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "cpc",
+        "giá mỗi click"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "ratio",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "cpm": {
+      "anomaly": null,
+      "components": [
+        "ad_spend",
+        "impressions"
+      ],
+      "cube": "mrt_common__ad_daily",
+      "description_vi": "Chi quảng cáo chia lượt hiển thị, nhân 1.000.",
+      "dimensions": [
+        "adgroup",
+        "campaign",
+        "campaign_name",
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": "ad_spend / impressions * 1000",
+      "good_direction": "down",
+      "hidden": false,
+      "measure": "mrt_common__ad_daily.cpm",
+      "metric": "cpm",
+      "mode": "cube",
+      "name_vi": "Chi phí mỗi nghìn lượt hiển thị (CPM)",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_common__ad_daily": "mrt_common__ad_daily.cpm"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "cpm"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "derived",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "ctr": {
+      "anomaly": null,
+      "components": [
+        "clicks",
+        "impressions"
+      ],
+      "cube": "mrt_common__ad_daily",
+      "description_vi": "Lượt nhấp chia lượt hiển thị.",
+      "dimensions": [
+        "adgroup",
+        "campaign",
+        "campaign_name",
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": "clicks / impressions",
+      "good_direction": "up",
+      "hidden": false,
+      "measure": "mrt_common__ad_daily.ctr",
+      "metric": "ctr",
+      "mode": "cube",
+      "name_vi": "Tỷ lệ nhấp (CTR)",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_common__ad_daily": "mrt_common__ad_daily.ctr"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "ctr",
+        "tỷ lệ nhấp"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "ratio",
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    "gmv": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Tổng giá trị các đơn đã đặt, trước mọi giảm giá, kể cả đơn hủy.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "up",
+      "hidden": false,
+      "measure": "mrt_seller__orders.gmv",
+      "metric": "gmv",
+      "mode": "cube",
+      "name_vi": "Tổng giá trị đơn (GMV)",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__orders": "mrt_seller__orders.gmv"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "gmv",
+        "doanh số",
+        "tổng giá trị đơn"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "gross_sales": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_common__sales_daily",
+      "description_vi": "Tổng giá trị đơn trước giảm giá theo ngày và kênh bán.",
+      "dimensions": [
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "up",
+      "hidden": true,
+      "measure": "mrt_common__sales_daily.gross_sales",
+      "metric": "gross_sales",
+      "mode": "cube",
+      "name_vi": "Tổng giá trị bán (theo ngày bán)",
+      "packs": [
+        "agency",
+        "seller"
+      ],
+      "realizations": {
+        "mrt_common__sales_daily": "mrt_common__sales_daily.gross_sales"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "impressions": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_common__ad_daily",
+      "description_vi": "Tổng lượt hiển thị do nền tảng quảng cáo báo.",
+      "dimensions": [
+        "adgroup",
+        "campaign",
+        "campaign_name",
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "up",
+      "hidden": false,
+      "measure": "mrt_common__ad_daily.impressions",
+      "metric": "impressions",
+      "mode": "cube",
+      "name_vi": "Lượt hiển thị",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_common__ad_daily": "mrt_common__ad_daily.impressions"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "hiển thị",
+        "impression"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "count",
+      "version": "1.0.0"
+    },
+    "line_allocated_ad_spend": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__order_lines",
+      "description_vi": "Cột của mart dòng đơn dùng để tính lãi theo SKU.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_seller__order_lines.line_allocated_ad_spend",
+      "metric": "line_allocated_ad_spend",
+      "mode": "cube",
+      "name_vi": "Thành phần lãi theo SKU (allocated_ad_spend_vnd)",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.line_allocated_ad_spend"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "line_cogs": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__order_lines",
+      "description_vi": "Cột của mart dòng đơn dùng để tính lãi theo SKU.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_seller__order_lines.line_cogs",
+      "metric": "line_cogs",
+      "mode": "cube",
+      "name_vi": "Thành phần lãi theo SKU (cogs_vnd)",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.line_cogs"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "line_net_revenue": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__order_lines",
+      "description_vi": "Cột của mart dòng đơn dùng để tính lãi theo SKU.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_seller__order_lines.line_net_revenue",
+      "metric": "line_net_revenue",
+      "mode": "cube",
+      "name_vi": "Thành phần lãi theo SKU (net_revenue_vnd)",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.line_net_revenue"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "line_other_costs": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__order_lines",
+      "description_vi": "Cột của mart dòng đơn dùng để tính lãi theo SKU.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_seller__order_lines.line_other_costs",
+      "metric": "line_other_costs",
+      "mode": "cube",
+      "name_vi": "Thành phần lãi theo SKU (other_cost_vnd)",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.line_other_costs"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "line_payment_fees": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__order_lines",
+      "description_vi": "Cột của mart dòng đơn dùng để tính lãi theo SKU.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_seller__order_lines.line_payment_fees",
+      "metric": "line_payment_fees",
+      "mode": "cube",
+      "name_vi": "Thành phần lãi theo SKU (payment_fee_vnd)",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.line_payment_fees"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "line_platform_fees": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__order_lines",
+      "description_vi": "Cột của mart dòng đơn dùng để tính lãi theo SKU.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_seller__order_lines.line_platform_fees",
+      "metric": "line_platform_fees",
+      "mode": "cube",
+      "name_vi": "Thành phần lãi theo SKU (platform_fee_vnd)",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.line_platform_fees"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "line_return_cost": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__order_lines",
+      "description_vi": "Cột của mart dòng đơn dùng để tính lãi theo SKU.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_seller__order_lines.line_return_cost",
+      "metric": "line_return_cost",
+      "mode": "cube",
+      "name_vi": "Thành phần lãi theo SKU (return_cost_vnd)",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.line_return_cost"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "line_shipping_cost": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__order_lines",
+      "description_vi": "Cột của mart dòng đơn dùng để tính lãi theo SKU.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_seller__order_lines.line_shipping_cost",
+      "metric": "line_shipping_cost",
+      "mode": "cube",
+      "name_vi": "Thành phần lãi theo SKU (shipping_cost_vnd)",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.line_shipping_cost"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "mer": {
+      "anomaly": null,
+      "components": [
+        "gross_sales",
+        "ad_spend"
+      ],
+      "cube": null,
+      "description_vi": "Tổng giá trị bán thực tế chia tổng chi quảng cáo.",
+      "dimensions": [
+        "date"
+      ],
+      "formula": "gross_sales / ad_spend",
+      "good_direction": "up",
+      "hidden": false,
+      "measure": null,
+      "metric": "mer",
+      "mode": "engine",
+      "name_vi": "MER (doanh thu trên chi quảng cáo)",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {},
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "mer",
+        "marketing efficiency ratio"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "ratio",
+      "unit": "ratio",
+      "version": "1.0.0"
+    },
+    "missing_cogs_revenue": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__order_lines",
+      "description_vi": "Doanh thu thực nhận của các dòng đơn có SKU chưa có giá vốn.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_seller__order_lines.missing_cogs_revenue",
+      "metric": "missing_cogs_revenue",
+      "mode": "cube",
+      "name_vi": "Doanh thu SKU chưa có giá vốn",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.missing_cogs_revenue"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "net_margin_pct": {
+      "anomaly": null,
+      "components": [
+        "net_profit_after_fees",
+        "net_revenue"
+      ],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Lãi sau phí chia doanh thu thực nhận.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": "net_profit_after_fees / net_revenue",
+      "good_direction": "up",
+      "hidden": false,
+      "measure": "mrt_seller__orders.net_margin_pct",
+      "metric": "net_margin_pct",
+      "mode": "cube",
+      "name_vi": "Biên lãi",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.net_margin_pct",
+        "mrt_seller__orders": "mrt_seller__orders.net_margin_pct"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "biên lãi",
+        "tỷ suất lợi nhuận",
+        "margin"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "ratio",
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    "net_profit_after_fees": {
+      "anomaly": {
+        "compare": "trailing_4_weeks",
+        "grain": "week",
+        "threshold_pct": 30
+      },
+      "components": [
+        "contribution_margin",
+        "allocated_ad_spend",
+        "other_costs"
+      ],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Doanh thu thực nhận trừ giá vốn, phí sàn, phí thanh toán, quảng cáo, vận chuyển, hoàn hàng và chi phí khác.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": "contribution_margin - allocated_ad_spend - other_costs",
+      "good_direction": "up",
+      "hidden": false,
+      "measure": "mrt_seller__orders.net_profit_after_fees",
+      "metric": "net_profit_after_fees",
+      "mode": "cube",
+      "name_vi": "Lãi sau phí",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.net_profit_after_fees",
+        "mrt_seller__orders": "mrt_seller__orders.net_profit_after_fees"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "lãi",
+        "lời",
+        "lợi nhuận",
+        "lãi ròng",
+        "lãi thật"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "derived",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "net_revenue": {
+      "anomaly": {
+        "compare": "trailing_4_weeks",
+        "grain": "week",
+        "threshold_pct": 30
+      },
+      "components": [],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Doanh thu sau giảm giá do shop chịu và sau tiền hoàn cho người mua. Đơn hủy tính là 0.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "up",
+      "hidden": false,
+      "measure": "mrt_seller__orders.net_revenue",
+      "metric": "net_revenue",
+      "mode": "cube",
+      "name_vi": "Doanh thu thực nhận",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.net_revenue",
+        "mrt_seller__orders": "mrt_seller__orders.net_revenue"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "doanh thu",
+        "doanh thu thật",
+        "tiền về",
+        "doanh thu thực"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "net_revenue_sales": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_common__sales_daily",
+      "description_vi": "Doanh thu thực nhận gộp theo ngày và kênh bán, dùng để tính ROAS thật.",
+      "dimensions": [
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "up",
+      "hidden": true,
+      "measure": "mrt_common__sales_daily.net_revenue_sales",
+      "metric": "net_revenue_sales",
+      "mode": "cube",
+      "name_vi": "Doanh thu thực nhận (theo ngày bán)",
+      "packs": [
+        "agency",
+        "seller"
+      ],
+      "realizations": {
+        "mrt_common__sales_daily": "mrt_common__sales_daily.net_revenue_sales"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "order_count": {
+      "anomaly": {
+        "compare": "trailing_4_weeks",
+        "grain": "day",
+        "threshold_pct": 40
+      },
+      "components": [],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Số đơn không bị hủy.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "up",
+      "hidden": false,
+      "measure": "mrt_seller__orders.order_count",
+      "metric": "order_count",
+      "mode": "cube",
+      "name_vi": "Số đơn",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.order_count",
+        "mrt_seller__orders": "mrt_seller__orders.order_count"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "số đơn",
+        "đơn hàng",
+        "lượng đơn"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "count",
+      "version": "1.0.0"
+    },
+    "orders_placed": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Mọi đơn đã đặt, kể cả đơn hủy.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_seller__orders.orders_placed",
+      "metric": "orders_placed",
+      "mode": "cube",
+      "name_vi": "Số đơn đặt",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__orders": "mrt_seller__orders.orders_placed"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "count",
+      "version": "1.0.0"
+    },
+    "other_costs": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Chi phí khác gắn với đơn, ví dụ hoa hồng tiếp thị liên kết.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "down",
+      "hidden": false,
+      "measure": "mrt_seller__orders.other_costs",
+      "metric": "other_costs",
+      "mode": "cube",
+      "name_vi": "Chi phí khác",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.other_costs",
+        "mrt_seller__orders": "mrt_seller__orders.other_costs"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "chi phí khác",
+        "affiliate"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "payment_fees": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Phí giao dịch, phí thanh toán sàn thu trên đơn.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "down",
+      "hidden": false,
+      "measure": "mrt_seller__orders.payment_fees",
+      "metric": "payment_fees",
+      "mode": "cube",
+      "name_vi": "Phí thanh toán",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.payment_fees",
+        "mrt_seller__orders": "mrt_seller__orders.payment_fees"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "phí thanh toán",
+        "phí giao dịch"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "platform_fees": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Hoa hồng và phí dịch vụ sàn thu trên đơn.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "down",
+      "hidden": false,
+      "measure": "mrt_seller__orders.platform_fees",
+      "metric": "platform_fees",
+      "mode": "cube",
+      "name_vi": "Phí sàn",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.platform_fees",
+        "mrt_seller__orders": "mrt_seller__orders.platform_fees"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "phí sàn",
+        "hoa hồng",
+        "phí cố định"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "platform_vs_actual_gap": {
+      "anomaly": null,
+      "components": [
+        "conversion_value",
+        "net_revenue_sales",
+        "net_revenue_sales"
+      ],
+      "cube": null,
+      "description_vi": "Doanh thu nền tảng quảng cáo báo trừ doanh thu thật trên sàn, chia doanh thu thật. Dương nghĩa là nền tảng báo cao hơn thực tế.",
+      "dimensions": [
+        "date"
+      ],
+      "formula": "(conversion_value - net_revenue_sales) / net_revenue_sales",
+      "good_direction": "down",
+      "hidden": false,
+      "measure": null,
+      "metric": "platform_vs_actual_gap",
+      "mode": "engine",
+      "name_vi": "Chênh lệch nền tảng báo và thực tế",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {},
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "chênh lệch roas",
+        "nền tảng báo cao"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "derived",
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    "return_cost": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Phí vận chuyển và xử lý khi người mua trả hàng.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "down",
+      "hidden": false,
+      "measure": "mrt_seller__orders.return_cost",
+      "metric": "return_cost",
+      "mode": "cube",
+      "name_vi": "Chi phí hoàn hàng",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.return_cost",
+        "mrt_seller__orders": "mrt_seller__orders.return_cost"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "chi phí hoàn",
+        "phí trả hàng"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "return_rate": {
+      "anomaly": {
+        "compare": "trailing_4_weeks",
+        "grain": "week",
+        "threshold_pct": 50
+      },
+      "components": [
+        "returned_orders",
+        "order_count"
+      ],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Số đơn có hoàn chia số đơn không hủy.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": "returned_orders / order_count",
+      "good_direction": "down",
+      "hidden": false,
+      "measure": "mrt_seller__orders.return_rate",
+      "metric": "return_rate",
+      "mode": "cube",
+      "name_vi": "Tỷ lệ hoàn",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.return_rate",
+        "mrt_seller__orders": "mrt_seller__orders.return_rate"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "tỷ lệ hoàn",
+        "hoàn hàng",
+        "trả hàng"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "ratio",
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    "returned_orders": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Số đơn có hoàn hàng hoặc hoàn tiền.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_seller__orders.returned_orders",
+      "metric": "returned_orders",
+      "mode": "cube",
+      "name_vi": "Số đơn hoàn",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.returned_orders",
+        "mrt_seller__orders": "mrt_seller__orders.returned_orders"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "count",
+      "version": "1.0.0"
+    },
+    "roas_blended": {
+      "anomaly": {
+        "compare": "trailing_4_weeks",
+        "grain": "week",
+        "threshold_pct": 30
+      },
+      "components": [
+        "net_revenue_sales",
+        "ad_spend"
+      ],
+      "cube": null,
+      "description_vi": "Doanh thu thực nhận trên các sàn chia cho tổng chi quảng cáo. Cho biết mỗi đồng quảng cáo mang về bao nhiêu đồng doanh thu thật.",
+      "dimensions": [
+        "date"
+      ],
+      "formula": "net_revenue_sales / ad_spend",
+      "good_direction": "up",
+      "hidden": false,
+      "measure": null,
+      "metric": "roas_blended",
+      "mode": "engine",
+      "name_vi": "ROAS thật",
+      "packs": [
+        "agency",
+        "seller"
+      ],
+      "realizations": {},
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "roas thật",
+        "roas tổng",
+        "hiệu quả quảng cáo thật",
+        "blended roas"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "ratio",
+      "unit": "ratio",
+      "version": "1.0.0"
+    },
+    "roas_platform": {
+      "anomaly": null,
+      "components": [
+        "conversion_value",
+        "ad_spend"
+      ],
+      "cube": "mrt_common__ad_daily",
+      "description_vi": "Giá trị chuyển đổi nền tảng báo chia chi quảng cáo. Thường cao hơn ROAS thật vì nền tảng tự ghi công.",
+      "dimensions": [
+        "adgroup",
+        "campaign",
+        "campaign_name",
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": "conversion_value / ad_spend",
+      "good_direction": "up",
+      "hidden": false,
+      "measure": "mrt_common__ad_daily.roas_platform",
+      "metric": "roas_platform",
+      "mode": "cube",
+      "name_vi": "ROAS nền tảng",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_common__ad_daily": "mrt_common__ad_daily.roas_platform"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "roas nền tảng",
+        "roas facebook",
+        "roas ads",
+        "roas"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "ratio",
+      "unit": "ratio",
+      "version": "1.0.0"
+    },
+    "shipping_cost": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Phí vận chuyển người bán chịu (sau trợ giá và phần người mua trả).",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "order_status",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": null,
+      "good_direction": "down",
+      "hidden": false,
+      "measure": "mrt_seller__orders.shipping_cost",
+      "metric": "shipping_cost",
+      "mode": "cube",
+      "name_vi": "Phí vận chuyển",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.shipping_cost",
+        "mrt_seller__orders": "mrt_seller__orders.shipping_cost"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [
+        "phí ship",
+        "vận chuyển"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "sku_profit": {
+      "anomaly": null,
+      "components": [
+        "line_net_revenue",
+        "line_cogs",
+        "line_platform_fees",
+        "line_payment_fees",
+        "line_shipping_cost",
+        "line_return_cost",
+        "line_allocated_ad_spend",
+        "line_other_costs"
+      ],
+      "cube": "mrt_seller__order_lines",
+      "description_vi": "Lãi sau phí tính riêng cho từng SKU, để tìm sản phẩm đang lỗ.",
+      "dimensions": [
+        "channel",
+        "date",
+        "is_provisional",
+        "platform",
+        "product",
+        "product_name",
+        "sku"
+      ],
+      "formula": "line_net_revenue - line_cogs - line_platform_fees - line_payment_fees - line_shipping_cost - line_return_cost - line_allocated_ad_spend - line_other_costs",
+      "good_direction": "up",
+      "hidden": false,
+      "measure": "mrt_seller__order_lines.sku_profit",
+      "metric": "sku_profit",
+      "mode": "cube",
+      "name_vi": "Lãi theo SKU",
+      "packs": [
+        "seller"
+      ],
+      "realizations": {
+        "mrt_seller__order_lines": "mrt_seller__order_lines.sku_profit"
+      },
+      "required_dimensions": [
+        "product"
+      ],
+      "requires": [],
+      "synonyms_vi": [
+        "lãi sku",
+        "sản phẩm lỗ",
+        "lãi từng sản phẩm",
+        "sku lỗ"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "derived",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "spend_mtd": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_agency__budget_monthly",
+      "description_vi": "Chi quảng cáo từ đầu tháng đến hôm qua.",
+      "dimensions": [
+        "date",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": true,
+      "measure": "mrt_agency__budget_monthly.spend_mtd",
+      "metric": "spend_mtd",
+      "mode": "cube",
+      "name_vi": "Đã chi trong tháng",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {
+        "mrt_agency__budget_monthly": "mrt_agency__budget_monthly.spend_mtd"
+      },
+      "required_dimensions": [],
+      "requires": [],
+      "synonyms_vi": [],
+      "time_grains": [
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    "tacos": {
+      "anomaly": null,
+      "components": [
+        "amazon_ad_spend",
+        "amazon_total_sales"
+      ],
+      "cube": null,
+      "description_vi": "Chi quảng cáo Amazon chia tổng doanh thu Amazon.",
+      "dimensions": [
+        "date"
+      ],
+      "formula": "amazon_ad_spend / amazon_total_sales",
+      "good_direction": "down",
+      "hidden": false,
+      "measure": null,
+      "metric": "tacos",
+      "mode": "engine",
+      "name_vi": "TACOS (Amazon)",
+      "packs": [
+        "agency"
+      ],
+      "realizations": {},
+      "required_dimensions": [],
+      "requires": [
+        "amazon"
+      ],
+      "synonyms_vi": [
+        "tacos",
+        "tổng chi quảng cáo trên doanh thu amazon"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "ratio",
+      "unit": "percent",
+      "version": "1.0.0"
+    }
+  },
+  "status_cube": "mrt_common__data_status"
+}

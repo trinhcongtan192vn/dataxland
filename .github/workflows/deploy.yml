@@ -51,3 +51,4 @@ jobs:
             docker compose -f infra/compose/docker-compose.yml --env-file .env --profile edge up -d
             docker compose -f infra/compose/docker-compose.yml --env-file .env exec -T api alembic upgrade head
             docker compose -f infra/compose/docker-compose.yml --env-file .env exec -T api python /repo/ops/sync_tenants.py
+            docker compose -f infra/compose/docker-compose.yml --env-file .env exec -T api python /repo/ops/release_metrics.py

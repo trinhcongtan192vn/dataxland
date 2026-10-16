@@ -1,0 +1,34 @@
+metric: roas_blended
+name_vi: ROAS thật
+description_vi: Doanh thu thực nhận trên các sàn chia cho tổng chi quảng cáo. Cho biết mỗi đồng quảng cáo mang về bao nhiêu
+  đồng doanh thu thật.
+version: 1.0.0
+type: ratio
+numerator: net_revenue_sales
+denominator: ad_spend
+dimensions:
+- date
+unit: ratio
+good_direction: up
+packs:
+- seller
+- agency
+anomaly:
+  compare: trailing_4_weeks
+  threshold_pct: 30
+  grain: week
+synonyms_vi:
+- roas thật
+- roas tổng
+- hiệu quả quảng cáo thật
+- blended roas
+source_note_vi: Doanh thu từ dữ liệu đơn của sàn; chi phí từ các nền tảng quảng cáo.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

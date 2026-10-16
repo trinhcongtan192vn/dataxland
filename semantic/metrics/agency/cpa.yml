@@ -1,0 +1,31 @@
+metric: cpa
+name_vi: Chi phí mỗi chuyển đổi (CPA)
+description_vi: Chi quảng cáo chia số chuyển đổi nền tảng báo.
+version: 1.0.0
+type: ratio
+numerator: ad_spend
+denominator: conversions
+dimensions:
+- date
+- platform
+- channel
+- campaign
+- campaign_name
+- adgroup
+unit: VND
+good_direction: down
+packs:
+- agency
+synonyms_vi:
+- cpa
+- giá mỗi chuyển đổi
+source_note_vi: Số do nền tảng quảng cáo báo.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

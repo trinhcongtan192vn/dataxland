@@ -1,0 +1,56 @@
+metric: order_count
+name_vi: Số đơn
+description_vi: Số đơn không bị hủy.
+version: 1.0.0
+type: simple
+source: mrt_seller__orders
+measure:
+  agg: count
+  column: order_id
+  filters:
+  - column: row_type
+    op: eq
+    value: order
+  - column: is_cancelled
+    op: eq
+    value: false
+variants:
+- source: mrt_seller__order_lines
+  measure:
+    agg: count_distinct
+    column: order_id
+    filters:
+    - column: is_cancelled
+      op: eq
+      value: false
+dimensions:
+- channel
+- date
+- is_provisional
+- order_status
+- platform
+- product
+- product_name
+- sku
+unit: count
+good_direction: up
+packs:
+- seller
+anomaly:
+  compare: trailing_4_weeks
+  threshold_pct: 40
+  grain: day
+synonyms_vi:
+- số đơn
+- đơn hàng
+- lượng đơn
+source_note_vi: Đơn trên các sàn, bỏ đơn hủy.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

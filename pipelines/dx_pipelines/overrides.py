@@ -40,8 +40,13 @@ def read_overrides(tenant: TenantConfig, repo_root: Path) -> list[dict[str, str]
 
 
 IDENTITY_COLUMNS = {
-    "entity": "string", "source": "string", "source_id": "string", "canonical_id": "string", "method": "string",
-    "approved_by": "string", "approved_at": "timestamp",
+    "entity": "string",
+    "source": "string",
+    "source_id": "string",
+    "canonical_id": "string",
+    "method": "string",
+    "approved_by": "string",
+    "approved_at": "timestamp",
 }
 
 

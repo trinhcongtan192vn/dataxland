@@ -202,4 +202,22 @@ def events_cleanup(
     )
     res = db.execute(delete(events).where(events.c.event_id.in_(stale), ~pending_dead))
     db.execute(delete(event_processed).where(event_processed.c.processed_at < cutoff))
-    return {"deleted": int(res.rowcount or 0)}
+    return {"deleted": int(getattr(res, "rowcount", 0) or 0)}
+
+
+class AnomalyRunIn(BaseModel):
+    tenant_id: str
+    run_id: str | None = None
+
+
+@router.post("/v1/internal/anomalies/run")
+def anomalies_run(
+    body: AnomalyRunIn, _: ServiceCaller = Depends(require_service), db: Session = Depends(get_db)
+) -> dict[str, Any]:
+    """Phát hiện bất thường sau khi làm mới Cube (spec 03 §8, spec 04 §3.2 bước `detect_anomalies`)."""
+    from app.auth.context import internal_ctx
+    from app.metrics.anomaly import detect
+
+    ctx = internal_ctx(db, body.tenant_id)
+    events = detect(ctx, db)
+    return {"tenant_id": body.tenant_id, "anomalies": len(events), "metrics": [e["metric"] for e in events]}

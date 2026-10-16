@@ -1,0 +1,15 @@
+{
+  "name": "dataxland-cube",
+  "private": true,
+  "description": "Chạy Cube trực tiếp trên máy dev (không cần Docker). Docker dùng image cubejs/cube cùng phiên bản.",
+  "scripts": {
+    "dev": "node run.js",
+    "start": "node run.js"
+  },
+  "dependencies": {
+    "@cubejs-backend/server": "1.7.50",
+    "@cubejs-backend/duckdb-driver": "1.7.50",
+    "@cubejs-backend/bigquery-driver": "1.7.50",
+    "jsonwebtoken": "9.0.2"
+  }
+}

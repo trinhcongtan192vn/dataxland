@@ -1,0 +1,30 @@
+# SINH RA bởi semantic/build.py – không sửa tay.
+cubes:
+- dimensions:
+  - name: tenant_id
+    primary_key: true
+    public: true
+    sql: tenant_id
+    type: string
+  - name: data_as_of
+    sql: data_as_of
+    type: time
+  - name: provisional_revenue_share
+    sql: provisional_revenue_share
+    type: number
+  - name: missing_cogs_sku_count
+    sql: missing_cogs_sku_count
+    type: number
+  - name: missing_cogs_revenue_vnd
+    sql: missing_cogs_revenue_vnd
+    type: number
+  - name: run_id
+    sql: run_id
+    type: string
+  measures:
+  - name: rows
+    type: count
+  name: mrt_common__data_status
+  pre_aggregations: []
+  sql_table: '{{ COMPILE_CONTEXT.securityContext.dataset_prefix | safe }}_marts.mrt_common__data_status'
+  title: Trạng thái dữ liệu

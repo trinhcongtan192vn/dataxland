@@ -1,0 +1,31 @@
+metric: conversion_value
+name_vi: Giá trị chuyển đổi (nền tảng báo)
+description_vi: Doanh thu do nền tảng quảng cáo ghi nhận.
+version: 1.0.0
+type: simple
+hidden: true
+source: mrt_common__ad_daily
+measure:
+  agg: sum
+  column: conversion_value_vnd
+dimensions:
+- date
+- platform
+- channel
+- campaign
+- campaign_name
+- adgroup
+unit: VND
+packs:
+- agency
+source_note_vi: Số do nền tảng quảng cáo báo.
+time_grains:
+- day
+- week
+- month
+good_direction: none
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

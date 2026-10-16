@@ -1,0 +1,148 @@
+# SINH RA bởi semantic/build.py – không sửa tay.
+cubes:
+- dimensions:
+  - name: ad_performance_id
+    primary_key: true
+    public: false
+    sql: ad_performance_id
+    type: string
+  - name: adgroup
+    sql: adgroup_id
+    title: Nhóm quảng cáo
+    type: string
+  - name: campaign
+    sql: campaign_id
+    title: Chiến dịch
+    type: string
+  - name: campaign_name
+    sql: campaign_name
+    title: Tên chiến dịch
+    type: string
+  - name: channel
+    sql: channel_id
+    title: Kênh
+    type: string
+  - name: date
+    sql: date
+    title: Ngày
+    type: time
+  - name: platform
+    sql: platform
+    title: Nền tảng
+    type: string
+  measures:
+  - meta:
+      unit: percent
+      version: 1.0.0
+    name: acos
+    sql: 1.0 * {amazon_ad_spend} / NULLIF({amazon_ad_sales}, 0)
+    title: ACOS (Amazon)
+    type: number
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: ad_spend
+    sql: spend_vnd
+    title: Chi phí quảng cáo
+    type: sum
+  - filters:
+    - sql: '{CUBE}.platform = ''amazon_ads'''
+    meta:
+      unit: VND
+      version: 1.0.0
+    name: amazon_ad_sales
+    sql: conversion_value_vnd
+    title: Doanh thu từ quảng cáo Amazon
+    type: sum
+  - filters:
+    - sql: '{CUBE}.platform = ''amazon_ads'''
+    meta:
+      unit: VND
+      version: 1.0.0
+    name: amazon_ad_spend
+    sql: spend_vnd
+    title: Chi quảng cáo Amazon
+    type: sum
+  - meta:
+      unit: count
+      version: 1.0.0
+    name: clicks
+    sql: clicks
+    title: Lượt nhấp
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: conversion_value
+    sql: conversion_value_vnd
+    title: Giá trị chuyển đổi (nền tảng báo)
+    type: sum
+  - meta:
+      unit: count
+      version: 1.0.0
+    name: conversions
+    sql: conversions
+    title: Chuyển đổi
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: cpa
+    sql: 1.0 * {ad_spend} / NULLIF({conversions}, 0)
+    title: Chi phí mỗi chuyển đổi (CPA)
+    type: number
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: cpc
+    sql: 1.0 * {ad_spend} / NULLIF({clicks}, 0)
+    title: Chi phí mỗi lượt nhấp (CPC)
+    type: number
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: cpm
+    sql: 1.0 * {ad_spend} / NULLIF({impressions}, 0) * 1000
+    title: Chi phí mỗi nghìn lượt hiển thị (CPM)
+    type: number
+  - meta:
+      unit: percent
+      version: 1.0.0
+    name: ctr
+    sql: 1.0 * {clicks} / NULLIF({impressions}, 0)
+    title: Tỷ lệ nhấp (CTR)
+    type: number
+  - meta:
+      unit: count
+      version: 1.0.0
+    name: impressions
+    sql: impressions
+    title: Lượt hiển thị
+    type: sum
+  - meta:
+      unit: ratio
+      version: 1.0.0
+    name: roas_platform
+    sql: 1.0 * {conversion_value} / NULLIF({ad_spend}, 0)
+    title: ROAS nền tảng
+    type: number
+  name: mrt_common__ad_daily
+  pre_aggregations:
+  - dimensions:
+    - channel
+    - platform
+    granularity: day
+    measures:
+    - ad_spend
+    - amazon_ad_sales
+    - amazon_ad_spend
+    - clicks
+    - conversion_value
+    - conversions
+    - impressions
+    name: daily
+    refresh_key:
+      sql: SELECT MAX(_dx_updated_at) FROM {{ COMPILE_CONTEXT.securityContext.dataset_prefix | safe }}_marts.mrt_common__ad_daily
+    time_dimension: date
+  sql_table: '{{ COMPILE_CONTEXT.securityContext.dataset_prefix | safe }}_marts.mrt_common__ad_daily'
+  title: Quảng cáo theo ngày

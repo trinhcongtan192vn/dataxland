@@ -1,0 +1,25 @@
+metric: spend_mtd
+name_vi: Đã chi trong tháng
+description_vi: Chi quảng cáo từ đầu tháng đến hôm qua.
+version: 1.0.0
+type: simple
+hidden: true
+source: mrt_agency__budget_monthly
+measure:
+  agg: sum
+  column: spend_mtd_vnd
+dimensions:
+- date
+- platform
+time_grains:
+- month
+unit: VND
+packs:
+- agency
+source_note_vi: Số do nền tảng quảng cáo báo.
+good_direction: none
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

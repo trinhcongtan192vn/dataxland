@@ -96,3 +96,10 @@
 {% macro dx_get(d, key, default=none) -%}
     {%- if d is mapping and key in d -%}{{ return(d[key]) }}{%- else -%}{{ return(default) }}{%- endif -%}
 {%- endmacro %}
+
+{#- Số thực 8 byte (DuckDB `float` chỉ 4 byte). -#}
+{% macro dx_type_float() -%}
+    {{ return(adapter.dispatch('dx_type_float', 'dx')()) }}
+{%- endmacro %}
+{% macro default__dx_type_float() -%}double{%- endmacro %}
+{% macro bigquery__dx_type_float() -%}float64{%- endmacro %}

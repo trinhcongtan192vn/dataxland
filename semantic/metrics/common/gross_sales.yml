@@ -1,0 +1,29 @@
+metric: gross_sales
+name_vi: Tổng giá trị bán (theo ngày bán)
+description_vi: Tổng giá trị đơn trước giảm giá theo ngày và kênh bán.
+version: 1.0.0
+type: simple
+hidden: true
+source: mrt_common__sales_daily
+measure:
+  agg: sum
+  column: gross_amount_vnd
+dimensions:
+- date
+- platform
+- channel
+unit: VND
+good_direction: up
+packs:
+- seller
+- agency
+source_note_vi: Đơn trên các sàn, giá trị trước giảm giá.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

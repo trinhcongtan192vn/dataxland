@@ -42,11 +42,11 @@ def config_hash(config: dict[str, object]) -> str:
 def sync_tenants(db: Session, tenants_dir: str | Path, producer: str = "s4-ops") -> SyncResult:
     res = SyncResult()
     for pid, p in load_partners(tenants_dir).items():
-        row = db.get(Partner, pid)
-        if row is None:
+        prow = db.get(Partner, pid)
+        if prow is None:
             db.add(Partner(partner_id=pid, name=p.name, contact_email=p.contact_email))
         else:
-            row.name, row.contact_email = p.name, p.contact_email
+            prow.name, prow.contact_email = p.name, p.contact_email
     db.flush()
 
     ok, errs = validate_dir(tenants_dir)

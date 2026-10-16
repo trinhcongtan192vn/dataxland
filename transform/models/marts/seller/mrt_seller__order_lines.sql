@@ -17,8 +17,8 @@ tot as (
 s as (
     select
         l.*,
-        case when coalesce(tot.tot_net, 0) = 0 then 1.0 / cast(tot.n as {{ dbt.type_float() }})
-            else cast(l.line_net_vnd as {{ dbt.type_float() }}) / cast(tot.tot_net as {{ dbt.type_float() }}) end as share
+        case when coalesce(tot.tot_net, 0) = 0 then 1.0 / cast(tot.n as {{ dx_type_float() }})
+            else cast(l.line_net_vnd as {{ dx_type_float() }}) / cast(tot.tot_net as {{ dx_type_float() }}) end as share
     from l
     inner join tot on tot.order_id = l.order_id
 )

@@ -1,0 +1,34 @@
+metric: net_margin_pct
+name_vi: Biên lãi
+description_vi: Lãi sau phí chia doanh thu thực nhận.
+version: 1.0.0
+type: ratio
+numerator: net_profit_after_fees
+denominator: net_revenue
+dimensions:
+- channel
+- date
+- is_provisional
+- order_status
+- platform
+- product
+- product_name
+- sku
+unit: percent
+good_direction: up
+packs:
+- seller
+synonyms_vi:
+- biên lãi
+- tỷ suất lợi nhuận
+- margin
+source_note_vi: Tính từ lãi sau phí và doanh thu.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

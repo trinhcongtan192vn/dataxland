@@ -119,6 +119,7 @@ services:
       INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN}
     volumes:
       - ../../cube/cube.js:/cube/conf/cube.js:ro
+      - ../../cube/local_duckdb.js:/cube/conf/local_duckdb.js:ro
       - ../../semantic/cube/model:/cube/conf/model:ro
       - ../../.local:/data
       - ../../.secrets:/secrets:ro

@@ -1,0 +1,9 @@
+# Ba số chính của demo_agency trên dữ liệu mẫu sinh với ngày cuối 2026-10-15, hôm nay = 2026-10-16.
+tenant: demo_agency
+period: this_month
+from: "2026-10-01"
+to: "2026-10-15"
+numbers:
+  ad_spend: 87080262
+  roas_blended: 2.121578
+  budget_pacing: 1.176248

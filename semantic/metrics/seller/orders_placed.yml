@@ -1,0 +1,34 @@
+metric: orders_placed
+name_vi: Số đơn đặt
+description_vi: Mọi đơn đã đặt, kể cả đơn hủy.
+version: 1.0.0
+type: simple
+hidden: true
+source: mrt_seller__orders
+measure:
+  agg: count
+  column: order_id
+  filters:
+  - column: row_type
+    op: eq
+    value: order
+dimensions:
+- date
+- platform
+- channel
+- order_status
+- is_provisional
+unit: count
+packs:
+- seller
+source_note_vi: Đơn trên các sàn.
+time_grains:
+- day
+- week
+- month
+good_direction: none
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

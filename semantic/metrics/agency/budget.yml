@@ -1,0 +1,27 @@
+metric: budget
+name_vi: Ngân sách quảng cáo
+description_vi: Ngân sách tháng khách nhập trên cổng.
+version: 1.0.0
+type: simple
+hidden: true
+source: mrt_agency__budget_monthly
+measure:
+  agg: sum
+  column: budget_vnd
+dimensions:
+- date
+- platform
+time_grains:
+- month
+unit: VND
+packs:
+- agency
+synonyms_vi:
+- ngân sách
+source_note_vi: Ngân sách khách nhập trên cổng DataxLand.
+good_direction: none
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

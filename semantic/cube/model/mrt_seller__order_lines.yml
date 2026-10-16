@@ -1,0 +1,264 @@
+# SINH RA bởi semantic/build.py – không sửa tay.
+cubes:
+- dimensions:
+  - name: order_line_id
+    primary_key: true
+    public: false
+    sql: order_line_id
+    type: string
+  - name: channel
+    sql: channel_id
+    title: Kênh
+    type: string
+  - name: date
+    sql: order_date
+    title: Ngày
+    type: time
+  - name: is_provisional
+    sql: is_provisional
+    title: Tạm tính
+    type: boolean
+  - name: order_status
+    sql: status
+    title: Trạng thái đơn
+    type: string
+  - name: platform
+    sql: platform
+    title: Nền tảng
+    type: string
+  - name: product
+    sql: product_id
+    title: Sản phẩm
+    type: string
+  - name: product_name
+    sql: product_name
+    title: Tên sản phẩm
+    type: string
+  - name: sku
+    sql: seller_sku
+    title: SKU
+    type: string
+  measures:
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: allocated_ad_spend
+    sql: allocated_ad_spend_vnd
+    title: Chi quảng cáo phân bổ
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: aov
+    sql: 1.0 * {net_revenue} / NULLIF({order_count}, 0)
+    title: Giá trị đơn trung bình
+    type: number
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: cogs
+    sql: cogs_vnd
+    title: Giá vốn hàng bán
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: contribution_margin
+    sql: '{net_revenue} - {cogs} - {platform_fees} - {payment_fees} - {shipping_cost} - {return_cost}'
+    title: Biên đóng góp
+    type: number
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: line_allocated_ad_spend
+    sql: allocated_ad_spend_vnd
+    title: Thành phần lãi theo SKU (allocated_ad_spend_vnd)
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: line_cogs
+    sql: cogs_vnd
+    title: Thành phần lãi theo SKU (cogs_vnd)
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: line_net_revenue
+    sql: net_revenue_vnd
+    title: Thành phần lãi theo SKU (net_revenue_vnd)
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: line_other_costs
+    sql: other_cost_vnd
+    title: Thành phần lãi theo SKU (other_cost_vnd)
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: line_payment_fees
+    sql: payment_fee_vnd
+    title: Thành phần lãi theo SKU (payment_fee_vnd)
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: line_platform_fees
+    sql: platform_fee_vnd
+    title: Thành phần lãi theo SKU (platform_fee_vnd)
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: line_return_cost
+    sql: return_cost_vnd
+    title: Thành phần lãi theo SKU (return_cost_vnd)
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: line_shipping_cost
+    sql: shipping_cost_vnd
+    title: Thành phần lãi theo SKU (shipping_cost_vnd)
+    type: sum
+  - filters:
+    - sql: '{CUBE}.has_missing_cogs = true'
+    - sql: '{CUBE}.is_cancelled = false'
+    meta:
+      unit: VND
+      version: 1.0.0
+    name: missing_cogs_revenue
+    sql: net_revenue_vnd
+    title: Doanh thu SKU chưa có giá vốn
+    type: sum
+  - meta:
+      unit: percent
+      version: 1.0.0
+    name: net_margin_pct
+    sql: 1.0 * {net_profit_after_fees} / NULLIF({net_revenue}, 0)
+    title: Biên lãi
+    type: number
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: net_profit_after_fees
+    sql: '{contribution_margin} - {allocated_ad_spend} - {other_costs}'
+    title: Lãi sau phí
+    type: number
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: net_revenue
+    sql: net_revenue_vnd
+    title: Doanh thu thực nhận
+    type: sum
+  - filters:
+    - sql: '{CUBE}.is_cancelled = false'
+    meta:
+      unit: count
+      version: 1.0.0
+    name: order_count
+    sql: order_id
+    title: Số đơn
+    type: count_distinct
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: other_costs
+    sql: other_cost_vnd
+    title: Chi phí khác
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: payment_fees
+    sql: payment_fee_vnd
+    title: Phí thanh toán
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: platform_fees
+    sql: platform_fee_vnd
+    title: Phí sàn
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: return_cost
+    sql: return_cost_vnd
+    title: Chi phí hoàn hàng
+    type: sum
+  - meta:
+      unit: percent
+      version: 1.0.0
+    name: return_rate
+    sql: 1.0 * {returned_orders} / NULLIF({order_count}, 0)
+    title: Tỷ lệ hoàn
+    type: number
+  - filters:
+    - sql: '{CUBE}.is_returned = true'
+    meta:
+      unit: count
+      version: 1.0.0
+    name: returned_orders
+    sql: order_id
+    title: Số đơn hoàn
+    type: count_distinct
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: shipping_cost
+    sql: shipping_cost_vnd
+    title: Phí vận chuyển
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: sku_profit
+    sql: '{line_net_revenue} - {line_cogs} - {line_platform_fees} - {line_payment_fees} - {line_shipping_cost} - {line_return_cost} - {line_allocated_ad_spend} - {line_other_costs}'
+    title: Lãi theo SKU
+    type: number
+  name: mrt_seller__order_lines
+  pre_aggregations:
+  - dimensions:
+    - channel
+    - platform
+    granularity: day
+    measures: &id001
+    - allocated_ad_spend
+    - cogs
+    - line_allocated_ad_spend
+    - line_cogs
+    - line_net_revenue
+    - line_other_costs
+    - line_payment_fees
+    - line_platform_fees
+    - line_return_cost
+    - line_shipping_cost
+    - missing_cogs_revenue
+    - net_revenue
+    - other_costs
+    - payment_fees
+    - platform_fees
+    - return_cost
+    - shipping_cost
+    name: daily
+    refresh_key: &id002
+      sql: SELECT MAX(_dx_updated_at) FROM {{ COMPILE_CONTEXT.securityContext.dataset_prefix | safe }}_marts.mrt_seller__order_lines
+    time_dimension: date
+  - dimensions:
+    - channel
+    - platform
+    - product
+    - product_name
+    - sku
+    granularity: day
+    measures: *id001
+    name: by_product
+    refresh_key: *id002
+    time_dimension: date
+  sql_table: '{{ COMPILE_CONTEXT.securityContext.dataset_prefix | safe }}_marts.mrt_seller__order_lines'
+  title: Dòng đơn (gói Seller)

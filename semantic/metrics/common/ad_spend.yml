@@ -1,0 +1,41 @@
+metric: ad_spend
+name_vi: Chi phí quảng cáo
+description_vi: Tổng tiền đã chi cho quảng cáo trên các nền tảng, quy đổi về VND theo tỷ giá ngày chi.
+version: 1.0.0
+type: simple
+source: mrt_common__ad_daily
+measure:
+  agg: sum
+  column: spend_vnd
+dimensions:
+- date
+- platform
+- channel
+- campaign
+- campaign_name
+- adgroup
+unit: VND
+good_direction: none
+packs:
+- seller
+- agency
+anomaly:
+  compare: trailing_4_weeks
+  threshold_pct: 40
+  grain: day
+synonyms_vi:
+- chi quảng cáo
+- tiền quảng cáo
+- ads
+- chi tiêu quảng cáo
+- spend
+source_note_vi: Số chi tiêu do Meta, TikTok, Google, Amazon Ads báo về qua Windsor.ai.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-
 from dbt_helpers import REPO, Built, dbt_run, seed
 
 pytestmark = pytest.mark.dbt
@@ -25,19 +24,28 @@ def _results(res: Any) -> dict[str, str]:
 def test_build_green_for_both_tenants(built: Built) -> None:
     con = built.con()
     for t in ("t_demo_seller_marts", "t_demo_agency_marts"):
-        tables = {r[0] for r in con.execute(
-            "select table_name from information_schema.tables where table_schema = ?", [t]).fetchall()}
+        tables = {
+            r[0]
+            for r in con.execute(
+                "select table_name from information_schema.tables where table_schema = ?", [t]
+            ).fetchall()
+        }
         assert "mrt_common__data_status" in tables and "mrt_common__ad_daily" in tables
         assert not any(x.endswith("__staging") for x in tables), "marts phải được hoán đổi sau khi test qua"
-    assert "mrt_seller__orders" in {r[0] for r in con.execute(
-        "select table_name from information_schema.tables where table_schema = 't_demo_seller_marts'").fetchall()}
+    assert "mrt_seller__orders" in {
+        r[0]
+        for r in con.execute(
+            "select table_name from information_schema.tables where table_schema = 't_demo_seller_marts'"
+        ).fetchall()
+    }
 
 
 def test_nfr_03_no_raw_pii_in_core_and_marts(built: Built) -> None:
     con = built.con()
     cols = con.execute(
         "select table_schema, table_name, column_name, data_type from information_schema.columns "
-        "where table_schema like 't_demo_%_core' or table_schema like 't_demo_%_marts'").fetchall()
+        "where table_schema like 't_demo_%_core' or table_schema like 't_demo_%_marts'"
+    ).fetchall()
     for schema, table, col, _ in cols:
         low = col.lower()
         if low.endswith("_hash"):
@@ -71,25 +79,38 @@ def test_fr_mod_03_usd_converted(built: Built) -> None:
     con = built.con()
     row = con.execute(
         "select currency, gross_amount_original, gross_amount_vnd from t_demo_agency_core.fct_order "
-        "where source = 'amazon_seller' limit 1").fetchone()
+        "where source = 'amazon_seller' limit 1"
+    ).fetchone()
     assert row[0] == "USD" and float(row[2]) > float(row[1]) * 20000
     # Ngày cuối tuần không có tỷ giá dùng tỷ giá ngày làm việc gần nhất trước đó.
     sat, fri = con.execute(
         "select (select rate_vnd from t_demo_agency_stg.stg_fx__rates_daily where date = '2026-10-10'),"
-        " (select rate_vnd from t_demo_agency_stg.stg_fx__rates_daily where date = '2026-10-09')").fetchone()
+        " (select rate_vnd from t_demo_agency_stg.stg_fx__rates_daily where date = '2026-10-09')"
+    ).fetchone()
     assert sat == fri
 
 
 def test_fr_inp_03_missing_cogs_counted(built: Built) -> None:
-    row = built.con().execute(
-        "select missing_cogs_sku_count, missing_cogs_revenue_vnd from t_demo_seller_marts.mrt_common__data_status").fetchone()
+    row = (
+        built.con()
+        .execute(
+            "select missing_cogs_sku_count, missing_cogs_revenue_vnd from t_demo_seller_marts.mrt_common__data_status"
+        )
+        .fetchone()
+    )
     assert row[0] == 1 and float(row[1]) > 0
 
 
 def test_fr_mod_05_sum_preserved_all_modes(built: Built) -> None:
     for mode in ("by_revenue", "by_order", "none"):
-        res = dbt_run(built.path, "demo_seller", extra_vars={"cost_allocation": mode},
-                      select=["fct_cost_allocated"], target_name=f"alloc_{mode}", swap=False)
+        res = dbt_run(
+            built.path,
+            "demo_seller",
+            extra_vars={"cost_allocation": mode},
+            select=["fct_cost_allocated"],
+            target_name=f"alloc_{mode}",
+            swap=False,
+        )
         statuses = _results(res)
         sp = [k for k in statuses if "sum_preserved" in k]
         assert sp and all(statuses[k] == "pass" for k in sp), (mode, statuses)
@@ -118,14 +139,14 @@ def test_fr_mod_01_unknown_status_blocks_until_override(scratch_samples: Path, t
     assert any("stg_lazada__orders_status" in k for k in failed), failed
 
     override = REPO / "tenants" / "overrides" / "demo_seller_status_map.csv"
-    original = override.read_text(encoding="utf-8")
+    original = override.read_bytes().decode("utf-8")
     try:
-        override.write_text(original.rstrip("\n") + "\nlazada,WEIRD_STATUS,pending\n", encoding="utf-8")
+        override.write_bytes((original.rstrip("\n") + "\nlazada,WEIRD_STATUS,pending\n").encode("utf-8"))
         res = dbt_run(db, "demo_seller", select=["+stg_lazada__orders"], target_name="weird2", swap=False)
         failed = [k for k, v in _results(res).items() if k.startswith("test.") and v == "fail"]
         assert failed == [], failed
     finally:
-        override.write_text(original, encoding="utf-8")
+        override.write_bytes(original.encode("utf-8"))
 
 
 def test_fr_dq_02_reconcile_detects_2pct_gap(scratch_samples: Path, tmp_path: Path) -> None:
@@ -138,16 +159,23 @@ def test_fr_dq_02_reconcile_detects_2pct_gap(scratch_samples: Path, tmp_path: Pa
     _write_jsonl(p, rows)
     db = tmp_path / "dx.duckdb"
     seed(db, scratch_samples)
-    res = dbt_run(db, "demo_seller", select=["+fct_order", "+stg_shopee__daily_totals"], target_name="recon", swap=False,
-                  exclude=["resource_type:unit_test"])
+    res = dbt_run(
+        db,
+        "demo_seller",
+        select=["+fct_order", "+stg_shopee__daily_totals"],
+        target_name="recon",
+        swap=False,
+        exclude=["resource_type:unit_test"],
+    )
     st = _results(res)
     rec = [k for k in st if "reconcile_daily_totals_shopee" in k]
     assert rec and st[rec[0]] == "fail"
     import duckdb
 
     con = duckdb.connect(str(db), read_only=True)
-    out = con.execute("select source, cast(date as varchar), metric, diff_pct from "
-                      "t_demo_seller_audit.reconcile_daily_totals_shopee").fetchall()
+    out = con.execute(
+        "select source, cast(date as varchar), metric, diff_pct from t_demo_seller_audit.reconcile_daily_totals_shopee"
+    ).fetchall()
     assert ("shopee", target_day, "gross_amount") in [(a, b, c) for a, b, c, _ in out]
     gaps = [float(d) for a, b, c, d in out if b == target_day and c == "gross_amount"]
     assert gaps and 1.5 < gaps[0] < 2.5
