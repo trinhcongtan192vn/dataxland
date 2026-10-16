@@ -1,0 +1,4 @@
+version: "1.0.0"
+audience: prospect
+channels: [email]
+title: "Xác nhận để DataxLand kiểm tra sức khỏe dữ liệu"

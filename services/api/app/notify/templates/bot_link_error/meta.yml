@@ -1,0 +1,4 @@
+version: "1.0.0"
+audience: customer
+channels: [telegram]
+title: "Không liên kết được"

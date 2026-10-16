@@ -1,0 +1,10 @@
+📊 <b>Báo cáo tuần {{ week_no }} ({{ week_range }}) – {{ tenant_name }}</b>
+
+{% if summary_only %}
+Báo cáo tuần đã sẵn sàng. Bấm nút bên dưới để xem trên cổng.
+{% else %}
+{% for n in numbers %}
+{{ n.label_vi }}: {{ n.value|unit(n.unit) }}{% if n.change_pct is not none and n.unit != 'percent' %} ({{ n.change_pct|change }}){% endif %}
+
+{% endfor %}
+{% endif %}

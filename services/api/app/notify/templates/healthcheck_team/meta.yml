@@ -1,0 +1,4 @@
+version: "1.0.0"
+audience: team
+channels: [telegram, email]
+title: "[DataxLand] Kiểm tra sức khỏe {{ check_id }}: {{ status_vi }}"

@@ -1,0 +1,10 @@
+<b>{{ period_label }} – {{ tenant_name }}</b>
+{% for n in numbers %}
+• {{ n.label_vi }}: {{ n.text }}
+
+{% endfor %}
+{% for w in warnings %}
+⚠️ {{ w }}
+
+{% endfor %}
+Cập nhật lúc {{ data_as_of|as_of }}

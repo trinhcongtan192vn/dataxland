@@ -1,0 +1,7 @@
+Đồng bộ lỗi – {{ tenant_label }}
+Nguồn: {{ source or '—' }}
+Lý do: {{ reason_vi }} ({{ reason }})
+{% if detail %}Chi tiết: {{ detail }}
+{% endif %}{% if repeat_count %}Lặp lại {{ repeat_count }} lần trong 6 giờ qua.
+{% endif %}Run: {{ run_id or '—' }}
+Màn hình vận hành: {{ ops_url }}

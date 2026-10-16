@@ -1,0 +1,6 @@
+{% extends "_base/email.html.j2" %}
+{% block body %}
+<p style="font-size:17px;font-weight:600;margin:0 0 8px">Kết quả kiểm tra sức khỏe dữ liệu{% if shop_name %} – {{ shop_name }}{% endif %}</p>
+<p>Báo cáo nêu bằng tiền: phí đã ăn vào lãi bao nhiêu, SKU nào đang lỗ sau phí, hoàn hàng bất thường và số không khớp giữa các nguồn.</p>
+<p style="color:#64748b">Dữ liệu của bạn sẽ tự xóa vào ngày <b>{{ expires_on|date_vn }}</b>.</p>
+{% endblock %}

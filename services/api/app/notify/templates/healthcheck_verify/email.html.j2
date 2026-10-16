@@ -1,0 +1,6 @@
+{% extends "_base/email.html.j2" %}
+{% block body %}
+<p>Cảm ơn bạn đã gửi file cho DataxLand{% if shop_name %} ({{ shop_name }}){% endif %}.</p>
+<p>Bấm nút bên dưới để xác nhận và bắt đầu kiểm tra. Kết quả sẽ được gửi trong 1–2 ngày làm việc.</p>
+<p style="color:#64748b">Dữ liệu sẽ tự xóa vào ngày <b>{{ expires_on|date_vn }}</b> (14 ngày sau khi tải lên), trừ khi bạn đồng ý chuyển sang dịch vụ chính thức.</p>
+{% endblock %}

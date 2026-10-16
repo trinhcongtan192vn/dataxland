@@ -1,0 +1,13 @@
+{% extends "_base/email.html.j2" %}
+{% block body %}
+<p style="font-size:18px;font-weight:600;margin:0 0 12px">📊 Báo cáo tuần {{ week_no }} ({{ week_range }}) – {{ tenant_name }}</p>
+{% if summary_only %}
+<p>Báo cáo tuần đã sẵn sàng.</p>
+{% else %}
+<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%">
+{% for n in numbers %}
+<tr><td style="padding:6px 0;color:#475569">{{ n.label_vi }}</td><td style="padding:6px 0;text-align:right;font-weight:600">{{ n.value|unit(n.unit) }}{% if n.change_pct is not none and n.unit != 'percent' %} <span style="color:{{ '#16a34a' if n.change_pct > 0 else '#dc2626' }}">({{ n.change_pct|change }})</span>{% endif %}</td></tr>
+{% endfor %}
+</table>
+{% endif %}
+{% endblock %}

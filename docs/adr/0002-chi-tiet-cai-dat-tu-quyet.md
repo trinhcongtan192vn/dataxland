@@ -23,3 +23,7 @@ hỏi chủ dự án (constitution, nguyên tắc I).
 | 12 | Đếm số lần xử lý lỗi của sự kiện | Cột `attempts`, `dead` trong `event_dead_letters` | 04 §4.2 |
 | 13 | Thứ tự commit lệch của outbox | `consume` quét lại 10 phút trước offset, dựa vào `event_processed` để không trùng | 04 §4.2, architecture §11.2 |
 | 14 | `net_amount` khi sàn trợ giá | `discount_amount` = giảm giá của shop + của sàn; `net_amount` = `gross` − giảm giá do shop chịu (giảm giá do sàn chịu vẫn về shop) | 02 §3.2, architecture §6.3 |
+| 15 | Bảng phụ cho hành vi đã mô tả | `notification_groups` (gộp cảnh báo 6 giờ), `channel_health` (Telegram lỗi 30 phút), `metric_anomalies` (chống phát trùng), `rate_counters` (giới hạn tần suất), `identity_matches` (spec 10), `tenant_costs`, `tenant_hours` (FR-OPS-06) | 04 §5.4, 03 §8, 05 §8 |
+| 16 | Mời owner cho khách mới | `POST /v1/members/invitations` nhận `role: owner` khi người gọi là `data_lead` (`users.manage`); owner chỉ mời được member | 05 §4, §5.1 |
+| 17 | Nhận lời mời | Đăng nhập lần đầu tự nhận lời mời trùng email; trang `/invite/<token>` gọi `POST /v1/invitations/accept`, yêu cầu email đăng nhập trùng email được mời | 05 §3.1, §5.1 |
+| 18 | Chiều để hiện tên SKU và tìm SKU thiếu giá vốn | Thêm chiều `sku` (`seller_sku`) và `product_name` trên mart dòng đơn; chỉ số ẩn `missing_cogs_revenue` | 03 §2.3, 05 §6.3, 06 §3.1 |

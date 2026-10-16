@@ -1,0 +1,4 @@
+version: "1.0.0"
+audience: team
+channels: [telegram, email]
+title: "[DataxLand] Đến ngày đo lại quyết định – {{ tenant_label }}"

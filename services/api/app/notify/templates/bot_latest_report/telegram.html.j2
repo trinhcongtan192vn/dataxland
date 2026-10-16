@@ -1,0 +1,11 @@
+{% if has_report %}
+📊 <b>Báo cáo tuần {{ week_no }} ({{ week_range }}) – {{ tenant_name }}</b>
+
+{% for n in numbers %}
+{{ n.label_vi }}: {{ n.text }}
+
+{% endfor %}
+Số liệu tại thời điểm {{ data_as_of|as_of }}
+{% else %}
+Chưa có báo cáo tuần nào được gửi cho {{ tenant_name }}.
+{% endif %}
