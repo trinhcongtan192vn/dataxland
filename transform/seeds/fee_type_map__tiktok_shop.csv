@@ -1,0 +1,5 @@
+fee_type_raw,cost_type
+platform_commission,platform_fee
+transaction_fee,payment_fee
+shipping_cost,shipping
+affiliate_commission,other

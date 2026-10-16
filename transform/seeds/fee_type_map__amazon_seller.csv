@@ -1,0 +1,7 @@
+fee_type_raw,cost_type
+Commission,platform_fee
+RefundCommission,platform_fee
+FBAPerUnitFulfillmentFee,shipping
+ShippingChargeback,shipping
+DigitalServicesFee,other
+RefundPrincipal,exclude

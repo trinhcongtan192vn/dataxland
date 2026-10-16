@@ -1,0 +1,8 @@
+fee_type_raw,cost_type
+Commission,platform_fee
+Payment Fee,payment_fee
+Shipping Fee Paid by Seller,shipping
+Shipping Fee (Charged by Lazada),shipping
+Marketing Fee,other
+Item Price Credit,exclude
+Shipping Fee (Paid By Customer),exclude

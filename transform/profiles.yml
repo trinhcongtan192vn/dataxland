@@ -1,0 +1,19 @@
+# Đọc từ biến môi trường, không chứa bí mật (spec 02 §1).
+dx:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      path: "{{ env_var('DUCKDB_PATH', '../.local/dx.duckdb') }}"
+      schema: main
+      threads: 4
+    bigquery:
+      type: bigquery
+      method: oauth
+      impersonate_service_account: "{{ env_var('DX_IMPERSONATE_SA', '') or none }}"
+      project: "{{ env_var('GCP_PROJECT_ID', 'dataxland-dev') }}"
+      dataset: dx_default
+      location: "{{ env_var('BQ_LOCATION', 'asia-southeast1') }}"
+      threads: 8
+      job_execution_timeout_seconds: 900
+      maximum_bytes_billed: 50000000000

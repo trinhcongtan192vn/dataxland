@@ -1,0 +1,15 @@
+source,platform,channel_type,name_vi
+shopee,shopee,marketplace,Shopee
+tiktok_shop,tiktok_shop,marketplace,TikTok Shop
+lazada,lazada,marketplace,Lazada
+amazon_seller,amazon_seller,marketplace,Amazon
+meta_ads,meta_ads,ads,Meta Ads
+tiktok_ads,tiktok_ads,ads,TikTok Ads
+google_ads,google_ads,ads,Google Ads
+amazon_ads,amazon_ads,ads,Amazon Ads
+shopee_file,shopee,marketplace,Shopee
+tiktok_shop_file,tiktok_shop,marketplace,TikTok Shop
+lazada_file,lazada,marketplace,Lazada
+meta_ads_file,meta_ads,ads,Meta Ads
+tiktok_ads_file,tiktok_ads,ads,TikTok Ads
+google_ads_file,google_ads,ads,Google Ads

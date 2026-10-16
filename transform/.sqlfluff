@@ -1,0 +1,15 @@
+[sqlfluff]
+dialect = bigquery
+templater = jinja
+# Ignore Jinja templating and macro parsing errors (spec 00 section 2).
+ignore = templating,parsing
+max_line_length = 140
+rules = core
+exclude_rules = LT05, LT09, AM04, ST06, RF04, CV03, AL07, ST05, RF02, LT02, LT01, CP02, AL05, AM06, CV11, LT14
+
+[sqlfluff:templater:jinja]
+apply_dbt_builtins = True
+load_macros_from_path = macros
+
+[sqlfluff:indentation]
+tab_space_size = 4

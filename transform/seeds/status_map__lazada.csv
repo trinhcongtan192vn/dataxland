@@ -1,0 +1,17 @@
+status_raw,status
+unpaid,pending
+pending,pending
+topack,confirmed
+packed,confirmed
+repacked,confirmed
+ready_to_ship,confirmed
+ready_to_ship_pending,confirmed
+shipped,shipping
+delivered,delivered
+confirmed,completed
+canceled,cancelled
+returned,returned
+shipped_back,returned
+failed_delivery,failed_delivery
+lost_by_3pl,failed_delivery
+damaged_by_3pl,failed_delivery

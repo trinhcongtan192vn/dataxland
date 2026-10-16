@@ -1,0 +1,158 @@
+version: 2
+
+models:
+  - name: mrt_seller__orders
+    description: >
+      Một đơn (`row_type = 'order'`) cộng dòng chi phí không phân bổ được (`row_type = 'unallocated_cost'`,
+      `order_id = 'unallocated:' || cost_id`, các cột doanh thu bằng 0) (spec 02 §5).
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+      - name: net_revenue_vnd
+        data_tests: [not_null]
+      - name: row_type
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [order, unallocated_cost]
+
+  - name: mrt_seller__order_lines
+    description: Một dòng đơn; doanh thu và phí của đơn phân bổ xuống dòng theo tỷ lệ doanh thu dòng.
+    columns:
+      - name: order_line_id
+        data_tests: [unique, not_null]
+      - name: product_id
+        data_tests: [not_null]
+
+  - name: mrt_common__ad_daily
+    columns:
+      - name: ad_performance_id
+        data_tests: [unique, not_null]
+      - name: spend_vnd
+        data_tests: [not_null]
+
+  - name: mrt_common__sales_daily
+    columns:
+      - name: sales_daily_id
+        data_tests: [unique, not_null]
+
+  - name: mrt_agency__budget_monthly
+    columns:
+      - name: budget_monthly_id
+        data_tests: [unique, not_null]
+
+  - name: mrt_common__data_status
+    columns:
+      - name: tenant_id
+        data_tests: [unique, not_null]
+
+unit_tests:
+  - name: test_mrt_seller_orders_unallocated_rows
+    config:
+      enabled: "{{ var('pack') == 'seller' }}"
+    description: Dòng chi phí không phân bổ được có mặt trong mart với doanh thu bằng 0 (spec 02 §5).
+    model: mrt_seller__orders
+    overrides:
+      vars: {pack: seller}
+    given:
+      - input: ref('fct_order')
+        rows:
+          - {order_id: O1, order_date: '2026-10-01', channel_id: SHOP, status: completed, is_provisional: false, gross_amount_vnd: 300, cogs_known_vnd: 100, has_missing_cogs: false, is_cancelled: false}
+      - input: ref('int_order_revenue')
+        rows:
+          - {order_id: O1, net_revenue_vnd: 280, refund_vnd: 0, return_fee_vnd: 0, is_returned: false}
+      - input: ref('fct_cost_allocated')
+        rows:
+          - {cost_id: F1, order_id: O1, cost_type: platform_fee, cost_date: '2026-10-01', channel_id: SHOP, allocated_amount_vnd: 20}
+          - {cost_id: AD1, order_id: O1, cost_type: ad_spend, cost_date: '2026-10-01', channel_id: META, allocated_amount_vnd: 50}
+          - {cost_id: AD2, order_id: null, cost_type: ad_spend, cost_date: '2026-10-02', channel_id: META, allocated_amount_vnd: 7}
+      - input: ref('dim_channel')
+        rows:
+          - {channel_id: SHOP, platform: shopee}
+          - {channel_id: META, platform: meta_ads}
+    expect:
+      rows:
+        - {order_id: O1, row_type: order, net_revenue_vnd: 280, allocated_ad_spend_vnd: 50, platform: shopee}
+        - {order_id: 'unallocated:AD2', row_type: unallocated_cost, net_revenue_vnd: 0, allocated_ad_spend_vnd: 7, platform: meta_ads}
+
+  - name: test_mrt_seller_order_lines_share
+    config:
+      enabled: "{{ var('pack') == 'seller' }}"
+    model: mrt_seller__order_lines
+    overrides:
+      vars: {pack: seller}
+    given:
+      - input: ref('fct_order_line')
+        rows:
+          - {order_line_id: L1, order_id: O1, product_id: P1, seller_sku: A, quantity: 1, line_net_vnd: 300, cogs_vnd: 100, has_missing_cogs: false}
+          - {order_line_id: L2, order_id: O1, product_id: P2, seller_sku: B, quantity: 1, line_net_vnd: 100, cogs_vnd: null, has_missing_cogs: true}
+      - input: ref('mrt_seller__orders')
+        rows:
+          - {order_id: O1, row_type: order, order_date: '2026-10-01', channel_id: C, platform: shopee, status: completed, net_revenue_vnd: 400, platform_fee_vnd: 40, payment_fee_vnd: 0, shipping_cost_vnd: 0, allocated_ad_spend_vnd: 80, other_cost_vnd: 0, return_cost_vnd: 0, is_cancelled: false, is_returned: false, is_provisional: false}
+      - input: ref('dim_product')
+        rows:
+          - {product_id: P1, canonical_name: Serum}
+          - {product_id: P2, canonical_name: Kem}
+    expect:
+      rows:
+        - {order_line_id: L1, product_name: Serum, net_revenue_vnd: 300, platform_fee_vnd: 30, allocated_ad_spend_vnd: 60, cogs_vnd: 100, has_missing_cogs: false}
+        - {order_line_id: L2, product_name: Kem, net_revenue_vnd: 100, platform_fee_vnd: 10, allocated_ad_spend_vnd: 20, cogs_vnd: 0, has_missing_cogs: true}
+
+  - name: test_mrt_common_sales_daily
+    model: mrt_common__sales_daily
+    given:
+      - input: ref('fct_order')
+        rows:
+          - {order_id: O1, order_date: '2026-10-01', channel_id: C, gross_amount_vnd: 300, is_cancelled: false}
+          - {order_id: O2, order_date: '2026-10-01', channel_id: C, gross_amount_vnd: 100, is_cancelled: true}
+      - input: ref('int_order_revenue')
+        rows:
+          - {order_id: O1, net_revenue_vnd: 280, is_returned: true}
+          - {order_id: O2, net_revenue_vnd: 0, is_returned: false}
+      - input: ref('dim_channel')
+        rows:
+          - {channel_id: C, platform: amazon_seller}
+      - input: ref('fct_ad_performance_daily')
+        rows:
+          - {date: '2026-10-01', source: amazon_ads, conversion_value_vnd: 55}
+    expect:
+      rows:
+        - {date: '2026-10-01', platform: amazon_seller, order_count: 1, gross_amount_vnd: 400, net_revenue_vnd: 280, cancelled_count: 1, returned_count: 1, amazon_ad_sales_vnd: 55}
+
+  - name: test_mrt_common_ad_daily
+    model: mrt_common__ad_daily
+    given:
+      - input: ref('fct_ad_performance_daily')
+        rows:
+          - {ad_performance_id: X, channel_id: M, date: '2026-10-01', campaign_id: c1, spend_vnd: 10}
+      - input: ref('dim_channel')
+        rows:
+          - {channel_id: M, platform: meta_ads, source_account: act_1}
+    expect:
+      rows:
+        - {ad_performance_id: X, platform: meta_ads, account_id: act_1, spend_vnd: 10}
+
+  - name: test_mrt_agency_budget_monthly_days
+    config:
+      enabled: "{{ var('pack') == 'agency' }}"
+    description: Ngày đã qua tính đến hôm qua; tháng trước tính đủ ngày (spec 03 §3.3 budget_pacing).
+    model: mrt_agency__budget_monthly
+    overrides:
+      vars: {pack: agency, today: '2026-10-16'}
+    given:
+      - input: ref('dim_ad_budget')
+        rows:
+          - {platform: meta_ads, month: '2026-10-01', budget_vnd: 310}
+          - {platform: meta_ads, month: '2026-09-01', budget_vnd: 300}
+      - input: ref('fct_ad_performance_daily')
+        rows:
+          - {channel_id: M, date: '2026-10-15', spend_vnd: 100}
+          - {channel_id: M, date: '2026-10-16', spend_vnd: 999}
+          - {channel_id: M, date: '2026-09-10', spend_vnd: 280}
+      - input: ref('dim_channel')
+        rows:
+          - {channel_id: M, platform: meta_ads}
+    expect:
+      rows:
+        - {month: '2026-10-01', platform: meta_ads, budget_vnd: 310, spend_mtd_vnd: 100, days_in_month: 31, days_elapsed: 15}
+        - {month: '2026-09-01', platform: meta_ads, budget_vnd: 300, spend_mtd_vnd: 280, days_in_month: 30, days_elapsed: 30}
