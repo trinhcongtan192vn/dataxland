@@ -17,7 +17,7 @@ cubes:
   measures:
   - meta:
       unit: VND
-      version: 1.0.0
+      version: 1.0.1
     name: budget
     sql: budget_vnd
     title: Ngân sách quảng cáo
@@ -45,7 +45,7 @@ cubes:
     type: number
   - meta:
       unit: VND
-      version: 1.0.0
+      version: 1.0.1
     name: spend_mtd
     sql: spend_mtd_vnd
     title: Đã chi trong tháng

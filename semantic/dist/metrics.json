@@ -230,7 +230,7 @@
       "type": "string"
     }
   },
-  "library_version": "d3b3749361e0b43f",
+  "library_version": "4e4385ba334726b3",
   "metrics": {
     "acos": {
       "anomaly": null,
@@ -343,7 +343,7 @@
       ],
       "formula": null,
       "good_direction": "down",
-      "hidden": true,
+      "hidden": false,
       "measure": "mrt_seller__orders.allocated_ad_spend",
       "metric": "allocated_ad_spend",
       "mode": "cube",
@@ -365,7 +365,7 @@
       ],
       "type": "simple",
       "unit": "VND",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     "amazon_ad_sales": {
       "anomaly": null,
@@ -539,7 +539,7 @@
       ],
       "formula": null,
       "good_direction": "none",
-      "hidden": true,
+      "hidden": false,
       "measure": "mrt_agency__budget_monthly.budget",
       "metric": "budget",
       "mode": "cube",
@@ -560,7 +560,7 @@
       ],
       "type": "simple",
       "unit": "VND",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     "budget_expected": {
       "anomaly": null,
@@ -2431,7 +2431,7 @@
       ],
       "formula": null,
       "good_direction": "none",
-      "hidden": true,
+      "hidden": false,
       "measure": "mrt_agency__budget_monthly.spend_mtd",
       "metric": "spend_mtd",
       "mode": "cube",
@@ -2450,7 +2450,7 @@
       ],
       "type": "simple",
       "unit": "VND",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     "tacos": {
       "anomaly": null,

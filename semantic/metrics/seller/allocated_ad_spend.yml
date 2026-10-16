@@ -1,9 +1,9 @@
 metric: allocated_ad_spend
 name_vi: Chi quảng cáo phân bổ
 description_vi: Chi quảng cáo phân bổ xuống đơn theo quy tắc của khách.
-version: 1.0.0
+version: 1.0.1
 type: simple
-hidden: true
+hidden: false
 source: mrt_seller__orders
 measure:
   agg: sum
@@ -36,3 +36,6 @@ history:
 - version: 1.0.0
   date: '2026-10-16'
   change_vi: Phiên bản đầu tiên.
+- version: 1.0.1
+  date: '2026-10-17'
+  change_vi: Hiện trên dashboard và sổ tay (ADR 0004); công thức không đổi.

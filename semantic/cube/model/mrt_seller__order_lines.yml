@@ -41,7 +41,7 @@ cubes:
   measures:
   - meta:
       unit: VND
-      version: 1.0.0
+      version: 1.0.1
     name: allocated_ad_spend
     sql: allocated_ad_spend_vnd
     title: Chi quảng cáo phân bổ

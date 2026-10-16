@@ -1,6 +1,8 @@
 .next
 node_modules
 lib/api/schema.d.ts
+lib/api/openapi.json
+next-env.d.ts
 playwright-report
 test-results
 public/hc-guides

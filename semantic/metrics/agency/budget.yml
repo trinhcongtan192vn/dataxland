@@ -1,9 +1,9 @@
 metric: budget
 name_vi: Ngân sách quảng cáo
 description_vi: Ngân sách tháng khách nhập trên cổng.
-version: 1.0.0
+version: 1.0.1
 type: simple
-hidden: true
+hidden: false
 source: mrt_agency__budget_monthly
 measure:
   agg: sum
@@ -25,3 +25,6 @@ history:
 - version: 1.0.0
   date: '2026-10-16'
   change_vi: Phiên bản đầu tiên.
+- version: 1.0.1
+  date: '2026-10-17'
+  change_vi: Hiện trên dashboard và sổ tay (ADR 0004); công thức không đổi.
