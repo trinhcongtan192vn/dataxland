@@ -1,0 +1,53 @@
+# Triển khai giai đoạn 1 (spec 00 §8.2): merge vào main → build image, đẩy Artifact Registry (tag SHA),
+# rồi SSH vào VM prod sau khi được duyệt thủ công trong GitHub Environments.
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      REGISTRY: ${{ vars.GAR_REGISTRY }}   # ví dụ asia-southeast1-docker.pkg.dev/dataxland-prod/dx
+    steps:
+      - uses: actions/checkout@v4
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SA }}
+      - uses: google-github-actions/setup-gcloud@v2
+      - run: gcloud auth configure-docker "${REGISTRY%%/*}" --quiet
+      - name: Build và đẩy image
+        run: |
+          for svc in api:services/api/Dockerfile web:apps/web/Dockerfile bot:services/telegram_bot/Dockerfile pipelines:pipelines/Dockerfile mcp:services/mcp/Dockerfile; do
+            name=${svc%%:*}; file=${svc#*:}
+            docker build -f "$file" -t "$REGISTRY/$name:${GITHUB_SHA}" .
+            docker push "$REGISTRY/$name:${GITHUB_SHA}"
+          done
+
+  deploy-prod:
+    needs: build
+    runs-on: ubuntu-24.04
+    environment: prod   # bấm duyệt thủ công
+    steps:
+      - name: SSH vào VM prod
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.PROD_VM_HOST }}
+          username: ${{ secrets.PROD_VM_USER }}
+          key: ${{ secrets.PROD_VM_SSH_KEY }}
+          script: |
+            set -euo pipefail
+            cd /srv/dataxland
+            git pull --ff-only
+            export IMAGE_TAG=${{ github.sha }} REGISTRY=${{ vars.GAR_REGISTRY }}
+            docker compose -f infra/compose/docker-compose.yml --env-file .env --profile edge pull
+            docker compose -f infra/compose/docker-compose.yml --env-file .env --profile edge up -d
+            docker compose -f infra/compose/docker-compose.yml --env-file .env exec -T api alembic upgrade head
+            docker compose -f infra/compose/docker-compose.yml --env-file .env exec -T api python /repo/ops/sync_tenants.py

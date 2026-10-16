@@ -1,0 +1,15 @@
+# Cấu hình gitleaks (spec 00 §3.5). Dữ liệu mẫu giả không phải bí mật.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Giá trị mẫu cho local và dữ liệu giả lập"
+paths = [
+  '''transform/samples/''',
+  '''\.env\.example''',
+  '''uv\.lock''',
+  '''pnpm-lock\.yaml''',
+]
+regexes = [
+  '''local-[a-z-]+-change-me''',
+]

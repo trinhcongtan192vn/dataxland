@@ -1,0 +1,30 @@
+[project]
+name = "dx-api"
+version = "0.1.0"
+description = "services/api – FastAPI: chỉ số, báo cáo, nhập liệu, quyết định, thông báo, sự kiện (spec 05)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "dx-common",
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.32",
+  "sqlalchemy>=2.0.36",
+  "alembic>=1.14",
+  "psycopg[binary]>=3.2",
+  "firebase-admin>=6.6",
+  "httpx>=0.28",
+  "pyjwt>=2.10",
+  "jinja2>=3.1",
+  "openpyxl>=3.1",
+  "python-multipart>=0.0.18",
+  "email-validator>=2.2",
+  "anthropic>=0.40",
+  "mcp>=1.2",
+  "pyyaml>=6.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]

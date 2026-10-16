@@ -1,0 +1,13 @@
+{
+  "name": "dataxland",
+  "private": true,
+  "packageManager": "pnpm@10.34.7",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "gen:api": "pnpm --filter web gen:api",
+    "lint": "pnpm --filter web lint",
+    "test": "pnpm --filter web test"
+  }
+}

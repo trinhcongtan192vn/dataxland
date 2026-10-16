@@ -1,0 +1,5 @@
+# Đối tác agency (spec 04 §1.2). Quyền xem khách do owner cấp trên cổng.
+partners:
+  - partner_id: demo_partner
+    name: Agency Demo
+    contact_email: contact@agency-demo.example

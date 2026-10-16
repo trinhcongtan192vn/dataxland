@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .card {
+    @apply rounded-xl border border-slate-200 bg-white p-4 shadow-sm;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-brand-600 text-white hover:bg-brand-700;
+  }
+  .btn-secondary {
+    @apply btn border border-slate-300 bg-white text-slate-700 hover:bg-slate-50;
+  }
+  .btn-danger {
+    @apply btn bg-red-600 text-white hover:bg-red-700;
+  }
+  .input {
+    @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500;
+  }
+  .label {
+    @apply mb-1 block text-sm font-medium text-slate-700;
+  }
+  .table {
+    @apply w-full text-left text-sm;
+  }
+  .table th {
+    @apply border-b border-slate-200 bg-slate-50 px-3 py-2 font-medium text-slate-600;
+  }
+  .table td {
+    @apply border-b border-slate-100 px-3 py-2;
+  }
+  .badge {
+    @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium;
+  }
+  .prose-dx h1 {
+    @apply mb-3 text-xl font-semibold;
+  }
+  .prose-dx h2 {
+    @apply mb-2 mt-6 text-lg font-semibold;
+  }
+  .prose-dx h3 {
+    @apply mb-2 mt-4 font-semibold;
+  }
+  .prose-dx p {
+    @apply mb-3 leading-relaxed;
+  }
+  .prose-dx ul {
+    @apply mb-3 list-disc pl-6;
+  }
+  .prose-dx ol {
+    @apply mb-3 list-decimal pl-6;
+  }
+  .prose-dx li {
+    @apply mb-1;
+  }
+  .prose-dx code {
+    @apply rounded bg-slate-100 px-1 py-0.5 font-mono text-[0.85em];
+  }
+  .prose-dx pre {
+    @apply mb-3 overflow-x-auto rounded-lg bg-slate-900 p-3 text-sm text-slate-100;
+  }
+  .prose-dx pre code {
+    @apply bg-transparent p-0 text-slate-100;
+  }
+  .prose-dx a {
+    @apply text-brand-600 underline;
+  }
+  .prose-dx table {
+    @apply mb-3 w-full text-sm;
+  }
+  .prose-dx th {
+    @apply border-b border-slate-200 bg-slate-50 px-2 py-1 text-left;
+  }
+  .prose-dx td {
+    @apply border-b border-slate-100 px-2 py-1;
+  }
+}

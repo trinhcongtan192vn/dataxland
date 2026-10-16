@@ -1,0 +1,42 @@
+# Khách giả lập gói Seller (spec 00 §5). Chỉ dùng cho test và demo.
+tenant_id: demo_seller
+name: Shop Demo
+status: active
+pack: seller
+warehouse:
+  provider: bigquery
+  project: dataxland-dev
+  location: asia-southeast1
+sources:
+  - type: shopee
+    connector: dlt
+    account_id: "100001"
+    secret_ref: dx-demo_seller-shopee-100001
+  - type: tiktok_shop
+    connector: dlt
+    account_id: "7000001"
+    secret_ref: dx-demo_seller-tiktok_shop-7000001
+  - type: lazada
+    connector: dlt
+    account_id: "300001"
+    secret_ref: dx-demo_seller-lazada-300001
+  - type: meta_ads
+    connector: windsor
+    account_id: "act_500001"
+  - type: portal
+    connector: dlt
+schedule:
+  sync: "0 */6 * * *"
+  weekly_report: "MON 07:00"
+quality:
+  reconcile_tolerance_pct: {default: 1.0}
+  provisional_window_days: {default: 14}
+cost_allocation: by_revenue
+overrides:
+  status_map: tenants/overrides/demo_seller_status_map.csv
+notify:
+  channels: [telegram, email]
+  email: [owner@demo-seller.example]
+  anomaly_alerts: true
+benchmark_opt_in: false
+partners: []

@@ -1,0 +1,212 @@
+# DataxLand – Docker Compose cho local và giai đoạn 1 (spec 00 §7).
+# Chạy từ thư mục gốc: docker compose -f infra/compose/docker-compose.yml --env-file .env up -d
+# Profile:
+#   (mặc định)  postgres, api, api-worker, web, bot, cube, dagster-webserver, dagster-daemon, metabase
+#   local       firebase-emulator, mailpit (SMTP giả để xem email ở http://localhost:8025)
+#   edge        caddy (chỉ dev và prod: TLS tự động, định tuyến app./api./bot.)
+#   ai          mcp (GĐ2)
+
+name: dataxland
+
+x-env: &env
+  env_file: ../../.env
+  environment:
+    DATABASE_URL: postgresql+psycopg://dx:${POSTGRES_PASSWORD:-dx}@postgres:5432/dx
+    DAGSTER_PG_URL: postgresql://dx:${POSTGRES_PASSWORD:-dx}@postgres:5432/dagster
+    CUBE_API_URL: http://cube:4000
+    API_INTERNAL_URL: http://api:8000
+    DUCKDB_PATH: /data/dx.duckdb
+    METADATA_BUCKET: ${METADATA_BUCKET_CONTAINER:-/data/meta}
+    HC_BUCKET: ${HC_BUCKET_CONTAINER:-/data/hc}
+    SECRETS_DIR: /secrets
+    FIREBASE_AUTH_EMULATOR_HOST: ${FIREBASE_AUTH_EMULATOR_HOST_CONTAINER:-}
+    SMTP_HOST: ${SMTP_HOST_CONTAINER:-${SMTP_HOST:-}}
+    MCP_URL: http://mcp:8200/mcp
+
+x-py-volumes: &pyvol
+  - ../../.local:/data
+  - ../../.secrets:/secrets
+
+services:
+  postgres:
+    image: postgres:16.6
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: dx
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dx}
+      POSTGRES_DB: dx
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dx -d dx"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: ../..
+      dockerfile: services/api/Dockerfile
+    image: ${REGISTRY:-dataxland}/api:${IMAGE_TAG:-local}
+    restart: unless-stopped
+    <<: *env
+    command: ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2 --proxy-headers"]
+    volumes: *pyvol
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api-worker:
+    image: ${REGISTRY:-dataxland}/api:${IMAGE_TAG:-local}
+    restart: unless-stopped
+    <<: *env
+    command: ["python", "-m", "app.workers"]
+    volumes: *pyvol
+    depends_on:
+      - api
+
+  web:
+    build:
+      context: ../..
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+        NEXT_PUBLIC_FIREBASE_API_KEY: ${NEXT_PUBLIC_FIREBASE_API_KEY:-local-emulator-key}
+        NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN:-localhost}
+        NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${NEXT_PUBLIC_FIREBASE_PROJECT_ID:-dataxland-local}
+        NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST: ${NEXT_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST:-}
+        NEXT_PUBLIC_TELEGRAM_BOT_USERNAME: ${TELEGRAM_BOT_USERNAME:-dataxland_bot}
+    image: ${REGISTRY:-dataxland}/web:${IMAGE_TAG:-local}
+    restart: unless-stopped
+    environment:
+      API_INTERNAL_URL: http://api:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+  bot:
+    build:
+      context: ../..
+      dockerfile: services/telegram_bot/Dockerfile
+    image: ${REGISTRY:-dataxland}/bot:${IMAGE_TAG:-local}
+    restart: unless-stopped
+    <<: *env
+    ports:
+      - "8100:8100"
+    depends_on:
+      - api
+
+  cube:
+    image: cubejs/cube:v1.7.50
+    restart: unless-stopped
+    env_file: ../../.env
+    environment:
+      CUBEJS_DB_TYPE: ${CUBEJS_DB_TYPE:-duckdb}
+      CUBEJS_DB_DUCKDB_DATABASE_PATH: /data/dx.duckdb
+      CUBEJS_API_SECRET: ${CUBE_API_SECRET}
+      CUBEJS_DEV_MODE: "false"
+      CUBEJS_SCHEDULED_REFRESH_DEFAULT: "false"
+      CUBEJS_PG_SQL_PORT: "15432"
+      CUBEJS_SQL_USER: ${CUBE_SQL_USER:-metabase}
+      CUBEJS_SQL_PASSWORD: ${CUBE_SQL_PASSWORD:-metabase-local}
+      DX_API_INTERNAL_URL: http://api:8000
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN}
+    volumes:
+      - ../../cube/cube.js:/cube/conf/cube.js:ro
+      - ../../semantic/cube/model:/cube/conf/model:ro
+      - ../../.local:/data
+      - ../../.secrets:/secrets:ro
+    ports:
+      - "4000:4000"
+
+  dagster-webserver:
+    build:
+      context: ../..
+      dockerfile: pipelines/Dockerfile
+    image: ${REGISTRY:-dataxland}/pipelines:${IMAGE_TAG:-local}
+    restart: unless-stopped
+    <<: *env
+    command: ["dagster-webserver", "-h", "0.0.0.0", "-p", "3001", "-w", "/opt/dagster/workspace.yaml"]
+    volumes: *pyvol
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  dagster-daemon:
+    image: ${REGISTRY:-dataxland}/pipelines:${IMAGE_TAG:-local}
+    restart: unless-stopped
+    <<: *env
+    command: ["dagster-daemon", "run", "-w", "/opt/dagster/workspace.yaml"]
+    volumes: *pyvol
+    depends_on:
+      - dagster-webserver
+
+  metabase:
+    image: metabase/metabase:v0.52.6
+    restart: unless-stopped
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: metabase
+      MB_DB_PORT: 5432
+      MB_DB_USER: dx
+      MB_DB_PASS: ${POSTGRES_PASSWORD:-dx}
+      MB_DB_HOST: postgres
+    ports:
+      - "127.0.0.1:3002:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  mcp:
+    profiles: ["ai"]
+    build:
+      context: ../..
+      dockerfile: services/mcp/Dockerfile
+    image: ${REGISTRY:-dataxland}/mcp:${IMAGE_TAG:-local}
+    restart: unless-stopped
+    <<: *env
+    ports:
+      - "127.0.0.1:8200:8200"
+
+  firebase-emulator:
+    profiles: ["local"]
+    build:
+      context: ./firebase
+    ports:
+      - "9099:9099"
+      - "4400:4400"
+
+  mailpit:
+    profiles: ["local"]
+    image: axllent/mailpit:v1.21
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  caddy:
+    profiles: ["edge"]
+    image: caddy:2.8
+    restart: unless-stopped
+    env_file: ../../.env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    depends_on:
+      - web
+      - api
+      - bot
+
+volumes:
+  pgdata:
+  caddy_data:

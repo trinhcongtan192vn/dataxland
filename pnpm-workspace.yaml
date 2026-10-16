@@ -1,0 +1,8 @@
+packages:
+  - "apps/*"
+onlyBuiltDependencies:
+  - "@firebase/util"
+  - "protobufjs"
+  - "esbuild"
+  - "sharp"
+  - "unrs-resolver"

@@ -1,0 +1,89 @@
+# CI cho mọi pull request (spec 00 §8.1).
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16.6
+        env:
+          POSTGRES_USER: dx
+          POSTGRES_PASSWORD: dx
+          POSTGRES_DB: dx
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U dx" --health-interval 5s --health-timeout 3s --health-retries 20
+    env:
+      DX_ENV: local
+      DX_TEST_DATABASE_URL: postgresql+psycopg://dx:dx@localhost:5432/dx
+      DUCKDB_PATH: ${{ github.workspace }}/.local/dx.duckdb
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v4
+        with:
+          version: "0.5.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: corepack enable
+      - name: Cài đặt
+        run: |
+          uv sync --frozen
+          pnpm install --frozen-lockfile
+          cd transform && uv run dbt deps --profiles-dir .
+      - name: "1. Lint"
+        run: make lint
+      - name: "4. Sinh model chỉ số và kiểm tra khớp YAML"
+        run: |
+          uv run python semantic/build.py
+          git diff --exit-code semantic/cube semantic/dist
+      - name: "5. Kiểm tra phiên bản chỉ số"
+        run: uv run python semantic/check_versions.py --base origin/main
+      - name: "3. dbt build trên DuckDB cho hai khách giả lập"
+        run: make test-dbt
+      - name: Cube runtime cho test tách biệt khách và test giá trị
+        run: |
+          cd cube && npm ci && (npm run start > ../.local/cube.log 2>&1 &) && sleep 20
+      - name: "2. Test Python (kèm kiểm thử tách biệt khách)"
+        run: make test-py
+      - name: "6. Test web và build Next.js"
+        run: make test-web
+      - name: "8. Bộ đánh giá AI (khi đổi semantic/ hoặc ai/)"
+        if: ${{ env.ANTHROPIC_API_KEY != '' }}
+        run: |
+          if git diff --name-only origin/main...HEAD | grep -qE '^(semantic|ai|knowledge/playbooks|services/api/app/ask)/'; then
+            uv run python ai/run_evals.py --out .local/evals.json
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-artifacts
+          path: |
+            .local/evals.json
+            .local/cube.log
+            transform/target/run_results.json
+          if-no-files-found: ignore
+
+  gitleaks:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: "7. gitleaks"
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

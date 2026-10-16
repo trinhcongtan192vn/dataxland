@@ -1,0 +1,83 @@
+[project]
+name = "dataxland"
+version = "0.1.0"
+description = "DataxLand monorepo (uv workspace gốc)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "dx-common",
+  "dx-api",
+  "dx-telegram-bot",
+  "dx-mcp",
+  "dx-identity-worker",
+  "dx-pipelines",
+  "pyyaml>=6.0",
+  "openpyxl>=3.1",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = [
+  "libs/dx_common",
+  "services/api",
+  "services/telegram_bot",
+  "services/mcp",
+  "services/identity_worker",
+  "pipelines",
+]
+
+[tool.uv.sources]
+dx-common = { workspace = true }
+dx-api = { workspace = true }
+dx-telegram-bot = { workspace = true }
+dx-mcp = { workspace = true }
+dx-identity-worker = { workspace = true }
+dx-pipelines = { workspace = true }
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3",
+  "pytest-asyncio>=0.24",
+  "respx>=0.21",
+  "ruff>=0.8",
+  "mypy>=1.13",
+  "sqlfluff>=3.2",
+  "pgserver>=0.1.4",
+  "types-pyyaml",
+  "types-python-dateutil",
+  "freezegun>=1.5",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = [".specify", "transform/dbt_packages", "transform/target", "apps", "node_modules", ".local"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "N", "SIM", "RUF"]
+ignore = ["S101", "RUF001", "RUF002", "RUF003", "S608", "E501", "RUF046", "SIM108", "SIM105", "N818", "B008"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["dx_common", "app", "bot", "dx_mcp", "identity_worker", "dx_pipelines", "connectors"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/tests/**" = ["S105", "S106", "S311", "N802"]
+"ops/gen_samples.py" = ["S311"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+ignore_missing_imports = true
+exclude = ["tests/", "alembic/versions/"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "-q"
+markers = [
+  "dbt: cần dbt chạy trên DuckDB",
+  "cube: cần Cube runtime",
+  "pg: cần Postgres",
+]

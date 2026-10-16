@@ -1,0 +1,35 @@
+# Caddy – TLS tự động và định tuyến (spec 00 §7). Chỉ dùng ở dev và prod.
+# Biến: DX_DOMAIN (ví dụ dataxland.vn), OPS_BASIC_AUTH_USER, OPS_BASIC_AUTH_HASH (caddy hash-password).
+
+app.{$DX_DOMAIN} {
+	encode gzip
+	reverse_proxy web:3000
+}
+
+api.{$DX_DOMAIN} {
+	encode gzip
+	# Endpoint nội bộ không mở ra Internet (spec 05 §3.3).
+	@internal path /v1/internal/*
+	respond @internal 404
+	reverse_proxy api:8000
+}
+
+bot.{$DX_DOMAIN} {
+	reverse_proxy bot:8100
+}
+
+# Dagster UI, Metabase, Cube: chỉ qua xác thực cơ bản (spec 00 §7).
+ops.{$DX_DOMAIN} {
+	basicauth {
+		{$OPS_BASIC_AUTH_USER} {$OPS_BASIC_AUTH_HASH}
+	}
+	handle_path /dagster/* {
+		reverse_proxy dagster-webserver:3001
+	}
+	handle_path /metabase/* {
+		reverse_proxy metabase:3000
+	}
+	handle_path /cube/* {
+		reverse_proxy cube:4000
+	}
+}
