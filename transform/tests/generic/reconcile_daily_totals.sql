@@ -2,6 +2,7 @@
 
 - So `fct_order` (đếm đơn, tổng `gross_amount_vnd` theo `order_date`, lọc theo `source`) với `stg_<source>__daily_totals`.
 - Chỉ xét D-30 đến D-1.
+- `gross_amount` của nguồn để trống (nền tảng không có đường độc lập cho tiền, vd. Shopee) thì chỉ so số đơn.
 - Lỗi khi |lệch| / số của nguồn × 100 > ngưỡng (`reconcile_tolerance_pct[source]` hoặc `default`, mặc định 1.0).
 - Mỗi dòng lỗi: `source`, `date`, `metric`, `expected`, `actual`, `diff_pct`.
 -#}
@@ -31,6 +32,7 @@ cmp as (
         cast(coalesce(e.order_count, 0) as {{ dx_type_float() }}) as exp_count,
         cast(coalesce(a.order_count, 0) as {{ dx_type_float() }}) as act_count,
         cast(coalesce(e.gross_amount, 0) as {{ dx_type_float() }}) as exp_gross,
+        e.gross_amount is null and e.date is not null as gross_unknown,
         cast(coalesce(a.gross_amount, 0) as {{ dx_type_float() }}) as act_gross
     from expected as e
     full outer join actual as a on a.date = e.date
@@ -39,7 +41,7 @@ cmp as (
 rows_ as (
     select date, 'order_count' as metric, exp_count as expected, act_count as actual from cmp
     union all
-    select date, 'gross_amount' as metric, exp_gross as expected, act_gross as actual from cmp
+    select date, 'gross_amount' as metric, exp_gross as expected, act_gross as actual from cmp where not gross_unknown
 )
 
 select

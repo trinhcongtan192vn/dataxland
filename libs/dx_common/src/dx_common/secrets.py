@@ -78,16 +78,22 @@ class GcpSecretStore:  # pragma: no cover - cần GCP thật
 
     def put(self, name: str, value: str) -> None:
         from google.api_core.exceptions import AlreadyExists
+        from google.cloud import secretmanager
 
         try:
             self.client.create_secret(
                 parent=f"projects/{self.project}",
                 secret_id=_check_name(name),
-                secret={"replication": {"automatic": {}}, "labels": {"dx": "true"}},
+                secret=secretmanager.Secret(
+                    replication=secretmanager.Replication(automatic=secretmanager.Replication.Automatic()),
+                    labels={"dx": "true"},
+                ),
             )
         except AlreadyExists:
             pass
-        self.client.add_secret_version(parent=self._secret_path(name), payload={"data": value.encode("utf-8")})
+        self.client.add_secret_version(
+            parent=self._secret_path(name), payload=secretmanager.SecretPayload(data=value.encode("utf-8"))
+        )
 
     def exists(self, name: str) -> bool:
         from google.api_core.exceptions import NotFound

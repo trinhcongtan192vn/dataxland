@@ -9,7 +9,7 @@ dependencies = [
   "dagster-webserver>=1.9",
   "dagster-dbt>=0.25",
   "dagster-dlt>=0.25",
-  "dlt[duckdb,sql_database]>=1.4",
+  "dlt[bigquery,duckdb,sql_database]>=1.4",
   "dbt-core>=1.9,<1.11",
   "dbt-duckdb>=1.9",
   "dbt-bigquery>=1.9",
@@ -17,6 +17,7 @@ dependencies = [
   "httpx>=0.28",
   "openpyxl>=3.1",
   "croniter>=5.0",
+  "defusedxml>=0.7",
 ]
 
 [project.optional-dependencies]

@@ -1,0 +1,8 @@
+{
+  "order_income": {
+    "escrow_amount": 470000, "buyer_total_amount": 553000, "original_price": 538000, "seller_discount": 0,
+    "voucher_from_seller": 0, "voucher_from_shopee": 15000, "commission_fee": 48420, "service_fee": 26900,
+    "seller_transaction_fee": 21000, "actual_shipping_fee": 30000, "shopee_shipping_rebate": 15000,
+    "buyer_paid_shipping_fee": 15000, "reverse_shipping_fee": 0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "order_list": [
+    {
+      "order_sn": "2610100100001SP", "order_status": "COMPLETED", "create_time": 1791590400, "update_time": 1792000000,
+      "pay_time": 1791590500, "currency": "VND", "total_amount": 553000, "buyer_user_id": 900001,
+      "buyer_username": "nguoimua1", "estimated_shipping_fee": 30000,
+      "recipient_address": {"name": "Người Mua Một", "phone": "0900000001", "full_address": "1 Đường A, Quận 1, TP HCM"},
+      "item_list": [
+        {"item_id": 1000, "item_name": "Serum Vitamin C 30ml", "item_sku": "DS-SRM-C30", "model_id": 50000,
+         "model_sku": "DS-SRM-C30", "model_quantity_purchased": 2, "model_original_price": 289000, "model_discounted_price": 269000}
+      ]
+    },
+    {
+      "order_sn": "2610110100002SP", "order_status": "SHIPPED", "create_time": 1791676800, "update_time": 1792001000,
+      "pay_time": 1791676900, "currency": "VND", "total_amount": 199000, "buyer_user_id": 900002,
+      "buyer_username": "nguoimua2", "estimated_shipping_fee": 25000,
+      "recipient_address": {"name": "Người Mua Hai", "phone": "0900000002", "full_address": "2 Đường B, Ba Đình, Hà Nội"},
+      "item_list": [
+        {"item_id": 1006, "item_name": "Kem chống nắng SPF50 50ml", "item_sku": "DS-CHONG-50", "model_id": 50060,
+         "model_sku": "DS-CHONG-50", "model_quantity_purchased": 1, "model_original_price": 199000, "model_discounted_price": 199000}
+      ]
+    }
+  ]
+}

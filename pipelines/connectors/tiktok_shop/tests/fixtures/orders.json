@@ -1,0 +1,49 @@
+{
+  "orders": [
+    {
+      "id": "57261010000001", "status": "COMPLETED", "create_time": 1791590400, "update_time": 1792000000,
+      "paid_time": 1791590500, "user_id": "u90001", "buyer_email": "nguoimua1@mail.example",
+      "recipient_address": {"name": "Người Mua Một", "phone_number": "(+84)900000001", "full_address": "1 Đường A, Quận 1, TP HCM"},
+      "payment": {"currency": "VND", "original_total_product_price": "378000", "platform_discount": "0",
+                  "seller_discount": "19000", "shipping_fee": "22000", "sub_total": "359000", "total_amount": "381000"},
+      "line_items": [
+        {"id": "5726101000000101", "product_id": "17290007", "product_name": "Tẩy tế bào chết 100g", "sku_id": "170007",
+         "sku_name": "Mặc định", "seller_sku": "DS-TAYTB-01", "original_price": "189000", "sale_price": "170000",
+         "platform_discount": "0", "seller_discount": "19000"},
+        {"id": "5726101000000102", "product_id": "17290007", "product_name": "Tẩy tế bào chết 100g", "sku_id": "170007",
+         "sku_name": "Mặc định", "seller_sku": "DS-TAYTB-01", "original_price": "189000", "sale_price": "189000",
+         "platform_discount": "0", "seller_discount": "0"}
+      ]
+    },
+    {
+      "id": "57261110000002", "status": "AWAITING_COLLECTION", "create_time": 1791676800, "update_time": 1792001000,
+      "paid_time": 1791676900, "user_id": "u90002", "buyer_email": "nguoimua2@mail.example",
+      "recipient_address": {"name": "Người Mua Hai", "phone_number": "(+84)900000002", "full_address": "2 Đường B, Ba Đình, Hà Nội"},
+      "payment": {"currency": "VND", "original_total_product_price": "199000", "platform_discount": "10000",
+                  "seller_discount": "0", "shipping_fee": "22000", "sub_total": "189000", "total_amount": "211000"},
+      "line_items": [
+        {"id": "5726111000000201", "product_id": "17290000", "product_name": "Serum Vitamin C 30ml", "sku_id": "170000",
+         "sku_name": "Mặc định", "seller_sku": "DS-SRM-C30", "original_price": "199000", "sale_price": "189000",
+         "platform_discount": "10000", "seller_discount": "0"}
+      ]
+    }
+  ],
+  "statement": {"currency": "VND", "statement_transactions": [
+    {"id": "ST57261010000001", "statement_time": 1792100000, "revenue_amount": "359000", "settlement_amount": "321220",
+     "shipping_cost_amount": "1000", "platform_commission_amount": "21540", "transaction_fee_amount": "15240",
+     "affiliate_commission_amount": "0"}
+  ]},
+  "returns": {"return_orders": [
+    {"return_id": "RT57261010000001", "order_id": "57261010000001", "return_type": "RETURN_AND_REFUND",
+     "return_status": "RETURN_OR_REFUND_REQUEST_PENDING", "return_reason": "wrong_item", "create_time": 1792000500,
+     "update_time": 1792000600, "refund_amount": {"currency": "VND", "refund_total": "170000", "return_shipping_fee": "20000"},
+     "return_line_items": [{"order_line_item_id": "5726101000000101"}]}
+  ]},
+  "products": {"products": [{"id": "17290000"}, {"id": "17290007"}]},
+  "product_details": {
+    "17290000": {"id": "17290000", "title": "Serum Vitamin C 30ml", "category_chains": [{"local_name": "Làm đẹp"}, {"local_name": "Serum"}],
+                 "skus": [{"id": "170000", "seller_sku": "DS-SRM-C30", "identifier_code": {"code": "8938500000011", "type": "EAN"}}]},
+    "17290007": {"id": "17290007", "title": "Tẩy tế bào chết 100g", "category_chains": [{"local_name": "Làm đẹp"}],
+                 "skus": [{"id": "170007", "seller_sku": "DS-TAYTB-01", "sales_attributes": [{"value_name": "100g"}]}]}
+  }
+}
