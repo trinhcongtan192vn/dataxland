@@ -268,7 +268,8 @@ Module `services/api/app/notify/`, chạy như worker nền của API (consumer 
 
 ```python
 class Channel(Protocol):
-    name: str                                    # "telegram", "email"
+    name: str  # "telegram", "email"
+
     def supports(self, recipient: Recipient) -> bool: ...
     async def send(self, recipient: Recipient, message: RenderedMessage) -> DeliveryResult: ...
 ```
