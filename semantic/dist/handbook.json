@@ -118,6 +118,72 @@
       "version": "1.0.0"
     },
     {
+      "description_vi": "Chi quảng cáo phân bổ xuống đơn theo quy tắc của khách.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "is_provisional",
+          "name_vi": "Tạm tính"
+        },
+        {
+          "name": "order_status",
+          "name_vi": "Trạng thái đơn"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        },
+        {
+          "name": "product",
+          "name_vi": "Sản phẩm"
+        },
+        {
+          "name": "product_name",
+          "name_vi": "Tên sản phẩm"
+        },
+        {
+          "name": "sku",
+          "name_vi": "SKU"
+        }
+      ],
+      "formula_vi": "Tổng allocated ad spend trên đơn hàng (gói seller)",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        },
+        {
+          "change_vi": "Hiện trên dashboard và sổ tay (ADR 0004); công thức không đổi.",
+          "date": "2026-10-17",
+          "version": "1.0.1"
+        }
+      ],
+      "metric": "allocated_ad_spend",
+      "name_vi": "Chi quảng cáo phân bổ",
+      "packs": [
+        "seller"
+      ],
+      "requires": [],
+      "source_note_vi": "Chi quảng cáo chia cho đơn cùng ngày theo doanh thu (cấu hình cost_allocation).",
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.1"
+    },
+    {
       "description_vi": "Doanh thu thực nhận chia số đơn không hủy.",
       "dimensions": [
         {
@@ -168,6 +234,48 @@
       ],
       "unit": "VND",
       "version": "1.0.0"
+    },
+    {
+      "description_vi": "Ngân sách tháng khách nhập trên cổng.",
+      "dimensions": [
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Tổng budget trên ngân sách quảng cáo theo tháng",
+      "good_direction": "none",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        },
+        {
+          "change_vi": "Hiện trên dashboard và sổ tay (ADR 0004); công thức không đổi.",
+          "date": "2026-10-17",
+          "version": "1.0.1"
+        }
+      ],
+      "metric": "budget",
+      "name_vi": "Ngân sách quảng cáo",
+      "packs": [
+        "agency"
+      ],
+      "requires": [],
+      "source_note_vi": "Ngân sách khách nhập trên cổng DataxLand.",
+      "synonyms_vi": [
+        "ngân sách"
+      ],
+      "time_grains": [
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.1"
     },
     {
       "description_vi": "Đã chi trong tháng chia mức chi đúng tiến độ (ngân sách × số ngày đã qua ÷ số ngày của tháng). 1,0 là đúng tiến độ; trên 1 là chi nhanh hơn kế hoạch.",
@@ -1750,6 +1858,46 @@
       ],
       "unit": "VND",
       "version": "1.0.0"
+    },
+    {
+      "description_vi": "Chi quảng cáo từ đầu tháng đến hôm qua.",
+      "dimensions": [
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Tổng spend mtd trên ngân sách quảng cáo theo tháng",
+      "good_direction": "none",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên.",
+          "date": "2026-10-16",
+          "version": "1.0.0"
+        },
+        {
+          "change_vi": "Hiện trên dashboard và sổ tay (ADR 0004); công thức không đổi.",
+          "date": "2026-10-17",
+          "version": "1.0.1"
+        }
+      ],
+      "metric": "spend_mtd",
+      "name_vi": "Đã chi trong tháng",
+      "packs": [
+        "agency"
+      ],
+      "requires": [],
+      "source_note_vi": "Số do nền tảng quảng cáo báo.",
+      "synonyms_vi": [],
+      "time_grains": [
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.1"
     },
     {
       "description_vi": "Chi quảng cáo Amazon chia tổng doanh thu Amazon.",

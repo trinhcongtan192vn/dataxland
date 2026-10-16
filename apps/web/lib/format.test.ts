@@ -52,6 +52,8 @@ describe("CSV (FR-DSH-05)", () => {
     expect(csv.charCodeAt(0)).toBe(0xfeff);
     expect(csv).toContain("Sản phẩm,Lãi theo SKU");
     expect(csv).toContain('"Serum, 30ml",1234568');
-    expect(csvFilename("sku_profit", "2026-10-01", "2026-10-15")).toBe("sku_profit_2026-10-01_2026-10-15.csv");
+    expect(csvFilename("sku_profit", "2026-10-01", "2026-10-15")).toBe(
+      "sku_profit_2026-10-01_2026-10-15.csv",
+    );
   });
 });
