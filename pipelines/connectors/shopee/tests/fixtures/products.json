@@ -1,0 +1,8 @@
+{
+  "item_list": {"item": [{"item_id": 1000}, {"item_id": 1006}], "has_next_page": false},
+  "base_info": {"item_list": [
+    {"item_id": 1000, "item_name": "Serum Vitamin C 30ml", "item_sku": "DS-SRM-C30", "category_id": 100017, "has_model": true},
+    {"item_id": 1006, "item_name": "Kem chống nắng SPF50 50ml", "item_sku": "DS-CHONG-50", "category_id": 100017, "has_model": false, "gtin_code": "8938500000066"}
+  ]},
+  "models": {"1000": {"model": [{"model_id": 50000, "model_name": "30ml", "model_sku": "DS-SRM-C30", "gtin_code": "8938500000011"}]}}
+}

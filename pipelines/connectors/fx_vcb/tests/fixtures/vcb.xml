@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExrateList>
+  <DateTime>10/16/2026 5:20:00 PM</DateTime>
+  <Exrate CurrencyCode="AUD" CurrencyName="AUSTRALIAN DOLLAR" Buy="16,612.25" Transfer="16,780.05" Sell="17,318.39" />
+  <Exrate CurrencyCode="USD" CurrencyName="US DOLLAR" Buy="25,950.00" Transfer="25,980.00" Sell="26,340.00" />
+  <Source>Joint Stock Commercial Bank for Foreign Trade of Vietnam - Vietcombank</Source>
+</ExrateList>
