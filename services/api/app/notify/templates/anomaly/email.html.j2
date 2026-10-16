@@ -1,0 +1,5 @@
+{% extends "_base/email.html.j2" %}
+{% block body %}
+<p style="font-size:17px;font-weight:600;margin:0 0 8px">{{ '✅' if direction == 'good' else '⚠️' }} {{ metric_name }} {{ 'tăng' if diff_pct > 0 else 'giảm' }} bất thường – {{ tenant_name }}</p>
+<p>Kỳ: {{ period_label }}<br>Giá trị: <b>{{ value|unit(unit) }}</b><br>Trung bình 4 kỳ trước: {{ baseline|unit(unit) }} ({{ diff_pct|change }})</p>
+{% endblock %}

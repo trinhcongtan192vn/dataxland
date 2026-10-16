@@ -1,0 +1,4 @@
+version: "1.0.0"
+audience: team
+channels: [email]
+title: "[DataxLand] Telegram không gửi được tin từ {{ since|datetime_vn }}"

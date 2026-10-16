@@ -1,0 +1,4 @@
+version: "1.0.0"
+audience: customer
+channels: [telegram, email]
+title: "Cảnh báo: {{ metric_name }} {{ 'tăng' if diff_pct > 0 else 'giảm' }} bất thường – {{ tenant_name }}"

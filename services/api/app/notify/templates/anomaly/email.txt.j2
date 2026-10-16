@@ -1,0 +1,4 @@
+{{ metric_name }} {{ 'tăng' if diff_pct > 0 else 'giảm' }} bất thường – {{ tenant_name }}
+Kỳ: {{ period_label }}
+Giá trị: {{ value|unit(unit) }} (trung bình 4 kỳ trước: {{ baseline|unit(unit) }}, {{ diff_pct|change }})
+Xem dashboard: {{ dashboard_url }}

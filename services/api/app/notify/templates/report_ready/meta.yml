@@ -1,0 +1,4 @@
+version: "1.0.0"
+audience: customer
+channels: [telegram, email]
+title: "Báo cáo tuần {{ week_no }} – {{ tenant_name }}"

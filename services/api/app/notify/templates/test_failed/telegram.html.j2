@@ -1,0 +1,11 @@
+⛔ <b>Test chặn lỗi</b> – {{ tenant_label }}
+Báo cáo và làm mới Cube của khách này đang bị giữ lại.
+{% for f in failures %}
+• <code>{{ f.test }}</code>
+{% for r in f.rows[:5] %}
+   – {% if r.source %}{{ r.source }} {% endif %}{% if r.date %}{{ r.date|date_vn }} {% endif %}{% if r.metric %}{{ r.metric }}: nguồn {{ r.expected|count }}, kho {{ r.actual|count }}, lệch {{ r.diff_pct }}%{% endif %}
+
+{% endfor %}
+{% endfor %}
+{% if repeat_count %}Lặp lại {{ repeat_count }} lần trong 6 giờ qua.
+{% endif %}Run: <code>{{ run_id }}</code>

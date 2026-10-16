@@ -1,0 +1,6 @@
+🔴 <b>Đồng bộ lỗi</b> – {{ tenant_label }}
+Nguồn: {{ source or '—' }}
+Lý do: {{ reason_vi }} (<code>{{ reason }}</code>)
+{% if detail %}Chi tiết: {{ detail }}
+{% endif %}{% if repeat_count %}Lặp lại {{ repeat_count }} lần trong 6 giờ qua.
+{% endif %}Run: <code>{{ run_id or '—' }}</code>

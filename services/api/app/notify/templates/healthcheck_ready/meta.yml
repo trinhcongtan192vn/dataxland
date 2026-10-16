@@ -1,0 +1,4 @@
+version: "1.0.0"
+audience: prospect
+channels: [email]
+title: "Kết quả kiểm tra sức khỏe dữ liệu{% if shop_name %} – {{ shop_name }}{% endif %}"

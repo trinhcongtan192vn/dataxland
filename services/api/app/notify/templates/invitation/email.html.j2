@@ -1,0 +1,5 @@
+{% extends "_base/email.html.j2" %}
+{% block body %}
+<p><b>{{ inviter_name or 'Chủ shop' }}</b> mời bạn tham gia <b>{{ tenant_name }}</b> trên DataxLand với vai trò {{ role_vi }}.</p>
+<p style="color:#64748b">Lời mời hết hạn ngày {{ expires_on|date_vn }}.</p>
+{% endblock %}
