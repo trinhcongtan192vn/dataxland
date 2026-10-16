@@ -1,0 +1,201 @@
+# SINH RA bởi semantic/build.py – không sửa tay.
+cubes:
+- dimensions:
+  - name: order_id
+    primary_key: true
+    public: false
+    sql: order_id
+    type: string
+  - name: channel
+    sql: channel_id
+    title: Kênh
+    type: string
+  - name: date
+    sql: order_date
+    title: Ngày
+    type: time
+  - name: is_provisional
+    sql: is_provisional
+    title: Tạm tính
+    type: boolean
+  - name: order_status
+    sql: status
+    title: Trạng thái đơn
+    type: string
+  - name: platform
+    sql: platform
+    title: Nền tảng
+    type: string
+  measures:
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: allocated_ad_spend
+    sql: allocated_ad_spend_vnd
+    title: Chi quảng cáo phân bổ
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: aov
+    sql: 1.0 * {net_revenue} / NULLIF({order_count}, 0)
+    title: Giá trị đơn trung bình
+    type: number
+  - meta:
+      unit: percent
+      version: 1.0.0
+    name: cancel_rate
+    sql: 1.0 * {cancelled_orders} / NULLIF({orders_placed}, 0)
+    title: Tỷ lệ hủy
+    type: number
+  - filters:
+    - sql: '{CUBE}.row_type = ''order'''
+    - sql: '{CUBE}.is_cancelled = true'
+    meta:
+      unit: count
+      version: 1.0.0
+    name: cancelled_orders
+    sql: order_id
+    title: Số đơn hủy
+    type: count
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: cogs
+    sql: cogs_vnd
+    title: Giá vốn hàng bán
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: contribution_margin
+    sql: '{net_revenue} - {cogs} - {platform_fees} - {payment_fees} - {shipping_cost} - {return_cost}'
+    title: Biên đóng góp
+    type: number
+  - filters:
+    - sql: '{CUBE}.row_type = ''order'''
+    meta:
+      unit: VND
+      version: 1.0.0
+    name: gmv
+    sql: gross_amount_vnd
+    title: Tổng giá trị đơn (GMV)
+    type: sum
+  - meta:
+      unit: percent
+      version: 1.0.0
+    name: net_margin_pct
+    sql: 1.0 * {net_profit_after_fees} / NULLIF({net_revenue}, 0)
+    title: Biên lãi
+    type: number
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: net_profit_after_fees
+    sql: '{contribution_margin} - {allocated_ad_spend} - {other_costs}'
+    title: Lãi sau phí
+    type: number
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: net_revenue
+    sql: net_revenue_vnd
+    title: Doanh thu thực nhận
+    type: sum
+  - filters:
+    - sql: '{CUBE}.row_type = ''order'''
+    - sql: '{CUBE}.is_cancelled = false'
+    meta:
+      unit: count
+      version: 1.0.0
+    name: order_count
+    sql: order_id
+    title: Số đơn
+    type: count
+  - filters:
+    - sql: '{CUBE}.row_type = ''order'''
+    meta:
+      unit: count
+      version: 1.0.0
+    name: orders_placed
+    sql: order_id
+    title: Số đơn đặt
+    type: count
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: other_costs
+    sql: other_cost_vnd
+    title: Chi phí khác
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: payment_fees
+    sql: payment_fee_vnd
+    title: Phí thanh toán
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: platform_fees
+    sql: platform_fee_vnd
+    title: Phí sàn
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: return_cost
+    sql: return_cost_vnd
+    title: Chi phí hoàn hàng
+    type: sum
+  - meta:
+      unit: percent
+      version: 1.0.0
+    name: return_rate
+    sql: 1.0 * {returned_orders} / NULLIF({order_count}, 0)
+    title: Tỷ lệ hoàn
+    type: number
+  - filters:
+    - sql: '{CUBE}.row_type = ''order'''
+    - sql: '{CUBE}.is_returned = true'
+    meta:
+      unit: count
+      version: 1.0.0
+    name: returned_orders
+    sql: order_id
+    title: Số đơn hoàn
+    type: count
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: shipping_cost
+    sql: shipping_cost_vnd
+    title: Phí vận chuyển
+    type: sum
+  name: mrt_seller__orders
+  pre_aggregations:
+  - dimensions:
+    - channel
+    - platform
+    granularity: day
+    measures:
+    - allocated_ad_spend
+    - cancelled_orders
+    - cogs
+    - gmv
+    - net_revenue
+    - order_count
+    - orders_placed
+    - other_costs
+    - payment_fees
+    - platform_fees
+    - return_cost
+    - returned_orders
+    - shipping_cost
+    name: daily
+    refresh_key:
+      sql: SELECT MAX(_dx_updated_at) FROM {{ COMPILE_CONTEXT.securityContext.dataset_prefix | safe }}_marts.mrt_seller__orders
+    time_dimension: date
+  sql_table: '{{ COMPILE_CONTEXT.securityContext.dataset_prefix | safe }}_marts.mrt_seller__orders'
+  title: Đơn hàng (gói Seller)

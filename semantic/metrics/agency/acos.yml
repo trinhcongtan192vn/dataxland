@@ -1,0 +1,32 @@
+metric: acos
+name_vi: ACOS (Amazon)
+description_vi: Chi quảng cáo Amazon chia doanh thu từ quảng cáo Amazon.
+version: 1.0.0
+type: ratio
+numerator: amazon_ad_spend
+denominator: amazon_ad_sales
+dimensions:
+- date
+- platform
+- channel
+- campaign
+- campaign_name
+- adgroup
+unit: percent
+good_direction: down
+packs:
+- agency
+requires:
+- amazon
+synonyms_vi:
+- acos
+source_note_vi: Amazon Ads qua Windsor.ai.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

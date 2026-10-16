@@ -1,0 +1,39 @@
+metric: missing_cogs_revenue
+name_vi: Doanh thu SKU chưa có giá vốn
+description_vi: Doanh thu thực nhận của các dòng đơn có SKU chưa có giá vốn.
+version: 1.0.0
+type: simple
+hidden: true
+source: mrt_seller__order_lines
+measure:
+  agg: sum
+  column: net_revenue_vnd
+  filters:
+  - column: has_missing_cogs
+    op: eq
+    value: true
+  - column: is_cancelled
+    op: eq
+    value: false
+dimensions:
+- date
+- platform
+- channel
+- product
+- product_name
+- sku
+- is_provisional
+unit: VND
+packs:
+- seller
+source_note_vi: Mart dòng đơn, cột has_missing_cogs.
+time_grains:
+- day
+- week
+- month
+good_direction: none
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

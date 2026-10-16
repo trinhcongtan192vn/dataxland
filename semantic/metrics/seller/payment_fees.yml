@@ -1,0 +1,40 @@
+metric: payment_fees
+name_vi: Phí thanh toán
+description_vi: Phí giao dịch, phí thanh toán sàn thu trên đơn.
+version: 1.0.0
+type: simple
+source: mrt_seller__orders
+measure:
+  agg: sum
+  column: payment_fee_vnd
+variants:
+- source: mrt_seller__order_lines
+  measure:
+    agg: sum
+    column: payment_fee_vnd
+dimensions:
+- channel
+- date
+- is_provisional
+- order_status
+- platform
+- product
+- product_name
+- sku
+unit: VND
+good_direction: down
+packs:
+- seller
+synonyms_vi:
+- phí thanh toán
+- phí giao dịch
+source_note_vi: Báo cáo quyết toán của sàn; đơn chưa quyết toán là số tạm tính.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

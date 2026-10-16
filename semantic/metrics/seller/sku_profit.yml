@@ -1,0 +1,36 @@
+metric: sku_profit
+name_vi: Lãi theo SKU
+description_vi: Lãi sau phí tính riêng cho từng SKU, để tìm sản phẩm đang lỗ.
+version: 1.0.0
+type: derived
+formula: line_net_revenue - line_cogs - line_platform_fees - line_payment_fees - line_shipping_cost - line_return_cost - line_allocated_ad_spend
+  - line_other_costs
+dimensions:
+- date
+- platform
+- channel
+- product
+- product_name
+- sku
+- is_provisional
+required_dimensions:
+- product
+unit: VND
+good_direction: up
+packs:
+- seller
+synonyms_vi:
+- lãi sku
+- sản phẩm lỗ
+- lãi từng sản phẩm
+- sku lỗ
+source_note_vi: Phí của đơn phân bổ xuống sản phẩm theo tỷ lệ doanh thu dòng.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

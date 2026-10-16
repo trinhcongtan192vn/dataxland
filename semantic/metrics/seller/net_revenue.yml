@@ -1,0 +1,46 @@
+metric: net_revenue
+name_vi: Doanh thu thực nhận
+description_vi: Doanh thu sau giảm giá do shop chịu và sau tiền hoàn cho người mua. Đơn hủy tính là 0.
+version: 1.0.0
+type: simple
+source: mrt_seller__orders
+measure:
+  agg: sum
+  column: net_revenue_vnd
+variants:
+- source: mrt_seller__order_lines
+  measure:
+    agg: sum
+    column: net_revenue_vnd
+dimensions:
+- channel
+- date
+- is_provisional
+- order_status
+- platform
+- product
+- product_name
+- sku
+unit: VND
+good_direction: up
+packs:
+- seller
+anomaly:
+  compare: trailing_4_weeks
+  threshold_pct: 30
+  grain: week
+synonyms_vi:
+- doanh thu
+- doanh thu thật
+- tiền về
+- doanh thu thực
+source_note_vi: Đơn trên các sàn; giảm giá do sàn tài trợ không bị trừ vì sàn trả lại cho shop.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

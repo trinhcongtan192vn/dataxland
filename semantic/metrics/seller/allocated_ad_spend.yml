@@ -1,0 +1,38 @@
+metric: allocated_ad_spend
+name_vi: Chi quảng cáo phân bổ
+description_vi: Chi quảng cáo phân bổ xuống đơn theo quy tắc của khách.
+version: 1.0.0
+type: simple
+hidden: true
+source: mrt_seller__orders
+measure:
+  agg: sum
+  column: allocated_ad_spend_vnd
+variants:
+- source: mrt_seller__order_lines
+  measure:
+    agg: sum
+    column: allocated_ad_spend_vnd
+dimensions:
+- channel
+- date
+- is_provisional
+- order_status
+- platform
+- product
+- product_name
+- sku
+unit: VND
+good_direction: down
+packs:
+- seller
+source_note_vi: Chi quảng cáo chia cho đơn cùng ngày theo doanh thu (cấu hình cost_allocation).
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

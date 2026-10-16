@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Literal, Protocol, runtime_checkable
+from typing import Any, Literal, Protocol, cast, runtime_checkable
 
 RecipientKind = Literal["user", "team", "telegram_chat", "email"]
 
@@ -54,10 +54,9 @@ class RenderedMessage:
 
     @classmethod
     def from_json(cls, d: dict[str, object]) -> RenderedMessage:
-        raw_buttons = d.get("buttons") or []
+        raw_buttons = cast("list[dict[str, Any]]", d.get("buttons") or [])
         buttons = [
-            Button(label=str(b["label"]), url=b.get("url"), callback_data=b.get("callback_data"))  # type: ignore[index,union-attr,arg-type]
-            for b in raw_buttons  # type: ignore[union-attr]
+            Button(label=str(b["label"]), url=b.get("url"), callback_data=b.get("callback_data")) for b in raw_buttons
         ]
         return cls(
             title=str(d.get("title", "")),

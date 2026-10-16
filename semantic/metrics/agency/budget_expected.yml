@@ -1,0 +1,25 @@
+metric: budget_expected
+name_vi: Mức chi đúng tiến độ
+description_vi: Ngân sách tháng nhân số ngày đã qua chia số ngày của tháng.
+version: 1.0.0
+type: simple
+hidden: true
+source: mrt_agency__budget_monthly
+measure:
+  agg: sum
+  column: budget_expected_mtd_vnd
+dimensions:
+- date
+- platform
+time_grains:
+- month
+unit: VND
+packs:
+- agency
+source_note_vi: Tính từ ngân sách tháng và số ngày đã qua.
+good_direction: none
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

@@ -1,0 +1,24 @@
+metric: budget_used_pct
+name_vi: Tỷ lệ ngân sách đã dùng
+description_vi: Đã chi trong tháng chia ngân sách tháng.
+version: 1.0.0
+type: ratio
+numerator: spend_mtd
+denominator: budget
+dimensions:
+- date
+- platform
+time_grains:
+- month
+unit: percent
+good_direction: none
+packs:
+- agency
+synonyms_vi:
+- đã dùng bao nhiêu ngân sách
+source_note_vi: Ngân sách khách nhập và chi tiêu nền tảng báo.
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

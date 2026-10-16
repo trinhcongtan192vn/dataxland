@@ -1,0 +1,27 @@
+mrt_seller__orders:
+  name_vi: Đơn hàng (gói Seller)
+  primary_key: order_id
+  packs:
+  - seller
+mrt_seller__order_lines:
+  name_vi: Dòng đơn (gói Seller)
+  primary_key: order_line_id
+  packs:
+  - seller
+mrt_common__ad_daily:
+  name_vi: Quảng cáo theo ngày
+  primary_key: ad_performance_id
+  packs:
+  - seller
+  - agency
+mrt_common__sales_daily:
+  name_vi: Bán hàng theo ngày
+  primary_key: sales_daily_id
+  packs:
+  - seller
+  - agency
+mrt_agency__budget_monthly:
+  name_vi: Ngân sách quảng cáo theo tháng
+  primary_key: budget_monthly_id
+  packs:
+  - agency

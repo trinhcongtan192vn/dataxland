@@ -1,0 +1,26 @@
+metric: platform_vs_actual_gap
+name_vi: Chênh lệch nền tảng báo và thực tế
+description_vi: Doanh thu nền tảng quảng cáo báo trừ doanh thu thật trên sàn, chia doanh thu thật. Dương nghĩa là nền tảng
+  báo cao hơn thực tế.
+version: 1.0.0
+type: derived
+formula: (conversion_value - net_revenue_sales) / net_revenue_sales
+dimensions:
+- date
+unit: percent
+good_direction: down
+packs:
+- agency
+synonyms_vi:
+- chênh lệch roas
+- nền tảng báo cao
+source_note_vi: So số nền tảng quảng cáo báo với đơn thật trên sàn.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

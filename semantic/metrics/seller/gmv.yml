@@ -1,0 +1,37 @@
+metric: gmv
+name_vi: Tổng giá trị đơn (GMV)
+description_vi: Tổng giá trị các đơn đã đặt, trước mọi giảm giá, kể cả đơn hủy.
+version: 1.0.0
+type: simple
+source: mrt_seller__orders
+measure:
+  agg: sum
+  column: gross_amount_vnd
+  filters:
+  - column: row_type
+    op: eq
+    value: order
+dimensions:
+- date
+- platform
+- channel
+- order_status
+- is_provisional
+unit: VND
+good_direction: up
+packs:
+- seller
+synonyms_vi:
+- gmv
+- doanh số
+- tổng giá trị đơn
+source_note_vi: Đơn trên Shopee, TikTok Shop, Lazada, Amazon.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

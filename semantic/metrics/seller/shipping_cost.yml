@@ -1,0 +1,40 @@
+metric: shipping_cost
+name_vi: Phí vận chuyển
+description_vi: Phí vận chuyển người bán chịu (sau trợ giá và phần người mua trả).
+version: 1.0.0
+type: simple
+source: mrt_seller__orders
+measure:
+  agg: sum
+  column: shipping_cost_vnd
+variants:
+- source: mrt_seller__order_lines
+  measure:
+    agg: sum
+    column: shipping_cost_vnd
+dimensions:
+- channel
+- date
+- is_provisional
+- order_status
+- platform
+- product
+- product_name
+- sku
+unit: VND
+good_direction: down
+packs:
+- seller
+synonyms_vi:
+- phí ship
+- vận chuyển
+source_note_vi: Báo cáo quyết toán của sàn; đơn chưa quyết toán là số tạm tính.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

@@ -1,0 +1,33 @@
+metric: roas_platform
+name_vi: ROAS nền tảng
+description_vi: Giá trị chuyển đổi nền tảng báo chia chi quảng cáo. Thường cao hơn ROAS thật vì nền tảng tự ghi công.
+version: 1.0.0
+type: ratio
+numerator: conversion_value
+denominator: ad_spend
+dimensions:
+- date
+- platform
+- channel
+- campaign
+- campaign_name
+- adgroup
+unit: ratio
+good_direction: up
+packs:
+- agency
+synonyms_vi:
+- roas nền tảng
+- roas facebook
+- roas ads
+- roas
+source_note_vi: Số do nền tảng quảng cáo báo.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

@@ -1,0 +1,31 @@
+metric: ctr
+name_vi: Tỷ lệ nhấp (CTR)
+description_vi: Lượt nhấp chia lượt hiển thị.
+version: 1.0.0
+type: ratio
+numerator: clicks
+denominator: impressions
+dimensions:
+- date
+- platform
+- channel
+- campaign
+- campaign_name
+- adgroup
+unit: percent
+good_direction: up
+packs:
+- agency
+synonyms_vi:
+- ctr
+- tỷ lệ nhấp
+source_note_vi: Số do nền tảng quảng cáo báo.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

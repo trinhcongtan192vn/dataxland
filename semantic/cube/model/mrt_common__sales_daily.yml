@@ -1,0 +1,60 @@
+# SINH RA bởi semantic/build.py – không sửa tay.
+cubes:
+- dimensions:
+  - name: sales_daily_id
+    primary_key: true
+    public: false
+    sql: sales_daily_id
+    type: string
+  - name: channel
+    sql: channel_id
+    title: Kênh
+    type: string
+  - name: date
+    sql: date
+    title: Ngày
+    type: time
+  - name: platform
+    sql: platform
+    title: Nền tảng
+    type: string
+  measures:
+  - filters:
+    - sql: '{CUBE}.platform = ''amazon_seller'''
+    meta:
+      unit: VND
+      version: 1.0.0
+    name: amazon_total_sales
+    sql: net_revenue_vnd
+    title: Tổng doanh thu Amazon
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: gross_sales
+    sql: gross_amount_vnd
+    title: Tổng giá trị bán (theo ngày bán)
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: net_revenue_sales
+    sql: net_revenue_vnd
+    title: Doanh thu thực nhận (theo ngày bán)
+    type: sum
+  name: mrt_common__sales_daily
+  pre_aggregations:
+  - dimensions:
+    - channel
+    - platform
+    granularity: day
+    measures:
+    - amazon_total_sales
+    - gross_sales
+    - net_revenue_sales
+    name: daily
+    refresh_key:
+      sql: SELECT MAX(_dx_updated_at) FROM {{ COMPILE_CONTEXT.securityContext.dataset_prefix | safe }}_marts.mrt_common__sales_daily
+    time_dimension: date
+  sql_table: '{{ COMPILE_CONTEXT.securityContext.dataset_prefix | safe }}_marts.mrt_common__sales_daily'
+  title: Bán hàng theo ngày

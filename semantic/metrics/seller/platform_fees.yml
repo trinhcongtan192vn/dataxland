@@ -1,0 +1,41 @@
+metric: platform_fees
+name_vi: Phí sàn
+description_vi: Hoa hồng và phí dịch vụ sàn thu trên đơn.
+version: 1.0.0
+type: simple
+source: mrt_seller__orders
+measure:
+  agg: sum
+  column: platform_fee_vnd
+variants:
+- source: mrt_seller__order_lines
+  measure:
+    agg: sum
+    column: platform_fee_vnd
+dimensions:
+- channel
+- date
+- is_provisional
+- order_status
+- platform
+- product
+- product_name
+- sku
+unit: VND
+good_direction: down
+packs:
+- seller
+synonyms_vi:
+- phí sàn
+- hoa hồng
+- phí cố định
+source_note_vi: Báo cáo quyết toán của sàn; đơn chưa quyết toán là số tạm tính.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

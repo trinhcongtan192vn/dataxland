@@ -97,8 +97,13 @@ class DbtProject:
             "--vars",
             json.dumps(vars, ensure_ascii=False),
         ]
-        full_env = {**os.environ, **env, "DBT_SEND_ANONYMOUS_USAGE_STATS": "false", "PYTHONIOENCODING": "utf-8",
-                    "PYTHONUTF8": "1"}
+        full_env = {
+            **os.environ,
+            **env,
+            "DBT_SEND_ANONYMOUS_USAGE_STATS": "false",
+            "PYTHONIOENCODING": "utf-8",
+            "PYTHONUTF8": "1",
+        }
         proc = subprocess.run(
             cmd, cwd=self.project_dir, env=full_env, capture_output=True, text=True, encoding="utf-8", errors="replace"
         )

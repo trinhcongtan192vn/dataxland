@@ -1,0 +1,32 @@
+metric: contribution_margin
+name_vi: Biên đóng góp
+description_vi: Doanh thu thực nhận trừ giá vốn, phí sàn, phí thanh toán, vận chuyển và hoàn hàng (chưa trừ quảng cáo).
+version: 1.0.0
+type: derived
+formula: net_revenue - cogs - platform_fees - payment_fees - shipping_cost - return_cost
+dimensions:
+- channel
+- date
+- is_provisional
+- order_status
+- platform
+- product
+- product_name
+- sku
+unit: VND
+good_direction: up
+packs:
+- seller
+synonyms_vi:
+- biên đóng góp
+- lãi gộp sau phí
+source_note_vi: Tính từ các chỉ số thành phần.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

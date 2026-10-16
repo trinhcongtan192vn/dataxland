@@ -68,8 +68,13 @@ def main() -> int:
     print(res.stdout_tail[-5000:])
     failures = blocking_failures(res, fresh)
     warns = warning_failures(res)
-    print(json.dumps({"returncode": res.returncode, "blocking": [f["unique_id"] for f in failures], "warnings": warns},
-                     ensure_ascii=False, indent=2))
+    print(
+        json.dumps(
+            {"returncode": res.returncode, "blocking": [f["unique_id"] for f in failures], "warnings": warns},
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
     if res.runtime_error or failures:
         return 1
     if not args.no_swap:

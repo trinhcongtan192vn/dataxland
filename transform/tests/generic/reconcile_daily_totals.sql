@@ -28,10 +28,10 @@ expected as (
 cmp as (
     select
         coalesce(e.date, a.date) as date,
-        cast(coalesce(e.order_count, 0) as {{ dbt.type_float() }}) as exp_count,
-        cast(coalesce(a.order_count, 0) as {{ dbt.type_float() }}) as act_count,
-        cast(coalesce(e.gross_amount, 0) as {{ dbt.type_float() }}) as exp_gross,
-        cast(coalesce(a.gross_amount, 0) as {{ dbt.type_float() }}) as act_gross
+        cast(coalesce(e.order_count, 0) as {{ dx_type_float() }}) as exp_count,
+        cast(coalesce(a.order_count, 0) as {{ dx_type_float() }}) as act_count,
+        cast(coalesce(e.gross_amount, 0) as {{ dx_type_float() }}) as exp_gross,
+        cast(coalesce(a.gross_amount, 0) as {{ dx_type_float() }}) as act_gross
     from expected as e
     full outer join actual as a on a.date = e.date
 ),

@@ -1,0 +1,26 @@
+metric: budget_pacing
+name_vi: Tiến độ ngân sách
+description_vi: Đã chi trong tháng chia mức chi đúng tiến độ (ngân sách × số ngày đã qua ÷ số ngày của tháng). 1,0 là đúng
+  tiến độ; trên 1 là chi nhanh hơn kế hoạch.
+version: 1.0.0
+type: derived
+formula: spend_mtd / budget_expected
+dimensions:
+- date
+- platform
+time_grains:
+- month
+unit: ratio
+good_direction: none
+packs:
+- agency
+synonyms_vi:
+- tiến độ ngân sách
+- pacing
+- chi có vượt không
+source_note_vi: Ngân sách khách nhập và chi tiêu nền tảng báo.
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

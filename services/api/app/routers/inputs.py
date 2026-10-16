@@ -385,12 +385,12 @@ def create_budget(body: BudgetIn, ctx: AuthContext = Depends(get_ctx), db: Sessi
         created_by=ctx.user_id,
         id=new_ulid(),
     )
-    stmt = stmt.on_conflict_do_update(
+    upsert = stmt.on_conflict_do_update(
         index_elements=["tenant_id", "platform", "month"],
         index_where=AdBudget.deleted_at.is_(None),
         set_={"budget_vnd": stmt.excluded.budget_vnd, "updated_at": now_utc()},
     ).returning(AdBudget.id)
-    bid = db.execute(stmt).scalar_one()
+    bid: str = db.execute(upsert).scalar_one()
     db.flush()
     audit(
         db,

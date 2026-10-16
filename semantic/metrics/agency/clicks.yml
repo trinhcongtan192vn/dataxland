@@ -1,0 +1,33 @@
+metric: clicks
+name_vi: Lượt nhấp
+description_vi: Tổng lượt nhấp do nền tảng quảng cáo báo.
+version: 1.0.0
+type: simple
+source: mrt_common__ad_daily
+measure:
+  agg: sum
+  column: clicks
+dimensions:
+- date
+- platform
+- channel
+- campaign
+- campaign_name
+- adgroup
+unit: count
+good_direction: up
+packs:
+- agency
+synonyms_vi:
+- click
+- nhấp
+source_note_vi: Số do nền tảng quảng cáo báo về qua Windsor.ai.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

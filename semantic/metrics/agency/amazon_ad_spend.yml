@@ -1,0 +1,37 @@
+metric: amazon_ad_spend
+name_vi: Chi quảng cáo Amazon
+description_vi: Chi quảng cáo trên Amazon Ads.
+version: 1.0.0
+type: simple
+hidden: true
+source: mrt_common__ad_daily
+measure:
+  agg: sum
+  column: spend_vnd
+  filters:
+  - column: platform
+    op: eq
+    value: amazon_ads
+dimensions:
+- date
+- platform
+- channel
+- campaign
+- campaign_name
+- adgroup
+unit: VND
+packs:
+- agency
+requires:
+- amazon
+source_note_vi: Amazon Ads qua Windsor.ai.
+time_grains:
+- day
+- week
+- month
+good_direction: none
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

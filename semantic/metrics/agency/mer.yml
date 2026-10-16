@@ -1,0 +1,26 @@
+metric: mer
+name_vi: MER (doanh thu trên chi quảng cáo)
+description_vi: Tổng giá trị bán thực tế chia tổng chi quảng cáo.
+version: 1.0.0
+type: ratio
+numerator: gross_sales
+denominator: ad_spend
+dimensions:
+- date
+unit: ratio
+good_direction: up
+packs:
+- agency
+synonyms_vi:
+- mer
+- marketing efficiency ratio
+source_note_vi: Doanh số từ đơn trên sàn; chi phí từ nền tảng quảng cáo.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

@@ -1,0 +1,30 @@
+metric: cancel_rate
+name_vi: Tỷ lệ hủy
+description_vi: Số đơn hủy chia số đơn đã đặt.
+version: 1.0.0
+type: ratio
+numerator: cancelled_orders
+denominator: orders_placed
+dimensions:
+- date
+- platform
+- channel
+- order_status
+- is_provisional
+unit: percent
+good_direction: down
+packs:
+- seller
+synonyms_vi:
+- tỷ lệ hủy
+- đơn hủy
+source_note_vi: Đơn trên các sàn.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

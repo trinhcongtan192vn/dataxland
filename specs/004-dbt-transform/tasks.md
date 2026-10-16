@@ -12,4 +12,4 @@
 - [x] T010 `scripts/check_portability.py`, `.sqlfluff`
 - [x] T011 `transform/tests/test_transform.py`: tiêu chí 02 §9, tách biệt khách 00 §9.3
 - [x] T012 `ops/dbt_build.py` cho `make dbt-build`
-- [ ] T013 (chờ ADR 0003) Chốt cách chạy Elementary
+- [x] T013 ADR 0003 Accepted: Elementary trên BigQuery, `dx_volume_anomaly` trên DuckDB

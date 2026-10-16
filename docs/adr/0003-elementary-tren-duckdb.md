@@ -1,6 +1,6 @@
 # 0003 – Elementary trên DuckDB
 
-- Trạng thái: Proposed (đang dùng phương án 1, chờ chủ dự án chốt)
+- Trạng thái: Accepted (chủ dự án chọn phương án 1 ngày 2026-10-16)
 - Ngày: 2026-10-16
 - Feature: 004-dbt-transform
 
@@ -22,7 +22,7 @@ Elementary vừa giữ CI trên DuckDB như spec yêu cầu.
 
 ## Quyết định
 
-Đang cài theo phương án 1 (gần spec nhất). Chờ chủ dự án chốt.
+Phương án 1: Elementary chạy trên BigQuery (dev, prod); trên DuckDB (local, CI) dùng `dx_volume_anomaly`.
 
 ## Hệ quả
 

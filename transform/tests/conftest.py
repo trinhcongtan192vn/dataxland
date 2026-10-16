@@ -7,7 +7,6 @@ from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
-
 from dbt_helpers import REPO, Built, dbt_run, seed
 
 

@@ -59,9 +59,9 @@ spread as (
         u.cost_date,
         u.channel_id,
         case
-            {% if mode == 'by_order' %}when 1 = 1 then u.amount_vnd / cast(t.tot_cnt as {{ dbt.type_float() }}){% endif %}
-            when coalesce(t.tot_rev, 0) = 0 then u.amount_vnd / cast(t.tot_cnt as {{ dbt.type_float() }})
-            else u.amount_vnd * (cast(t.w_rev as {{ dbt.type_float() }}) / cast(t.tot_rev as {{ dbt.type_float() }}))
+            {% if mode == 'by_order' %}when 1 = 1 then u.amount_vnd / cast(t.tot_cnt as {{ dx_type_float() }}){% endif %}
+            when coalesce(t.tot_rev, 0) = 0 then u.amount_vnd / cast(t.tot_cnt as {{ dx_type_float() }})
+            else u.amount_vnd * (cast(t.w_rev as {{ dx_type_float() }}) / cast(t.tot_rev as {{ dx_type_float() }}))
         end as allocated_amount_vnd
     from unlinked as u
     inner join targets as t on t.cost_id = u.cost_id

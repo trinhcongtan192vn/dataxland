@@ -26,16 +26,11 @@ m as (
         cast(coalesce(s.spend_vnd, 0) as numeric) as spend_mtd_vnd
     from b
     full outer join s on s.month = b.month and s.platform = b.platform
-)
+),
 
+d as (
 select
-    {{ dbt_utils.generate_surrogate_key(['m.platform', dx_str('m.month')]) }} as budget_monthly_id,
-    {{ dx_tenant() }} as tenant_id,
-    {{ dx_now() }} as _dx_updated_at,
-    m.month,
-    m.platform,
-    m.budget_vnd,
-    m.spend_mtd_vnd,
+    m.*,
     {{ dbt.datediff('m.month', dbt.dateadd('month', 1, 'm.month'), 'day') }} as days_in_month,
     case
         when cast({{ yesterday }} as date) >= {{ dx_month_end('m.month') }}
@@ -44,3 +39,18 @@ select
         else {{ dbt.datediff('m.month', 'cast(' ~ yesterday ~ ' as date)', 'day') }} + 1
     end as days_elapsed
 from m
+)
+
+select
+    {{ dbt_utils.generate_surrogate_key(['d.platform', dx_str('d.month')]) }} as budget_monthly_id,
+    {{ dx_tenant() }} as tenant_id,
+    {{ dx_now() }} as _dx_updated_at,
+    d.month,
+    d.platform,
+    d.budget_vnd,
+    d.spend_mtd_vnd,
+    d.days_in_month,
+    d.days_elapsed,
+    {#- Mức chi đúng tiến độ, cộng được qua nhiều nền tảng (dùng cho `budget_pacing`, spec 03 §3.3). -#}
+    cast(d.budget_vnd * cast(d.days_elapsed as {{ dx_type_float() }}) / cast(d.days_in_month as {{ dx_type_float() }}) as numeric) as budget_expected_mtd_vnd
+from d

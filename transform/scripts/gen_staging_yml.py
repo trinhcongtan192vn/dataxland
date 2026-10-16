@@ -18,36 +18,86 @@ STATUSES = ["pending", "confirmed", "shipping", "delivered", "completed", "cance
 REASONS = ["buyer_changed_mind", "damaged", "wrong_item", "not_received", "quality", "failed_delivery", "other"]
 COST_TYPES = ["platform_fee", "payment_fee", "shipping", "ad_spend", "other"]
 
-S, TS, D, N, I, B = "string", "timestamp", "date", "numeric", "bigint", "boolean"
+S, TS, D, N, INT, B = "string", "timestamp", "date", "numeric", "bigint", "boolean"
 
 CONTRACTS: dict[str, list[tuple[str, str]]] = {
     "orders": [
-        ("source", S), ("source_id", S), ("source_account", S), ("ordered_at", TS), ("updated_at", TS),
-        ("order_date", D), ("status_raw", S), ("status", S), ("buyer_ref", S), ("buyer_phone_hash", S),
-        ("buyer_email_hash", S), ("currency", S), ("gross_amount_original", N), ("discount_amount_original", N),
-        ("seller_discount_original", N), ("platform_discount_original", N), ("gross_amount_vnd", N),
-        ("discount_amount_vnd", N), ("net_amount_vnd", N), ("settled_at", TS),
+        ("source", S),
+        ("source_id", S),
+        ("source_account", S),
+        ("ordered_at", TS),
+        ("updated_at", TS),
+        ("order_date", D),
+        ("status_raw", S),
+        ("status", S),
+        ("buyer_ref", S),
+        ("buyer_phone_hash", S),
+        ("buyer_email_hash", S),
+        ("currency", S),
+        ("gross_amount_original", N),
+        ("discount_amount_original", N),
+        ("seller_discount_original", N),
+        ("platform_discount_original", N),
+        ("gross_amount_vnd", N),
+        ("discount_amount_vnd", N),
+        ("net_amount_vnd", N),
+        ("settled_at", TS),
     ],
     "order_lines": [
-        ("source", S), ("source_id", S), ("order_source_id", S), ("seller_sku", S), ("item_name", S),
-        ("quantity", I), ("unit_price_vnd", N), ("line_gross_vnd", N), ("allocated_discount_vnd", N),
+        ("source", S),
+        ("source_id", S),
+        ("order_source_id", S),
+        ("seller_sku", S),
+        ("item_name", S),
+        ("quantity", INT),
+        ("unit_price_vnd", N),
+        ("line_gross_vnd", N),
+        ("allocated_discount_vnd", N),
     ],
     "fees": [
-        ("source", S), ("source_id", S), ("order_source_id", S), ("source_account", S), ("fee_date", D),
-        ("fee_type_raw", S), ("cost_type", S), ("amount_original", N), ("currency", S), ("amount_vnd", N),
+        ("source", S),
+        ("source_id", S),
+        ("order_source_id", S),
+        ("source_account", S),
+        ("fee_date", D),
+        ("fee_type_raw", S),
+        ("cost_type", S),
+        ("amount_original", N),
+        ("currency", S),
+        ("amount_vnd", N),
     ],
     "returns": [
-        ("source", S), ("source_id", S), ("order_source_id", S), ("order_line_source_id", S), ("returned_at", TS),
-        ("return_date", D), ("reason_raw", S), ("reason", S), ("refund_amount_vnd", N), ("return_fee_vnd", N),
+        ("source", S),
+        ("source_id", S),
+        ("order_source_id", S),
+        ("order_line_source_id", S),
+        ("returned_at", TS),
+        ("return_date", D),
+        ("reason_raw", S),
+        ("reason", S),
+        ("refund_amount_vnd", N),
+        ("return_fee_vnd", N),
         ("status", S),
     ],
     "products": [("source", S), ("source_id", S), ("seller_sku", S), ("name", S), ("barcode", S), ("category_raw", S)],
     "ad_insights_daily": [
-        ("source", S), ("source_account", S), ("date", D), ("campaign_id", S), ("campaign_name", S), ("adgroup_id", S),
-        ("adgroup_name", S), ("currency", S), ("spend_original", N), ("spend_vnd", N), ("impressions", I),
-        ("clicks", I), ("conversions", N), ("conversion_value_original", N), ("conversion_value_vnd", N),
+        ("source", S),
+        ("source_account", S),
+        ("date", D),
+        ("campaign_id", S),
+        ("campaign_name", S),
+        ("adgroup_id", S),
+        ("adgroup_name", S),
+        ("currency", S),
+        ("spend_original", N),
+        ("spend_vnd", N),
+        ("impressions", INT),
+        ("clicks", INT),
+        ("conversions", N),
+        ("conversion_value_original", N),
+        ("conversion_value_vnd", N),
     ],
-    "daily_totals": [("source", S), ("source_account", S), ("date", D), ("order_count", I), ("gross_amount_vnd", N)],
+    "daily_totals": [("source", S), ("source_account", S), ("date", D), ("order_count", INT), ("gross_amount_vnd", N)],
 }
 
 MODELS: dict[str, list[str]] = {
@@ -66,8 +116,10 @@ MODELS: dict[str, list[str]] = {
     "tiktok_ads_file": ["ad_insights_daily"],
     "google_ads_file": ["ad_insights_daily"],
 }
-KEYS = {"daily_totals": ["source_account", "date"], "ad_insights_daily": ["source_account", "date", "campaign_id",
-                                                                          "adgroup_id"]}
+KEYS = {
+    "daily_totals": ["source_account", "date"],
+    "ad_insights_daily": ["source_account", "date", "campaign_id", "adgroup_id"],
+}
 OPTIONAL_VND = {"settled_at"}
 
 
@@ -80,30 +132,42 @@ def model_yaml(source: str, obj: str) -> list[str]:
             tests += ["unique", "not_null"]
         if col.endswith("_vnd"):
             tests.append("not_null")
-        if col in ("source", "date", "order_date", "fee_date", "return_date") or (col == "order_source_id" and obj != "fees"):
+        if col in ("source", "date", "order_date", "fee_date", "return_date") or (
+            col == "order_source_id" and obj != "fees"
+        ):
             tests.append("not_null")
         line = f"      - name: {col}\n        data_type: {typ}"
         if col == "status" and obj == "orders":
-            line += ("\n        data_tests:\n          - not_null\n          - accepted_values:\n              arguments:\n"
-                     f"                values: {STATUSES}\n              config: {{severity: error}}")
+            line += (
+                "\n        data_tests:\n          - not_null\n          - accepted_values:\n              arguments:\n"
+                f"                values: {STATUSES}\n              config: {{severity: error}}"
+            )
             out.append(line)
             continue
         if col == "reason":
-            line += ("\n        data_tests:\n          - not_null\n          - accepted_values:\n              arguments:\n"
-                     f"                values: {REASONS}")
+            line += (
+                "\n        data_tests:\n          - not_null\n          - accepted_values:\n              arguments:\n"
+                f"                values: {REASONS}"
+            )
             out.append(line)
             continue
         if col == "cost_type":
-            line += ("\n        data_tests:\n          - not_null\n          - accepted_values:\n              arguments:\n"
-                     f"                values: {COST_TYPES}")
+            line += (
+                "\n        data_tests:\n          - not_null\n          - accepted_values:\n              arguments:\n"
+                f"                values: {COST_TYPES}"
+            )
             out.append(line)
             continue
         if tests:
             line += "\n        data_tests: [" + ", ".join(dict.fromkeys(tests)) + "]"
         out.append(line)
     if obj in KEYS:
-        out += ["    data_tests:", "      - dbt_utils.unique_combination_of_columns:", "          arguments:",
-                f"            combination_of_columns: {KEYS[obj]}"]
+        out += [
+            "    data_tests:",
+            "      - dbt_utils.unique_combination_of_columns:",
+            "          arguments:",
+            f"            combination_of_columns: {KEYS[obj]}",
+        ]
     return out
 
 
@@ -161,14 +225,23 @@ def main() -> None:
     print("ok")
 
 
-TYPE_MACRO = {S: "dbt.type_string()", TS: "dbt.type_timestamp()", D: "'date'", N: "'numeric'", I: "dbt.type_bigint()",
-              B: "dbt.type_boolean()"}
+TYPE_MACRO = {
+    S: "dbt.type_string()",
+    TS: "dbt.type_timestamp()",
+    D: "'date'",
+    N: "'numeric'",
+    INT: "dbt.type_bigint()",
+    B: "dbt.type_boolean()",
+}
 
 
 def write_contract_macro() -> None:
     """`dx_contract(object)` trả {cột: kiểu} của hợp đồng staging, dùng trong `dx_union_enabled`."""
-    out = ["{#- Tự sinh bởi transform/scripts/gen_staging_yml.py – không sửa tay. -#}",
-           "{% macro dx_contract(object) -%}", "    {%- set c = {"]
+    out = [
+        "{#- Tự sinh bởi transform/scripts/gen_staging_yml.py – không sửa tay. -#}",
+        "{% macro dx_contract(object) -%}",
+        "    {%- set c = {",
+    ]
     for obj, cols in CONTRACTS.items():
         inner = ", ".join(f"'{c}': {TYPE_MACRO[t]}" for c, t in cols)
         out.append(f"        '{obj}': {{{inner}}},")

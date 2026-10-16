@@ -16,7 +16,10 @@ FORBIDDEN = [
     ("FORMAT_DATE", re.compile(r"\bformat_date\s*\(", re.I)),
     ("PARSE_DATE", re.compile(r"\bparse_date\s*\(", re.I)),
     ("PARSE_TIMESTAMP", re.compile(r"\bparse_timestamp\s*\(", re.I)),
-    ("DATE_TRUNC dạng BigQuery", re.compile(r"\bdate_trunc\s*\(\s*[^,()]+,\s*(day|week|month|year|quarter)\s*\)", re.I)),
+    (
+        "DATE_TRUNC dạng BigQuery",
+        re.compile(r"\bdate_trunc\s*\(\s*[^,()]+,\s*(day|week|month|year|quarter)\s*\)", re.I),
+    ),
     ("ARRAY_AGG", re.compile(r"\barray_agg\s*\(", re.I)),
     ("STRUCT(", re.compile(r"\bstruct\s*\(", re.I)),
     ("UNNEST", re.compile(r"\bunnest\s*\(", re.I)),

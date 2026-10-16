@@ -1,0 +1,30 @@
+metric: aov
+name_vi: Giá trị đơn trung bình
+description_vi: Doanh thu thực nhận chia số đơn không hủy.
+version: 1.0.0
+type: ratio
+numerator: net_revenue
+denominator: order_count
+dimensions:
+- date
+- platform
+- channel
+- order_status
+- is_provisional
+unit: VND
+good_direction: up
+packs:
+- seller
+synonyms_vi:
+- aov
+- giá trị đơn trung bình
+source_note_vi: Tính từ doanh thu thực nhận và số đơn.
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-16'
+  change_vi: Phiên bản đầu tiên.

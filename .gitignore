@@ -40,3 +40,4 @@ tmp*/
 # Hệ điều hành
 .DS_Store
 Thumbs.db
+transform/.user.yml
