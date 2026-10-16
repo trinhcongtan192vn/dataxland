@@ -1,0 +1,9 @@
+# Bí mật (00 §3.5)
+.env
+.secrets/
+
+# Dữ liệu local (00 §4)
+.local/
+
+# Claude Code: cấu hình cá nhân, không chia sẻ
+.claude/settings.local.json
