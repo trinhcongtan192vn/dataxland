@@ -1045,7 +1045,7 @@ def build_hc_files(tables: dict[str, list[dict[str, Any]]], out: Path) -> None:
         w = csv.writer(sio, lineterminator="\n")
         w.writerow(header)
         w.writerows(rows)
-        (files_dir / name).write_text(sio.getvalue(), encoding="utf-8-sig")
+        (files_dir / name).write_bytes(sio.getvalue().encode("utf-8-sig"))
 
     sp_status = {
         "COMPLETED": "Hoàn thành",
