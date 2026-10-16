@@ -7,3 +7,36 @@
 
 # Claude Code: cấu hình cá nhân, không chia sẻ
 .claude/settings.local.json
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# dbt
+transform/target/
+transform/dbt_packages/
+transform/logs/
+logs/
+
+# Node
+node_modules/
+apps/web/.next/
+apps/web/out/
+apps/web/test-results/
+apps/web/playwright-report/
+cube/.cubestore/
+cube/node_modules/
+
+# Dagster
+.dagster_home/
+pipelines/.dagster/
+tmp*/
+
+# Hệ điều hành
+.DS_Store
+Thumbs.db

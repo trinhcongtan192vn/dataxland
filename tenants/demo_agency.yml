@@ -1,0 +1,47 @@
+# Khách giả lập gói Agency (spec 00 §5). Chỉ dùng cho test và demo.
+tenant_id: demo_agency
+name: Brand Demo (Agency)
+status: active
+pack: agency
+warehouse:
+  provider: bigquery
+  project: dataxland-dev
+  location: asia-southeast1
+sources:
+  - type: meta_ads
+    connector: windsor
+    account_id: "act_600001"
+  - type: tiktok_ads
+    connector: windsor
+    account_id: "6900000001"
+  - type: google_ads
+    connector: windsor
+    account_id: "123-456-7890"
+  - type: amazon_ads
+    connector: windsor
+    account_id: "ENTITY1AMZ"
+  - type: amazon_seller
+    connector: windsor
+    account_id: "A1SELLERDEMO"
+  - type: shopee
+    connector: dlt
+    account_id: "100002"
+    secret_ref: dx-demo_agency-shopee-100002
+  - type: portal
+    connector: dlt
+schedule:
+  sync: "0 */3 * * *"
+  weekly_report: "MON 07:00"
+quality:
+  reconcile_tolerance_pct: {default: 1.0}
+cost_allocation: by_revenue
+attention:
+  overspend_pct: 15
+  roas_drop_pct: 25
+  platform_gap_pct: 50
+notify:
+  channels: [telegram, email]
+  email: [owner@demo-agency.example]
+  anomaly_alerts: true
+benchmark_opt_in: false
+partners: [demo_partner]
