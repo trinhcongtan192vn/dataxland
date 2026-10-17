@@ -954,21 +954,26 @@ class Gen:
             for month in months:
                 for plat, amount in plats.items():
                     m += 1
-                    self.emit(
-                        "portal",
-                        "ad_budgets",
-                        "portal",
-                        {
-                            "id": f"ab{m:04d}",
-                            "tenant_id": tenant,
-                            "platform": plat,
-                            "month": month.isoformat(),
-                            "budget_vnd": f"{amount:.2f}",
-                            "deleted_at": None,
-                            "created_at": _iso(created),
-                            "updated_at": _iso(created),
-                        },
-                    )
+                    # FR-INP-05: tháng cuối, TikTok Ads của demo_agency nhập theo chiến dịch (cùng tổng).
+                    split = tenant == "demo_agency" and plat == "tiktok_ads" and month == months[-1]
+                    parts = [("tic001", 0.5), ("tic002", 0.3), ("tic003", 0.2)] if split else [(None, 1.0)]
+                    for i, (campaign, share) in enumerate(parts):
+                        self.emit(
+                            "portal",
+                            "ad_budgets",
+                            "portal",
+                            {
+                                "id": f"ab{m:04d}" + (chr(97 + i) if split else ""),
+                                "tenant_id": tenant,
+                                "platform": plat,
+                                "month": month.isoformat(),
+                                "campaign_id": campaign,
+                                "budget_vnd": f"{amount * share:.2f}",
+                                "deleted_at": None,
+                                "created_at": _iso(created),
+                                "updated_at": _iso(created),
+                            },
+                        )
 
     def fx(self) -> None:
         r = self.rng

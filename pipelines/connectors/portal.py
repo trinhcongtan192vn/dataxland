@@ -34,6 +34,7 @@ BUDGET_COLUMNS = {
     "tenant_id": "string",
     "platform": "string",
     "month": "date",
+    "campaign_id": "string",
     "budget_vnd": "string",
     "deleted_at": "timestamp",
     "created_at": "timestamp",
@@ -56,7 +57,8 @@ def sync_portal(tenant: TenantConfig, source: SourceConfig, ctx: SyncContext) ->
         tenant.tenant_id,
     )
     budgets = _rows(
-        "select id, tenant_id, platform, month, budget_vnd::text as budget_vnd, deleted_at, created_at, updated_at"
+        "select id, tenant_id, platform, month, campaign_id, budget_vnd::text as budget_vnd, deleted_at, created_at,"
+        " updated_at"
         " from ad_budgets where tenant_id = :t order by id",
         tenant.tenant_id,
     )

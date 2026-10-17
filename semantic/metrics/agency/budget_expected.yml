@@ -1,14 +1,21 @@
 metric: budget_expected
 name_vi: Mức chi đúng tiến độ
 description_vi: Ngân sách tháng nhân số ngày đã qua chia số ngày của tháng.
-version: 1.0.0
+version: 1.0.1
 type: simple
 hidden: true
 source: mrt_agency__budget_monthly
 measure:
   agg: sum
   column: budget_expected_mtd_vnd
+variants:
+- source: mrt_agency__budget_campaign_monthly
+  measure:
+    agg: sum
+    column: budget_expected_mtd_vnd
 dimensions:
+- campaign
+- campaign_name
 - date
 - platform
 time_grains:
@@ -23,3 +30,6 @@ history:
 - version: 1.0.0
   date: '2026-10-16'
   change_vi: Phiên bản đầu tiên.
+- version: 1.0.1
+  date: '2026-10-17'
+  change_vi: Thêm chiều chiến dịch cho ngân sách nhập theo chiến dịch (FR-INP-05); công thức không đổi.

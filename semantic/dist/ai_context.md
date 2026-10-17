@@ -6,9 +6,9 @@
 | `ad_spend` | Chi phí quảng cáo | seller, agency | VND | 1.0.0 | chi quảng cáo, tiền quảng cáo, ads, chi tiêu quảng cáo, spend | Tổng spend trên quảng cáo theo ngày |
 | `allocated_ad_spend` | Chi quảng cáo phân bổ | seller | VND | 1.0.1 |  | Tổng allocated ad spend trên đơn hàng (gói seller) |
 | `aov` | Giá trị đơn trung bình | seller | VND | 1.0.0 | aov, giá trị đơn trung bình | Doanh thu thực nhận ÷ Số đơn |
-| `budget` | Ngân sách quảng cáo | agency | VND | 1.0.1 | ngân sách | Tổng budget trên ngân sách quảng cáo theo tháng |
-| `budget_pacing` | Tiến độ ngân sách | agency | ratio | 1.0.0 | tiến độ ngân sách, pacing, chi có vượt không | Đã chi trong tháng ÷ Mức chi đúng tiến độ |
-| `budget_used_pct` | Tỷ lệ ngân sách đã dùng | agency | percent | 1.0.0 | đã dùng bao nhiêu ngân sách | Đã chi trong tháng ÷ Ngân sách quảng cáo |
+| `budget` | Ngân sách quảng cáo | agency | VND | 1.0.2 | ngân sách | Tổng budget trên ngân sách quảng cáo theo tháng |
+| `budget_pacing` | Tiến độ ngân sách | agency | ratio | 1.0.1 | tiến độ ngân sách, pacing, chi có vượt không | Đã chi trong tháng ÷ Mức chi đúng tiến độ |
+| `budget_used_pct` | Tỷ lệ ngân sách đã dùng | agency | percent | 1.0.1 | đã dùng bao nhiêu ngân sách | Đã chi trong tháng ÷ Ngân sách quảng cáo |
 | `cancel_rate` | Tỷ lệ hủy | seller | percent | 1.0.0 | tỷ lệ hủy, đơn hủy | Số đơn hủy ÷ Số đơn đặt |
 | `clicks` | Lượt nhấp | agency | count | 1.0.0 | click, nhấp | Tổng clicks trên quảng cáo theo ngày |
 | `cogs` | Giá vốn hàng bán | seller | VND | 1.0.1 | giá vốn, cogs, tiền hàng | Tổng cogs trên đơn hàng (gói seller) |
@@ -36,7 +36,7 @@
 | `roas_platform` | ROAS nền tảng | agency | ratio | 1.0.0 | roas nền tảng, roas facebook, roas ads, roas | Giá trị chuyển đổi (nền tảng báo) ÷ Chi phí quảng cáo |
 | `shipping_cost` | Phí vận chuyển | seller | VND | 1.0.0 | phí ship, vận chuyển | Tổng shipping cost trên đơn hàng (gói seller) |
 | `sku_profit` | Lãi theo SKU | seller | VND | 1.0.0 | lãi sku, sản phẩm lỗ, lãi từng sản phẩm, sku lỗ | Thành phần lãi theo SKU (net_revenue_vnd) - Thành phần lãi theo SKU (cogs_vnd) - Thành phần lãi theo SKU (platform_fee_vnd) - Thành phần lãi theo SKU (payment_fee_vnd) - Thành phần lãi theo SKU (shipping_cost_vnd) - Thành phần lãi theo SKU (return_cost_vnd) - Thành phần lãi theo SKU (allocated_ad_spend_vnd) - Thành phần lãi theo SKU (other_cost_vnd) |
-| `spend_mtd` | Đã chi trong tháng | agency | VND | 1.0.1 |  | Tổng spend mtd trên ngân sách quảng cáo theo tháng |
+| `spend_mtd` | Đã chi trong tháng | agency | VND | 1.0.2 |  | Tổng spend mtd trên ngân sách quảng cáo theo tháng |
 | `tacos` | TACOS (Amazon) | agency | percent | 1.0.0 | tacos, tổng chi quảng cáo trên doanh thu amazon | Chi quảng cáo Amazon ÷ Tổng doanh thu Amazon |
 
 ## Chiều

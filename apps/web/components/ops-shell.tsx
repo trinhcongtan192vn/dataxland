@@ -14,6 +14,7 @@ const NAV = [
   { href: "/ops/health-checks", label: "Kiểm tra sức khỏe" },
   { href: "/ops/metric-requests", label: "Chỉ số được hỏi" },
   { href: "/ops/integrations", label: "Hướng dẫn tích hợp" },
+  { href: "/ops/costs", label: "Chi phí" },
   { href: "/ops/fx-rates", label: "Tỷ giá" },
 ];
 

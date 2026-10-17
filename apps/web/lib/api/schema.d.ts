@@ -369,6 +369,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/inputs/ad-campaigns": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Campaigns
+         * @description Chiến dịch có chi tiêu 90 ngày qua, để chọn khi nhập ngân sách theo chiến dịch (FR-INP-05). Đọc qua bộ máy
+         *     chỉ số, không SQL riêng.
+         */
+        get: operations["list_campaigns_v1_inputs_ad_campaigns_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/inputs/product-costs": {
         parameters: {
             query?: never;
@@ -473,6 +494,23 @@ export interface paths {
          * @description Phát hiện bất thường sau khi làm mới Cube (spec 03 §8, spec 04 §3.2 bước `detect_anomalies`).
          */
         post: operations["anomalies_run_v1_internal_anomalies_run_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/internal/costs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Internal Costs */
+        post: operations["internal_costs_v1_internal_costs_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -980,6 +1018,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/ops/costs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ops Costs */
+        get: operations["ops_costs_v1_ops_costs_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/ops/costs/allocate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Allocate */
+        post: operations["allocate_v1_ops_costs_allocate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/ops/health-checks": {
         parameters: {
             query?: never;
@@ -1162,11 +1234,8 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        /**
-         * Set Hours
-         * @description Giờ người theo khách, nhập tay (FR-OPS-06).
-         */
-        put: operations["set_hours_v1_ops_tenants__tenant_id__hours_put"];
+        /** Put Hours */
+        put: operations["put_hours_v1_ops_tenants__tenant_id__hours_put"];
         post?: never;
         delete?: never;
         options?: never;
@@ -1547,6 +1616,18 @@ export interface components {
             /** Token */
             token: string;
         };
+        /** AllocateIn */
+        AllocateIn: {
+            /** Amount Vnd */
+            amount_vnd: number | string;
+            /**
+             * Item
+             * @enum {string}
+             */
+            item: "windsor" | "claude";
+            /** Month */
+            month: string;
+        };
         /** AllowlistIn */
         AllowlistIn: {
             /** Metric Allowlist */
@@ -1615,6 +1696,8 @@ export interface components {
         BudgetIn: {
             /** Budget Vnd */
             budget_vnd: number | string;
+            /** Campaign Id */
+            campaign_id?: string | null;
             /** Month */
             month: string;
             /** Platform */
@@ -1624,6 +1707,8 @@ export interface components {
         BudgetOut: {
             /** Budget Vnd */
             budget_vnd: number;
+            /** Campaign Id */
+            campaign_id?: string | null;
             /** Id */
             id: string;
             /** Month */
@@ -1673,6 +1758,17 @@ export interface components {
             action: "approve" | "reject";
             /** Ids */
             ids: string[];
+        };
+        /** CampaignOut */
+        CampaignOut: {
+            /** Campaign Id */
+            campaign_id: string;
+            /** Campaign Name */
+            campaign_name: string | null;
+            /** Platform */
+            platform: string;
+            /** Spend Vnd 90D */
+            spend_vnd_90d: number | null;
         };
         /** ChatLeftIn */
         ChatLeftIn: {
@@ -1751,6 +1847,13 @@ export interface components {
             /** Valid To */
             valid_to: string | null;
         };
+        /** CostRow */
+        CostRow: {
+            /** Amount Vnd */
+            amount_vnd: number | string;
+            /** Tenant Id */
+            tenant_id: string;
+        };
         /** CostUpdate */
         CostUpdate: {
             /** Note */
@@ -1759,6 +1862,18 @@ export interface components {
             unit_cost_vnd?: number | string | null;
             /** Valid From */
             valid_from?: string | null;
+        };
+        /** CostsIn */
+        CostsIn: {
+            /**
+             * Item
+             * @constant
+             */
+            item: "gcp";
+            /** Month */
+            month: string;
+            /** Rows */
+            rows: components["schemas"]["CostRow"][];
         };
         /** DecisionIn */
         DecisionIn: {
@@ -2053,15 +2168,6 @@ export interface components {
             status: string;
             /** Status Vi */
             status_vi: string;
-        };
-        /** HoursIn */
-        HoursIn: {
-            /** Hours */
-            hours: number | string;
-            /** Month */
-            month: string;
-            /** Note */
-            note?: string | null;
         };
         /** IntegrationDetail */
         IntegrationDetail: {
@@ -2885,6 +2991,23 @@ export interface components {
              */
             status: "running" | "success" | "failed" | "skipped";
         };
+        /** TenantCostOut */
+        TenantCostOut: {
+            /** Hours */
+            hours: number | null;
+            /** Hours Note */
+            hours_note: string | null;
+            /** Items */
+            items: {
+                [key: string]: number;
+            };
+            /** Name */
+            name: string;
+            /** Tenant Id */
+            tenant_id: string;
+            /** Total Vnd */
+            total_vnd: number;
+        };
         /** TenantIn */
         TenantIn: {
             /** Tenant Id */
@@ -2996,6 +3119,24 @@ export interface components {
             msg: string;
             /** Error Type */
             type: string;
+        };
+        /** HoursIn */
+        app__routers__costs__HoursIn: {
+            /** Hours */
+            hours: number | string;
+            /** Month */
+            month: string;
+            /** Note */
+            note?: string | null;
+        };
+        /** HoursIn */
+        app__routers__ops__HoursIn: {
+            /** Hours */
+            hours: number | string;
+            /** Month */
+            month: string;
+            /** Note */
+            note?: string | null;
         };
     };
     responses: never;
@@ -3903,6 +4044,40 @@ export interface operations {
             };
         };
     };
+    list_campaigns_v1_inputs_ad_campaigns_get: {
+        parameters: {
+            query?: {
+                platform?: string | null;
+            };
+            header?: {
+                "x-tenant-id"?: string | null;
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CampaignOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_costs_v1_inputs_product_costs_get: {
         parameters: {
             query?: {
@@ -4170,6 +4345,40 @@ export interface operations {
                         [key: string]: unknown;
                     };
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    internal_costs_v1_internal_costs_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+                "x-service"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CostsIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {
@@ -5232,6 +5441,76 @@ export interface operations {
             };
         };
     };
+    ops_costs_v1_ops_costs_get: {
+        parameters: {
+            query?: {
+                month?: string | null;
+            };
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TenantCostOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    allocate_v1_ops_costs_allocate_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AllocateIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     ops_list_v1_ops_health_checks_get: {
         parameters: {
             query?: {
@@ -5606,7 +5885,7 @@ export interface operations {
             };
         };
     };
-    set_hours_v1_ops_tenants__tenant_id__hours_put: {
+    put_hours_v1_ops_tenants__tenant_id__hours_put: {
         parameters: {
             query?: never;
             header?: {
@@ -5619,7 +5898,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["HoursIn"];
+                "application/json": components["schemas"]["app__routers__costs__HoursIn"];
             };
         };
         responses: {

@@ -11,7 +11,7 @@ from decimal import Decimal
 from fastapi import APIRouter, Depends, File, Query, UploadFile
 from fastapi.responses import Response
 from pydantic import BaseModel, Field, field_validator
-from sqlalchemy import select
+from sqlalchemy import select, text
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
@@ -320,6 +320,7 @@ class BudgetOut(BaseModel):
     id: str
     platform: str
     month: str
+    campaign_id: str | None = None
     budget_vnd: int
     updated_at: datetime
 
@@ -328,6 +329,8 @@ class BudgetIn(BaseModel):
     platform: str
     month: str = Field(pattern=r"^\d{4}-(0[1-9]|1[0-2])$")
     budget_vnd: Decimal = Field(ge=0, max_digits=18, decimal_places=2)
+    # FR-INP-05: trống = ngân sách cả nền tảng trong tháng.
+    campaign_id: str | None = Field(default=None, min_length=1, max_length=200)
 
 
 class BudgetUpdate(BaseModel):
@@ -344,6 +347,7 @@ def _budget_out(b: AdBudget) -> BudgetOut:
         id=b.id,
         platform=b.platform,
         month=b.month.strftime("%Y-%m"),
+        campaign_id=b.campaign_id,
         budget_vnd=int(b.budget_vnd.quantize(Decimal("1"))),
         updated_at=b.updated_at,
     )
@@ -362,7 +366,10 @@ def list_budgets(
         q = q.where(AdBudget.month >= _month(from_month))
     if to_month:
         q = q.where(AdBudget.month <= _month(to_month))
-    return [_budget_out(b) for b in db.scalars(q.order_by(AdBudget.month, AdBudget.platform))]
+    return [
+        _budget_out(b)
+        for b in db.scalars(q.order_by(AdBudget.month, AdBudget.platform, AdBudget.campaign_id.nulls_first()))
+    ]
 
 
 @router.post("/ad-budgets", response_model=BudgetOut, status_code=201)
@@ -377,16 +384,35 @@ def create_budget(body: BudgetIn, ctx: AuthContext = Depends(get_ctx), db: Sessi
             f"Nền tảng {body.platform} không phải nguồn quảng cáo của khách ({', '.join(platforms) or 'không có'})",
         )
     month = _month(body.month)
+    # Một nền tảng trong một tháng nhập ở một mức: cả nền tảng hoặc từng chiến dịch, để tổng không bị cộng trùng.
+    other_level = db.scalar(
+        select(AdBudget.id).where(
+            AdBudget.tenant_id == ctx.tenant_id,
+            AdBudget.platform == body.platform,
+            AdBudget.month == month,
+            AdBudget.deleted_at.is_(None),
+            AdBudget.campaign_id.is_(None) if body.campaign_id else AdBudget.campaign_id.is_not(None),
+        )
+    )
+    if other_level is not None:
+        raise ApiError(
+            409,
+            "BUDGET_LEVEL_CONFLICT",
+            "Tháng này đã nhập ngân sách cả nền tảng; xóa trước khi nhập theo chiến dịch"
+            if body.campaign_id
+            else "Tháng này đã nhập ngân sách theo chiến dịch; xóa các dòng chiến dịch trước khi nhập cả nền tảng",
+        )
     stmt = insert(AdBudget).values(
         tenant_id=ctx.tenant_id,
         platform=body.platform,
         month=month,
+        campaign_id=body.campaign_id,
         budget_vnd=body.budget_vnd,
         created_by=ctx.user_id,
         id=new_ulid(),
     )
     upsert = stmt.on_conflict_do_update(
-        index_elements=["tenant_id", "platform", "month"],
+        index_elements=["tenant_id", "platform", "month", text("coalesce(campaign_id, '')")],
         index_where=AdBudget.deleted_at.is_(None),
         set_={"budget_vnd": stmt.excluded.budget_vnd, "updated_at": now_utc()},
     ).returning(AdBudget.id)
@@ -398,7 +424,12 @@ def create_budget(body: BudgetIn, ctx: AuthContext = Depends(get_ctx), db: Sessi
         tenant_id=ctx.tenant_id,
         actor_user_id=ctx.user_id,
         target=bid,
-        detail={"platform": body.platform, "month": body.month, "budget_vnd": str(body.budget_vnd)},
+        detail={
+            "platform": body.platform,
+            "month": body.month,
+            "campaign_id": body.campaign_id,
+            "budget_vnd": str(body.budget_vnd),
+        },
     )
     _changed(db, ctx, "ad_budgets")
     b = db.get(AdBudget, bid)
@@ -439,3 +470,41 @@ def delete_budget(budget_id: str, ctx: AuthContext = Depends(get_ctx), db: Sessi
     b.deleted_at = now_utc()
     audit(db, action="inputs.ad_budget_deleted", tenant_id=ctx.tenant_id, actor_user_id=ctx.user_id, target=budget_id)
     _changed(db, ctx, "ad_budgets")
+
+
+class CampaignOut(BaseModel):
+    platform: str
+    campaign_id: str
+    campaign_name: str | None
+    spend_vnd_90d: int | None
+
+
+@router.get("/ad-campaigns", response_model=list[CampaignOut])
+def list_campaigns(
+    platform: str | None = Query(default=None), ctx: AuthContext = Depends(get_ctx), db: Session = Depends(get_db)
+) -> list[CampaignOut]:
+    """Chiến dịch có chi tiêu 90 ngày qua, để chọn khi nhập ngân sách theo chiến dịch (FR-INP-05). Đọc qua bộ máy
+    chỉ số, không SQL riêng."""
+    require(ctx, "inputs.read", resource="ad_budgets")
+    from app.metrics.engine import FilterIn, QueryIn, query
+
+    filters = [FilterIn(dimension="platform", op="eq", value=platform)] if platform else []
+    body = QueryIn(
+        metrics=["ad_spend"],
+        dimensions=["platform", "campaign", "campaign_name"],
+        time={"preset": "last_90_days"},
+        filters=filters,
+        limit=1000,
+    )
+    res = query(ctx, body, db=db, caller=ctx.caller)
+    out = [
+        CampaignOut(
+            platform=str(r["platform"]),
+            campaign_id=str(r["campaign"]),
+            campaign_name=r.get("campaign_name"),
+            spend_vnd_90d=int(r["ad_spend"]) if r.get("ad_spend") is not None else None,
+        )
+        for r in res["rows"]
+        if r.get("campaign")
+    ]
+    return sorted(out, key=lambda c: (c.platform, -(c.spend_vnd_90d or 0)))

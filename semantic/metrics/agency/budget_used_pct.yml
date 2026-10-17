@@ -1,11 +1,13 @@
 metric: budget_used_pct
 name_vi: Tỷ lệ ngân sách đã dùng
 description_vi: Đã chi trong tháng chia ngân sách tháng.
-version: 1.0.0
+version: 1.0.1
 type: ratio
 numerator: spend_mtd
 denominator: budget
 dimensions:
+- campaign
+- campaign_name
 - date
 - platform
 time_grains:
@@ -22,3 +24,6 @@ history:
 - version: 1.0.0
   date: '2026-10-16'
   change_vi: Phiên bản đầu tiên.
+- version: 1.0.1
+  date: '2026-10-17'
+  change_vi: Thêm chiều chiến dịch cho ngân sách nhập theo chiến dịch (FR-INP-05); công thức không đổi.

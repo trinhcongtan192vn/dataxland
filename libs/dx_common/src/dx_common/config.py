@@ -22,6 +22,8 @@ class Settings(BaseSettings):
     database_url: str = "postgresql+psycopg://dx:dx@localhost:5432/dx"
 
     gcp_project_id: str = ""
+    # FR-OPS-06: bảng billing export của GCP, dạng project.dataset.gcp_billing_export_v1_XXXX
+    gcp_billing_export_table: str = ""
     bq_location: str = "asia-southeast1"
     duckdb_path: str = "./.local/dx.duckdb"
     metadata_bucket: str = "./.local/meta"

@@ -14,6 +14,43 @@
     "title": "AcceptIn",
     "type": "object"
    },
+   "AllocateIn": {
+    "properties": {
+     "amount_vnd": {
+      "anyOf": [
+       {
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,16}|(?=[\\d.]{1,19}0*$)\\d{0,16}\\.\\d{0,2}0*$)",
+        "type": "string"
+       }
+      ],
+      "title": "Amount Vnd"
+     },
+     "item": {
+      "enum": [
+       "windsor",
+       "claude"
+      ],
+      "title": "Item",
+      "type": "string"
+     },
+     "month": {
+      "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+      "title": "Month",
+      "type": "string"
+     }
+    },
+    "required": [
+     "month",
+     "item",
+     "amount_vnd"
+    ],
+    "title": "AllocateIn",
+    "type": "object"
+   },
    "AllowlistIn": {
     "properties": {
      "metric_allowlist": {
@@ -247,6 +284,19 @@
       ],
       "title": "Budget Vnd"
      },
+     "campaign_id": {
+      "anyOf": [
+       {
+        "maxLength": 200,
+        "minLength": 1,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Campaign Id"
+     },
      "month": {
       "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
       "title": "Month",
@@ -270,6 +320,17 @@
      "budget_vnd": {
       "title": "Budget Vnd",
       "type": "integer"
+     },
+     "campaign_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Campaign Id"
      },
      "id": {
       "title": "Id",
@@ -404,6 +465,48 @@
      "action"
     ],
     "title": "BulkIn",
+    "type": "object"
+   },
+   "CampaignOut": {
+    "properties": {
+     "campaign_id": {
+      "title": "Campaign Id",
+      "type": "string"
+     },
+     "campaign_name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Campaign Name"
+     },
+     "platform": {
+      "title": "Platform",
+      "type": "string"
+     },
+     "spend_vnd_90d": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Spend Vnd 90D"
+     }
+    },
+    "required": [
+     "platform",
+     "campaign_id",
+     "campaign_name",
+     "spend_vnd_90d"
+    ],
+    "title": "CampaignOut",
     "type": "object"
    },
    "ChatLeftIn": {
@@ -618,6 +721,33 @@
     "title": "CostOut",
     "type": "object"
    },
+   "CostRow": {
+    "properties": {
+     "amount_vnd": {
+      "anyOf": [
+       {
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+        "type": "string"
+       }
+      ],
+      "title": "Amount Vnd"
+     },
+     "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+     }
+    },
+    "required": [
+     "tenant_id",
+     "amount_vnd"
+    ],
+    "title": "CostRow",
+    "type": "object"
+   },
    "CostUpdate": {
     "properties": {
      "note": {
@@ -662,6 +792,34 @@
      }
     },
     "title": "CostUpdate",
+    "type": "object"
+   },
+   "CostsIn": {
+    "properties": {
+     "item": {
+      "const": "gcp",
+      "title": "Item",
+      "type": "string"
+     },
+     "month": {
+      "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+      "title": "Month",
+      "type": "string"
+     },
+     "rows": {
+      "items": {
+       "$ref": "#/components/schemas/CostRow"
+      },
+      "title": "Rows",
+      "type": "array"
+     }
+    },
+    "required": [
+     "month",
+     "item",
+     "rows"
+    ],
+    "title": "CostsIn",
     "type": "object"
    },
    "DecisionIn": {
@@ -1492,45 +1650,6 @@
      "files_rejected"
     ],
     "title": "HcSummary",
-    "type": "object"
-   },
-   "HoursIn": {
-    "properties": {
-     "hours": {
-      "anyOf": [
-       {
-        "minimum": 0.0,
-        "type": "number"
-       },
-       {
-        "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,6}|(?=[\\d.]{1,9}0*$)\\d{0,6}\\.\\d{0,2}0*$)",
-        "type": "string"
-       }
-      ],
-      "title": "Hours"
-     },
-     "month": {
-      "pattern": "^\\d{4}-\\d{2}$",
-      "title": "Month",
-      "type": "string"
-     },
-     "note": {
-      "anyOf": [
-       {
-        "type": "string"
-       },
-       {
-        "type": "null"
-       }
-      ],
-      "title": "Note"
-     }
-    },
-    "required": [
-     "month",
-     "hours"
-    ],
-    "title": "HoursIn",
     "type": "object"
    },
    "IntegrationDetail": {
@@ -3939,6 +4058,61 @@
     "title": "SourceStatusIn",
     "type": "object"
    },
+   "TenantCostOut": {
+    "properties": {
+     "hours": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Hours"
+     },
+     "hours_note": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Hours Note"
+     },
+     "items": {
+      "additionalProperties": {
+       "type": "integer"
+      },
+      "title": "Items",
+      "type": "object"
+     },
+     "name": {
+      "title": "Name",
+      "type": "string"
+     },
+     "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+     },
+     "total_vnd": {
+      "title": "Total Vnd",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "tenant_id",
+     "name",
+     "items",
+     "total_vnd",
+     "hours",
+     "hours_note"
+    ],
+    "title": "TenantCostOut",
+    "type": "object"
+   },
    "TenantIn": {
     "properties": {
      "tenant_id": {
@@ -4255,6 +4429,85 @@
      "type"
     ],
     "title": "ValidationError",
+    "type": "object"
+   },
+   "app__routers__costs__HoursIn": {
+    "properties": {
+     "hours": {
+      "anyOf": [
+       {
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,6}|(?=[\\d.]{1,9}0*$)\\d{0,6}\\.\\d{0,2}0*$)",
+        "type": "string"
+       }
+      ],
+      "title": "Hours"
+     },
+     "month": {
+      "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+      "title": "Month",
+      "type": "string"
+     },
+     "note": {
+      "anyOf": [
+       {
+        "maxLength": 500,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Note"
+     }
+    },
+    "required": [
+     "month",
+     "hours"
+    ],
+    "title": "HoursIn",
+    "type": "object"
+   },
+   "app__routers__ops__HoursIn": {
+    "properties": {
+     "hours": {
+      "anyOf": [
+       {
+        "minimum": 0.0,
+        "type": "number"
+       },
+       {
+        "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,6}|(?=[\\d.]{1,9}0*$)\\d{0,6}\\.\\d{0,2}0*$)",
+        "type": "string"
+       }
+      ],
+      "title": "Hours"
+     },
+     "month": {
+      "pattern": "^\\d{4}-\\d{2}$",
+      "title": "Month",
+      "type": "string"
+     },
+     "note": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Note"
+     }
+    },
+    "required": [
+     "month",
+     "hours"
+    ],
+    "title": "HoursIn",
     "type": "object"
    }
   }
@@ -6082,6 +6335,92 @@
     ]
    }
   },
+  "/v1/inputs/ad-campaigns": {
+   "get": {
+    "description": "Chiến dịch có chi tiêu 90 ngày qua, để chọn khi nhập ngân sách theo chiến dịch (FR-INP-05). Đọc qua bộ máy\nchỉ số, không SQL riêng.",
+    "operationId": "list_campaigns_v1_inputs_ad_campaigns_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "platform",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Platform"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-tenant-id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/CampaignOut"
+         },
+         "title": "Response List Campaigns V1 Inputs Ad Campaigns Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "List Campaigns",
+    "tags": [
+     "inputs"
+    ]
+   }
+  },
   "/v1/inputs/product-costs": {
    "get": {
     "operationId": "list_costs_v1_inputs_product_costs_get",
@@ -6685,6 +7024,74 @@
     "summary": "Anomalies Run",
     "tags": [
      "internal"
+    ]
+   }
+  },
+  "/v1/internal/costs": {
+   "post": {
+    "operationId": "internal_costs_v1_internal_costs_post",
+    "parameters": [
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-service",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Service"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CostsIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Internal Costs",
+    "tags": [
+     "costs"
     ]
    }
   },
@@ -8967,6 +9374,137 @@
     ]
    }
   },
+  "/v1/ops/costs": {
+   "get": {
+    "operationId": "ops_costs_v1_ops_costs_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "month",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Month"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/TenantCostOut"
+         },
+         "title": "Response Ops Costs V1 Ops Costs Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Ops Costs",
+    "tags": [
+     "costs"
+    ]
+   }
+  },
+  "/v1/ops/costs/allocate": {
+   "post": {
+    "operationId": "allocate_v1_ops_costs_allocate_post",
+    "parameters": [
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/AllocateIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Allocate V1 Ops Costs Allocate Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Allocate",
+    "tags": [
+     "costs"
+    ]
+   }
+  },
   "/v1/ops/health-checks": {
    "get": {
     "operationId": "ops_list_v1_ops_health_checks_get",
@@ -9678,8 +10216,7 @@
   },
   "/v1/ops/tenants/{tenant_id}/hours": {
    "put": {
-    "description": "Giờ người theo khách, nhập tay (FR-OPS-06).",
-    "operationId": "set_hours_v1_ops_tenants__tenant_id__hours_put",
+    "operationId": "put_hours_v1_ops_tenants__tenant_id__hours_put",
     "parameters": [
      {
       "in": "path",
@@ -9711,7 +10248,7 @@
      "content": {
       "application/json": {
        "schema": {
-        "$ref": "#/components/schemas/HoursIn"
+        "$ref": "#/components/schemas/app__routers__costs__HoursIn"
        }
       }
      },
@@ -9732,9 +10269,9 @@
       "description": "Validation Error"
      }
     },
-    "summary": "Set Hours",
+    "summary": "Put Hours",
     "tags": [
-     "ops"
+     "costs"
     ]
    }
   },

@@ -1,14 +1,21 @@
 metric: spend_mtd
 name_vi: Đã chi trong tháng
 description_vi: Chi quảng cáo từ đầu tháng đến hôm qua.
-version: 1.0.1
+version: 1.0.2
 type: simple
 hidden: false
 source: mrt_agency__budget_monthly
 measure:
   agg: sum
   column: spend_mtd_vnd
+variants:
+- source: mrt_agency__budget_campaign_monthly
+  measure:
+    agg: sum
+    column: spend_mtd_vnd
 dimensions:
+- campaign
+- campaign_name
 - date
 - platform
 time_grains:
@@ -26,3 +33,6 @@ history:
 - version: 1.0.1
   date: '2026-10-17'
   change_vi: Hiện trên dashboard và sổ tay (ADR 0004); công thức không đổi.
+- version: 1.0.2
+  date: '2026-10-17'
+  change_vi: Thêm chiều chiến dịch cho ngân sách nhập theo chiến dịch (FR-INP-05); công thức không đổi.
