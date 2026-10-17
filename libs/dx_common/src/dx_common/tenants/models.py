@@ -170,7 +170,9 @@ class TenantConfig(_Base):
 
     @property
     def dataset_prefix(self) -> str:
-        return f"t_{self.tenant_id}"
+        from dx_common.tenants.naming import dataset_prefix
+
+        return dataset_prefix(self.tenant_id)
 
     def enabled_sources(self) -> list[SourceConfig]:
         return [s for s in self.sources if s.enabled]

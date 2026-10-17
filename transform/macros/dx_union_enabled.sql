@@ -9,7 +9,7 @@ Không có nguồn nào: trả truy vấn rỗng với đúng cột của hợp 
         'orders': ['shopee', 'tiktok_shop', 'lazada', 'amazon_seller', 'shopee_file', 'tiktok_shop_file', 'lazada_file'],
         'order_lines': ['shopee', 'tiktok_shop', 'lazada', 'amazon_seller', 'shopee_file', 'tiktok_shop_file', 'lazada_file'],
         'fees': ['shopee', 'tiktok_shop', 'lazada', 'amazon_seller', 'shopee_file', 'tiktok_shop_file', 'lazada_file'],
-        'returns': ['shopee', 'tiktok_shop', 'lazada', 'amazon_seller'],
+        'returns': ['shopee', 'tiktok_shop', 'lazada', 'amazon_seller', 'shopee_file', 'tiktok_shop_file', 'lazada_file'],
         'products': ['shopee', 'tiktok_shop', 'lazada', 'amazon_seller', 'shopee_file', 'tiktok_shop_file', 'lazada_file'],
         'ad_insights_daily': ['meta_ads', 'tiktok_ads', 'google_ads', 'amazon_ads', 'meta_ads_file', 'tiktok_ads_file',
                               'google_ads_file'],

@@ -10,3 +10,11 @@ COMPLETED,completed
 IN_CANCEL,cancelled
 CANCELLED,cancelled
 TO_RETURN,returned
+Chờ xác nhận,pending
+Chờ lấy hàng,confirmed
+Đang giao,shipping
+Đã giao,delivered
+Hoàn thành,completed
+Đang hủy,cancelled
+Đã hủy,cancelled
+Trả hàng/Hoàn tiền,returned

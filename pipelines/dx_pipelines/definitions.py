@@ -13,7 +13,7 @@ from dx_pipelines.jobs.fixed import (
     healthcheck_cleanup,
     sync_tenants,
 )
-from dx_pipelines.jobs.healthcheck import healthcheck
+from dx_pipelines.jobs.healthcheck import healthcheck, healthcheck_convert
 from dx_pipelines.jobs.tenant_pipeline import tenant_pipeline
 from dx_pipelines.jobs.weekly_report import weekly_report
 from dx_pipelines.sensors.events import events_sensor
@@ -26,6 +26,7 @@ defs = dg.Definitions(
         tenant_pipeline,
         weekly_report,
         healthcheck,
+        healthcheck_convert,
         fx_daily,
         sync_tenants,
         healthcheck_cleanup,

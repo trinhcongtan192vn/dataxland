@@ -1062,9 +1062,17 @@ def build_hc_files(tables: dict[str, list[dict[str, Any]]], out: Path) -> None:
         "SELLER_HOLD": "Chờ xác nhận",
     }
     orders = {o["order_sn"]: o for o in latest(of("shopee/orders", acct["shopee"]), "order_sn")}
+    sp_ret: dict[tuple[str, int, int], dict[str, Any]] = {}
+    for r in latest(of("shopee/returns", acct["shopee"]), "return_sn"):
+        k = (r["order_sn"], r["item_id"], r["model_id"])
+        cur = sp_ret.setdefault(k, {"refund": 0, "fee": 0, "time": r["create_time"]})
+        cur["refund"] += r["refund_amount"]
+        cur["fee"] += r["return_ship_fee"] or 0
+        cur["time"] = min(cur["time"], r["create_time"])
     rows = []
     for it in of("shopee/order_items", acct["shopee"]):
         o = orders[it["order_sn"]]
+        ret = sp_ret.get((it["order_sn"], it["item_id"], it["model_id"]))
         rows.append(
             [
                 o["order_sn"],
@@ -1083,6 +1091,9 @@ def build_hc_files(tables: dict[str, list[dict[str, Any]]], out: Path) -> None:
                 o["recipient_phone"],
                 o["recipient_full_address"],
                 o["buyer_username"],
+                ret["refund"] if ret else 0,
+                vn_dt(ret["time"]) if ret else None,
+                ret["fee"] if ret else 0,
             ]
         )
     write_xlsx(
@@ -1105,6 +1116,9 @@ def build_hc_files(tables: dict[str, list[dict[str, Any]]], out: Path) -> None:
             "Số điện thoại",
             "Địa chỉ nhận hàng",
             "Người Mua",
+            "Số tiền hoàn lại",
+            "Ngày trả hàng/hoàn tiền",
+            "Phí vận chuyển trả hàng",
         ],
         rows,
     )
@@ -1145,9 +1159,16 @@ def build_hc_files(tables: dict[str, list[dict[str, Any]]], out: Path) -> None:
     )
 
     tk_orders = {o["id"]: o for o in of("tiktok_shop/orders", acct["tiktok_shop"])}
+    tk_ret: dict[str, dict[str, Any]] = {}
+    for r in latest(of("tiktok_shop/returns", acct["tiktok_shop"]), "return_id"):
+        cur = tk_ret.setdefault(r["line_item_id"], {"refund": 0, "fee": 0, "time": r["create_time"]})
+        cur["refund"] += r["refund_total"]
+        cur["fee"] += r["return_shipping_fee"] or 0
+        cur["time"] = min(cur["time"], r["create_time"])
     tk_rows = []
     for it in of("tiktok_shop/order_items", acct["tiktok_shop"]):
         o = tk_orders[it["order_id"]]
+        ret = tk_ret.get(it["id"])
         tk_rows.append(
             [
                 o["id"],
@@ -1164,6 +1185,9 @@ def build_hc_files(tables: dict[str, list[dict[str, Any]]], out: Path) -> None:
                 o["recipient_phone_number"],
                 o["recipient_full_address"],
                 o["buyer_email"],
+                ret["refund"] if ret else 0,
+                vn_dt(ret["time"]) if ret else "",
+                ret["fee"] if ret else 0,
             ]
         )
     write_csv(
@@ -1183,6 +1207,9 @@ def build_hc_files(tables: dict[str, list[dict[str, Any]]], out: Path) -> None:
             "Phone #",
             "Detail Address",
             "Buyer Email",
+            "SKU Refund Amount",
+            "Refund Time",
+            "Return Shipping Fee",
         ],
         tk_rows,
     )
@@ -1215,9 +1242,15 @@ def build_hc_files(tables: dict[str, list[dict[str, Any]]], out: Path) -> None:
     )
 
     lz_orders = {o["order_id"]: o for o in of("lazada/orders", acct["lazada"])}
+    lz_ret: dict[str, dict[str, Any]] = {}
+    for r in latest(of("lazada/returns", acct["lazada"]), "reverse_order_id"):
+        cur = lz_ret.setdefault(r["order_item_id"], {"refund": 0, "time": r["created_at"]})
+        cur["refund"] += r["refund_amount"]
+        cur["time"] = min(cur["time"], r["created_at"])
     lz_rows = []
     for it in of("lazada/order_items", acct["lazada"]):
         o = lz_orders[it["order_id"]]
+        ret = lz_ret.get(it["order_item_id"])
         lz_rows.append(
             [
                 it["order_item_id"],
@@ -1232,6 +1265,8 @@ def build_hc_files(tables: dict[str, list[dict[str, Any]]], out: Path) -> None:
                 o["customer_first_name"],
                 o["address_phone"],
                 o["address_full"],
+                ret["refund"] if ret else 0,
+                ret["time"][:16] if ret else None,
             ]
         )
     write_xlsx(
@@ -1250,6 +1285,8 @@ def build_hc_files(tables: dict[str, list[dict[str, Any]]], out: Path) -> None:
             "Customer Name",
             "Shipping Phone Number",
             "Shipping Address",
+            "Refund Amount",
+            "Refund Date",
         ],
         lz_rows,
     )
