@@ -445,6 +445,54 @@
       "version": "1.0.0"
     },
     {
+      "description_vi": "Phí vận chuyển, phí hoàn và phí bảo hiểm hãng tính theo vận đơn, theo ngày gửi.",
+      "dimensions": [
+        {
+          "name": "carrier",
+          "name_vi": "Hãng vận chuyển"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "shipment_status",
+          "name_vi": "Trạng thái vận đơn"
+        }
+      ],
+      "formula_vi": "Tổng total fee trên vận đơn hãng vận chuyển",
+      "good_direction": "down",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên (FR-ING-09).",
+          "date": "2026-10-17",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "carrier_fees",
+      "name_vi": "Phí hãng vận chuyển",
+      "packs": [
+        "seller"
+      ],
+      "requires": [
+        "carrier"
+      ],
+      "source_note_vi": "Số do hãng vận chuyển báo qua webhook, API chi tiết vận đơn (GHN, GHTK) hoặc file đối soát (J&T).",
+      "synonyms_vi": [
+        "phí hãng vận chuyển",
+        "phí ghn",
+        "phí j&t",
+        "phí giao hàng"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
+      "version": "1.0.0"
+    },
+    {
       "description_vi": "Tổng lượt nhấp do nền tảng quảng cáo báo.",
       "dimensions": [
         {
@@ -498,6 +546,52 @@
         "month"
       ],
       "unit": "count",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Tiền hãng thu hộ người nhận theo vận đơn, theo ngày gửi.",
+      "dimensions": [
+        {
+          "name": "carrier",
+          "name_vi": "Hãng vận chuyển"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "shipment_status",
+          "name_vi": "Trạng thái vận đơn"
+        }
+      ],
+      "formula_vi": "Tổng cod trên vận đơn hãng vận chuyển",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên (FR-ING-09).",
+          "date": "2026-10-17",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "cod_amount",
+      "name_vi": "Tiền thu hộ (COD)",
+      "packs": [
+        "seller"
+      ],
+      "requires": [
+        "carrier"
+      ],
+      "source_note_vi": "Số do hãng vận chuyển báo qua webhook, API chi tiết vận đơn (GHN, GHTK) hoặc file đối soát (J&T).",
+      "synonyms_vi": [
+        "cod",
+        "tiền thu hộ"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "VND",
       "version": "1.0.0"
     },
     {
@@ -1822,6 +1916,52 @@
         "month"
       ],
       "unit": "ratio",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Số vận đơn hãng vận chuyển ghi nhận, theo ngày gửi.",
+      "dimensions": [
+        {
+          "name": "carrier",
+          "name_vi": "Hãng vận chuyển"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "shipment_status",
+          "name_vi": "Trạng thái vận đơn"
+        }
+      ],
+      "formula_vi": "Số shipment id trên vận đơn hãng vận chuyển",
+      "good_direction": "none",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên (FR-ING-09).",
+          "date": "2026-10-17",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "shipment_count",
+      "name_vi": "Số vận đơn",
+      "packs": [
+        "seller"
+      ],
+      "requires": [
+        "carrier"
+      ],
+      "source_note_vi": "Số do hãng vận chuyển báo qua webhook, API chi tiết vận đơn (GHN, GHTK) hoặc file đối soát (J&T).",
+      "synonyms_vi": [
+        "số vận đơn",
+        "số đơn gửi hãng"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "count",
       "version": "1.0.0"
     },
     {

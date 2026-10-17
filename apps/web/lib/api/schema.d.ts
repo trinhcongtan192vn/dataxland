@@ -59,6 +59,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/carriers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Carriers */
+        get: operations["list_carriers_v1_carriers_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/connect/{source}/callback": {
         parameters: {
             query?: never;
@@ -384,6 +401,24 @@ export interface paths {
         get: operations["list_campaigns_v1_inputs_ad_campaigns_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/inputs/carrier-files": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Carrier Files */
+        get: operations["list_carrier_files_v1_inputs_carrier_files_get"];
+        put?: never;
+        /** Upload Carrier File */
+        post: operations["upload_carrier_file_v1_inputs_carrier_files_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1607,6 +1642,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/webhooks/carriers/{carrier}/{tenant_id}/{token}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Carrier Webhook */
+        post: operations["carrier_webhook_v1_webhooks_carriers__carrier___tenant_id___token__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1686,6 +1738,11 @@ export interface components {
             started_at?: number | null;
             /** Website */
             website?: string | null;
+        };
+        /** Body_upload_carrier_file_v1_inputs_carrier_files_post */
+        Body_upload_carrier_file_v1_inputs_carrier_files_post: {
+            /** File */
+            file: string;
         };
         /** Body_upload_costs_v1_inputs_product_costs_upload_post */
         Body_upload_costs_v1_inputs_product_costs_upload_post: {
@@ -1769,6 +1826,45 @@ export interface components {
             platform: string;
             /** Spend Vnd 90D */
             spend_vnd_90d: number | null;
+        };
+        /** CarrierFileOut */
+        CarrierFileOut: {
+            /** Carrier */
+            carrier: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Error Message Vi */
+            error_message_vi: string | null;
+            /** Filename */
+            filename: string;
+            /** Id */
+            id: string;
+            /** Rows Loaded */
+            rows_loaded: number | null;
+            /** Size Bytes */
+            size_bytes: number;
+            /** Status */
+            status: string;
+        };
+        /** CarrierOut */
+        CarrierOut: {
+            /** Carrier */
+            carrier: string;
+            /** Guide */
+            guide: string;
+            /** Kind */
+            kind: string;
+            /** Label */
+            label: string;
+            /** Last Event At */
+            last_event_at: string | null;
+            /** Waybills */
+            waybills: number;
+            /** Webhook Url */
+            webhook_url: string | null;
         };
         /** ChatLeftIn */
         ChatLeftIn: {
@@ -3289,6 +3385,38 @@ export interface operations {
             };
         };
     };
+    list_carriers_v1_carriers_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-tenant-id"?: string | null;
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CarrierOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     callback_v1_connect__source__callback_get: {
         parameters: {
             query?: {
@@ -4065,6 +4193,74 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CampaignOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_carrier_files_v1_inputs_carrier_files_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-tenant-id"?: string | null;
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CarrierFileOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    upload_carrier_file_v1_inputs_carrier_files_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-tenant-id"?: string | null;
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_upload_carrier_file_v1_inputs_carrier_files_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CarrierFileOut"];
                 };
             };
             /** @description Validation Error */
@@ -6772,6 +6968,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TenantOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    carrier_webhook_v1_webhooks_carriers__carrier___tenant_id___token__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                carrier: string;
+                tenant_id: string;
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
                 };
             };
             /** @description Validation Error */

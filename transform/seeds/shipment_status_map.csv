@@ -1,0 +1,57 @@
+carrier,status_raw,status
+ghn,ready_to_pick,pending
+ghn,picking,pending
+ghn,money_collect_picking,pending
+ghn,picked,in_transit
+ghn,storing,in_transit
+ghn,transporting,in_transit
+ghn,sorting,in_transit
+ghn,delivering,in_transit
+ghn,money_collect_delivering,in_transit
+ghn,delivered,delivered
+ghn,delivery_fail,failed
+ghn,waiting_to_return,returning
+ghn,return,returning
+ghn,return_transporting,returning
+ghn,return_sorting,returning
+ghn,returning,returning
+ghn,return_fail,returning
+ghn,returned,returned
+ghn,cancel,cancelled
+ghn,exception,failed
+ghn,lost,failed
+ghn,damage,failed
+ghtk,-1,cancelled
+ghtk,1,pending
+ghtk,2,pending
+ghtk,3,in_transit
+ghtk,4,in_transit
+ghtk,5,delivered
+ghtk,6,delivered
+ghtk,7,failed
+ghtk,8,pending
+ghtk,9,failed
+ghtk,10,in_transit
+ghtk,11,returned
+ghtk,12,pending
+ghtk,13,returning
+ghtk,20,returning
+ghtk,21,returned
+ghtk,45,in_transit
+ghtk,49,failed
+ghtk,123,in_transit
+ghtk,127,failed
+ghtk,128,pending
+jnt,chờ lấy hàng,pending
+jnt,đã lấy hàng,in_transit
+jnt,đang vận chuyển,in_transit
+jnt,đang giao hàng,in_transit
+jnt,đã ký nhận,delivered
+jnt,giao thành công,delivered
+jnt,giao không thành công,failed
+jnt,đang hoàn,returning
+jnt,chuyển hoàn,returning
+jnt,đã hoàn,returned
+jnt,hoàn thành công,returned
+jnt,đã hủy,cancelled
+jnt,hủy,cancelled

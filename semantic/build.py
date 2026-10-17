@@ -66,7 +66,7 @@ UNITS = {"VND", "ratio", "percent", "count"}
 DIRECTIONS = {"up", "down", "none"}
 GRAINS = {"day", "week", "month"}
 PACKS = {"seller", "agency"}
-REQUIRES = {"identity", "amazon"}
+REQUIRES = {"identity", "amazon", "carrier"}
 AGGS = {"sum": "sum", "count": "count", "count_distinct": "count_distinct", "avg": "avg", "min": "min", "max": "max"}
 ADDITIVE = {"sum", "count"}
 SEMVER = re.compile(r"^\d+\.\d+\.\d+$")
@@ -168,7 +168,7 @@ def validate(lib: Library) -> None:
         if not set(m.get("packs") or []) <= PACKS:
             e.append(f"{f}: packs chỉ gồm seller, agency")
         if not set(m.get("requires") or []) <= REQUIRES:
-            e.append(f"{f}: requires chỉ gồm identity, amazon")
+            e.append(f"{f}: requires chỉ gồm identity, amazon, carrier")
         for dname in m.get("dimensions") or []:
             if dname not in lib.dimensions:
                 e.append(f"{f}: chiều '{dname}' không có trong dimensions.yml")

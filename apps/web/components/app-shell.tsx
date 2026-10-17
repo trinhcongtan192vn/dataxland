@@ -32,6 +32,7 @@ const APP_NAV: NavItem[] = [
     show: (t) => t?.pack === "seller" && t.role !== "partner" && can(t, "inputs.read"),
   },
   { href: "/app/inputs/budgets", label: "Ngân sách", show: (t) => can(t, "inputs.read") },
+  { href: "/app/inputs/carriers", label: "Vận chuyển", show: (t) => can(t, "inputs.read") },
   { href: "/app/decisions", label: "Quyết định", show: (t) => can(t, "decisions.read") },
   { href: "/app/settings/members", label: "Thành viên", show: (t) => can(t, "users.manage") },
   { href: "/app/settings/partners", label: "Agency", show: (t) => can(t, "partners.manage") },

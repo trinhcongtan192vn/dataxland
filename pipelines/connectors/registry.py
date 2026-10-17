@@ -16,6 +16,9 @@ DLT_CONNECTORS: dict[str, str] = {
     "shopee": "connectors.shopee.source:sync_shopee",
     "tiktok_shop": "connectors.tiktok_shop.source:sync_tiktok_shop",
     "lazada": "connectors.lazada.source:sync_lazada",
+    "ghn": "connectors.carriers.ghn:sync_ghn",
+    "ghtk": "connectors.carriers.ghtk:sync_ghtk",
+    "jnt": "connectors.carriers.jnt:sync_jnt",
 }
 
 
@@ -32,6 +35,8 @@ def connector_for(source: SourceConfig, settings: Settings | None = None) -> Con
         return None
     if source.type == "portal":
         return _load(DLT_CONNECTORS["portal"])
+    if source.type == "jnt":  # file đối soát, không cần secret (ADR 0005)
+        return _load(DLT_CONNECTORS["jnt"])
     if s.is_local and (not source.secret_ref or not get_secret_store(s).exists(source.secret_ref)):
         return _load("connectors.samples:sync_from_samples")
     path = DLT_CONNECTORS.get(source.type)

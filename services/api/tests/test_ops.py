@@ -50,7 +50,7 @@ def test_fr_ops_04_overview_reflects_runs(client: Any) -> None:
     assert colors["shopee"] == "green" and colors["lazada"] == "red" and colors["tiktok_shop"] == "grey"
     assert seller["blocking_tests"] == 1 and seller["last_run"]["status"] == "blocked"
     assert seller["weekly_report"]["status"] == "not_built"
-    assert seller["source_count"] == 4
+    assert seller["source_count"] == 6  # shopee, tiktok_shop, lazada, meta_ads, ghn, jnt (không tính portal)
     # Chỉ nhân viên vào được /ops.
     assert client.get("/v1/ops/overview", headers=auth("owner_seller")).status_code == 403
     assert client.get("/v1/ops/overview", headers=auth("engineer")).status_code == 200

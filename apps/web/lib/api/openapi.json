@@ -255,6 +255,20 @@
     "title": "Body_submit_v1_health_checks_post",
     "type": "object"
    },
+   "Body_upload_carrier_file_v1_inputs_carrier_files_post": {
+    "properties": {
+     "file": {
+      "contentMediaType": "application/octet-stream",
+      "title": "File",
+      "type": "string"
+     }
+    },
+    "required": [
+     "file"
+    ],
+    "title": "Body_upload_carrier_file_v1_inputs_carrier_files_post",
+    "type": "object"
+   },
    "Body_upload_costs_v1_inputs_product_costs_upload_post": {
     "properties": {
      "file": {
@@ -507,6 +521,127 @@
      "spend_vnd_90d"
     ],
     "title": "CampaignOut",
+    "type": "object"
+   },
+   "CarrierFileOut": {
+    "properties": {
+     "carrier": {
+      "title": "Carrier",
+      "type": "string"
+     },
+     "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+     },
+     "error_message_vi": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Error Message Vi"
+     },
+     "filename": {
+      "title": "Filename",
+      "type": "string"
+     },
+     "id": {
+      "title": "Id",
+      "type": "string"
+     },
+     "rows_loaded": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Rows Loaded"
+     },
+     "size_bytes": {
+      "title": "Size Bytes",
+      "type": "integer"
+     },
+     "status": {
+      "title": "Status",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "carrier",
+     "filename",
+     "size_bytes",
+     "status",
+     "rows_loaded",
+     "error_message_vi",
+     "created_at"
+    ],
+    "title": "CarrierFileOut",
+    "type": "object"
+   },
+   "CarrierOut": {
+    "properties": {
+     "carrier": {
+      "title": "Carrier",
+      "type": "string"
+     },
+     "guide": {
+      "title": "Guide",
+      "type": "string"
+     },
+     "kind": {
+      "title": "Kind",
+      "type": "string"
+     },
+     "label": {
+      "title": "Label",
+      "type": "string"
+     },
+     "last_event_at": {
+      "anyOf": [
+       {
+        "format": "date-time",
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Last Event At"
+     },
+     "waybills": {
+      "title": "Waybills",
+      "type": "integer"
+     },
+     "webhook_url": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Webhook Url"
+     }
+    },
+    "required": [
+     "carrier",
+     "label",
+     "kind",
+     "webhook_url",
+     "waybills",
+     "last_event_at",
+     "guide"
+    ],
+    "title": "CarrierOut",
     "type": "object"
    },
    "ChatLeftIn": {
@@ -4785,6 +4920,75 @@
     ]
    }
   },
+  "/v1/carriers": {
+   "get": {
+    "operationId": "list_carriers_v1_carriers_get",
+    "parameters": [
+     {
+      "in": "header",
+      "name": "x-tenant-id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/CarrierOut"
+         },
+         "title": "Response List Carriers V1 Carriers Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "List Carriers",
+    "tags": [
+     "carriers"
+    ]
+   }
+  },
   "/v1/connect/{source}/callback": {
    "get": {
     "operationId": "callback_v1_connect__source__callback_get",
@@ -6418,6 +6622,148 @@
     "summary": "List Campaigns",
     "tags": [
      "inputs"
+    ]
+   }
+  },
+  "/v1/inputs/carrier-files": {
+   "get": {
+    "operationId": "list_carrier_files_v1_inputs_carrier_files_get",
+    "parameters": [
+     {
+      "in": "header",
+      "name": "x-tenant-id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/CarrierFileOut"
+         },
+         "title": "Response List Carrier Files V1 Inputs Carrier Files Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "List Carrier Files",
+    "tags": [
+     "carriers"
+    ]
+   },
+   "post": {
+    "operationId": "upload_carrier_file_v1_inputs_carrier_files_post",
+    "parameters": [
+     {
+      "in": "header",
+      "name": "x-tenant-id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "multipart/form-data": {
+       "schema": {
+        "$ref": "#/components/schemas/Body_upload_carrier_file_v1_inputs_carrier_files_post"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CarrierFileOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Upload Carrier File",
+    "tags": [
+     "carriers"
     ]
    }
   },
@@ -12025,6 +12371,68 @@
     "summary": "Get Tenant",
     "tags": [
      "tenants"
+    ]
+   }
+  },
+  "/v1/webhooks/carriers/{carrier}/{tenant_id}/{token}": {
+   "post": {
+    "operationId": "carrier_webhook_v1_webhooks_carriers__carrier___tenant_id___token__post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "carrier",
+      "required": true,
+      "schema": {
+       "title": "Carrier",
+       "type": "string"
+      }
+     },
+     {
+      "in": "path",
+      "name": "tenant_id",
+      "required": true,
+      "schema": {
+       "title": "Tenant Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "path",
+      "name": "token",
+      "required": true,
+      "schema": {
+       "title": "Token",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Carrier Webhook V1 Webhooks Carriers  Carrier   Tenant Id   Token  Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Carrier Webhook",
+    "tags": [
+     "carriers"
     ]
    }
   }

@@ -1,0 +1,33 @@
+metric: shipment_count
+name_vi: Số vận đơn
+description_vi: Số vận đơn hãng vận chuyển ghi nhận, theo ngày gửi.
+version: 1.0.0
+type: simple
+hidden: false
+source: mrt_seller__shipments
+measure:
+  agg: count
+  column: shipment_id
+dimensions:
+- carrier
+- date
+- shipment_status
+time_grains:
+- day
+- week
+- month
+unit: count
+good_direction: none
+packs:
+- seller
+requires:
+- carrier
+synonyms_vi:
+- số vận đơn
+- số đơn gửi hãng
+source_note_vi: Số do hãng vận chuyển báo qua webhook, API chi tiết vận đơn (GHN, GHTK) hoặc file đối soát (J&T).
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-17'
+  change_vi: Phiên bản đầu tiên (FR-ING-09).

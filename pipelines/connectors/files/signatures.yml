@@ -107,3 +107,12 @@ product_costs:
     - [ma_sku, Mã SKU, SKU]
     - [gia_von, Giá vốn]
     - [ap_dung_tu, Áp dụng từ]
+jnt_reconcile:
+  label_vi: File đối soát J&T Express
+  columns:
+    - [Mã vận đơn, Waybill No, Billcode]
+    - [Mã đơn hàng, Order No, Mã đơn khách hàng]
+    - [Trạng thái, Status]
+    - [Phí vận chuyển, Freight, Cước phí]
+    - [Tiền COD, COD Amount, Tiền thu hộ]
+    - [Ngày gửi, Ngày gửi hàng, Ship Date, Pickup Time]

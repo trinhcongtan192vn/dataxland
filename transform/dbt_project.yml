@@ -52,6 +52,8 @@ seeds:
   dx:
     +schema: core
     +quote_columns: false
+    shipment_status_map:
+      +column_types: {carrier: string, status_raw: string, status: string}
 
 data_tests:
   dx:

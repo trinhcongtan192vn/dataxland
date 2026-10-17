@@ -8,6 +8,11 @@ mrt_seller__order_lines:
   primary_key: order_line_id
   packs:
   - seller
+mrt_seller__shipments:
+  name_vi: Vận đơn hãng vận chuyển
+  primary_key: shipment_id
+  packs:
+  - seller
 mrt_common__ad_daily:
   name_vi: Quảng cáo theo ngày
   primary_key: ad_performance_id

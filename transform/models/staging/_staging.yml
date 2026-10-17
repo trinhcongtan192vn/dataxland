@@ -1624,3 +1624,129 @@ models:
       - dbt_utils.unique_combination_of_columns:
           arguments:
             combination_of_columns: ['source_account', 'date', 'campaign_id', 'adgroup_id']
+  - name: stg_ghn__shipments
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: source_account
+        data_type: string
+      - name: order_source_id
+        data_type: string
+      - name: status_raw
+        data_type: string
+      - name: status
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['pending', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', 'failed']
+              config: {severity: error}
+      - name: created_at
+        data_type: timestamp
+      - name: updated_at
+        data_type: timestamp
+      - name: ship_date
+        data_type: date
+      - name: cod_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: shipping_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: return_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: insurance_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_ghtk__shipments
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: source_account
+        data_type: string
+      - name: order_source_id
+        data_type: string
+      - name: status_raw
+        data_type: string
+      - name: status
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['pending', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', 'failed']
+              config: {severity: error}
+      - name: created_at
+        data_type: timestamp
+      - name: updated_at
+        data_type: timestamp
+      - name: ship_date
+        data_type: date
+      - name: cod_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: shipping_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: return_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: insurance_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]
+  - name: stg_jnt__shipments
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: source_account
+        data_type: string
+      - name: order_source_id
+        data_type: string
+      - name: status_raw
+        data_type: string
+      - name: status
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['pending', 'in_transit', 'delivered', 'returning', 'returned', 'cancelled', 'failed']
+              config: {severity: error}
+      - name: created_at
+        data_type: timestamp
+      - name: updated_at
+        data_type: timestamp
+      - name: ship_date
+        data_type: date
+      - name: cod_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: shipping_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: return_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: insurance_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]

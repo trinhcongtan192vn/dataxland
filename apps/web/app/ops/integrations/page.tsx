@@ -9,6 +9,7 @@ import { api, unwrap } from "@/lib/api/client";
 const CAT: Record<string, string> = {
   marketplace: "Sàn thương mại điện tử",
   ads: "Quảng cáo",
+  logistics: "Vận chuyển",
   messaging: "Nhắn tin",
   auth: "Đăng nhập",
   email: "Email",
