@@ -1002,6 +1002,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/partner/tenants": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Partner Tenants */
+        get: operations["partner_tenants_v1_partner_tenants_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/partners": {
         parameters: {
             query?: never;
@@ -2161,6 +2178,29 @@ export interface components {
             name: string;
             /** Partner Id */
             partner_id: string;
+        };
+        /** PartnerTenant */
+        PartnerTenant: {
+            /** Ad Spend Mtd */
+            ad_spend_mtd: number | null;
+            /** Budget Pacing */
+            budget_pacing: number | null;
+            /** Data As Of */
+            data_as_of: string | null;
+            /** Error */
+            error?: string | null;
+            /** Flags */
+            flags: {
+                [key: string]: unknown;
+            }[];
+            /** Name */
+            name: string;
+            /** Pack */
+            pack: string;
+            /** Roas Blended */
+            roas_blended: number | null;
+            /** Tenant Id */
+            tenant_id: string;
         };
         /** PurgedIn */
         PurgedIn: {
@@ -4891,6 +4931,37 @@ export interface operations {
                     "application/json": {
                         [key: string]: unknown;
                     }[];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    partner_tenants_v1_partner_tenants_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PartnerTenant"][];
                 };
             };
             /** @description Validation Error */
