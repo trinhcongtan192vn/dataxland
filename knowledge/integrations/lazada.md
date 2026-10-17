@@ -1,6 +1,6 @@
 # Lazada Open Platform
 
-Connector Lazada thuộc mốc M4 (spec 01 §5). Luồng kết nối OAuth đã có; connector nạp dữ liệu được bật ở bước 011.
+DataxLand đọc đơn hàng, giao dịch tài chính, trả hàng và sản phẩm qua Lazada Open Platform (spec 01 §5).
 
 | Lớp | Lưu ở đâu |
 |---|---|

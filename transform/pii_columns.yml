@@ -1,0 +1,28 @@
+# Cột thông tin cá nhân người mua trong bảng raw (spec 04 §8, NFR-03). Dùng bởi `ops/erase_subject.py`.
+# key: cột khóa của bản ghi; phone/email/buyer_ref: cột dùng để tìm người; name/address: cột chỉ bị xóa theo.
+# Bảng đơn: xóa các cột này (đặt null), giữ đơn để không sai doanh thu.
+shopee__orders:
+  source: shopee
+  key: order_sn
+  phone: [recipient_phone]
+  name: [recipient_name, buyer_username]
+  address: [recipient_full_address]
+  buyer_ref: [buyer_user_id]
+tiktok_shop__orders:
+  source: tiktok_shop
+  key: id
+  phone: [recipient_phone_number]
+  email: [buyer_email]
+  name: [recipient_name]
+  address: [recipient_full_address]
+  buyer_ref: [user_id]
+lazada__orders:
+  source: lazada
+  key: order_id
+  phone: [address_phone]
+  name: [customer_first_name]
+  address: [address_full]
+amazon_seller__orders:
+  source: amazon_seller
+  key: amazon_order_id
+  email: [buyer_email]
