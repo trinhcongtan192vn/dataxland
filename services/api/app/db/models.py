@@ -185,6 +185,8 @@ class AdBudget(Timestamps, Base):
     platform: Mapped[str] = mapped_column(Text, nullable=False)
     month: Mapped[date] = mapped_column(Date, nullable=False)
     budget_vnd: Mapped[Decimal] = mapped_column(Numeric(18, 2), nullable=False)
+    # FR-INP-05: trống = ngân sách cả nền tảng; có giá trị = ngân sách một chiến dịch (ADR 0002 #55).
+    campaign_id: Mapped[str | None] = mapped_column(Text)
     created_by: Mapped[str | None] = mapped_column(Text)
     deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     __table_args__ = (
@@ -195,6 +197,7 @@ class AdBudget(Timestamps, Base):
             "tenant_id",
             "platform",
             "month",
+            text("coalesce(campaign_id, '')"),
             unique=True,
             postgresql_where=text("deleted_at is null"),
         ),

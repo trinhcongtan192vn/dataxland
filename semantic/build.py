@@ -360,7 +360,7 @@ def build_cubes(lib: Library) -> dict[str, dict[str, Any]]:
                     "measures": additive,
                     "dimensions": roll_dims,
                     "time_dimension": "date",
-                    "granularity": "day" if mart != "mrt_agency__budget_monthly" else "month",
+                    "granularity": "month" if mart.startswith("mrt_agency__budget") else "day",
                     # Không làm mới theo thời gian: đổi khi marts được hoán đổi (spec 03 §10.2).
                     "refresh_key": {
                         "sql": f"SELECT MAX(_dx_updated_at) FROM {{{{ COMPILE_CONTEXT.securityContext.dataset_prefix | safe }}}}_marts.{mart}"

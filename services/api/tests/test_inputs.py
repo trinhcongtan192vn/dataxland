@@ -207,3 +207,44 @@ def test_fr_ops_01_sync_tenants(tmp_path: Any, session: Any, client: Any) -> Non
     session.commit()
     assert res.archived == ["demo_agency"]
     assert client.get("/v1/tenants/demo_agency", headers=auth("data_lead")).status_code == 404
+
+
+def test_fr_inp_05_campaign_budgets(client: Any, session: Any) -> None:
+    h = auth("owner_agency")
+    post = lambda body: client.post("/v1/inputs/ad-budgets", json=body, headers=h)  # noqa: E731
+    r = post({"platform": "tiktok_ads", "month": "2026-11", "campaign_id": "tic001", "budget_vnd": 20000000})
+    assert r.status_code == 201 and r.json()["campaign_id"] == "tic001"
+    # Cùng chiến dịch, cùng tháng: cập nhật dòng cũ thay vì thêm dòng.
+    r2 = post({"platform": "tiktok_ads", "month": "2026-11", "campaign_id": "tic001", "budget_vnd": 25000000})
+    assert r2.status_code == 201 and r2.json()["id"] == r.json()["id"] and r2.json()["budget_vnd"] == 25000000
+    assert (
+        post({"platform": "tiktok_ads", "month": "2026-11", "campaign_id": "tic002", "budget_vnd": 1}).status_code
+        == 201
+    )
+    # Đã nhập theo chiến dịch thì không nhập cả nền tảng cùng tháng (tránh cộng trùng), và ngược lại.
+    c = post({"platform": "tiktok_ads", "month": "2026-11", "budget_vnd": 40000000})
+    assert c.status_code == 409 and c.json()["code"] == "BUDGET_LEVEL_CONFLICT"
+    assert post({"platform": "meta_ads", "month": "2026-11", "budget_vnd": 5}).status_code == 201
+    c2 = post({"platform": "meta_ads", "month": "2026-11", "campaign_id": "m1", "budget_vnd": 5})
+    assert c2.status_code == 409
+    rows = client.get("/v1/inputs/ad-budgets?from_month=2026-11&to_month=2026-11", headers=h).json()
+    assert [(b["platform"], b["campaign_id"]) for b in rows] == [
+        ("meta_ads", None),
+        ("tiktok_ads", "tic001"),
+        ("tiktok_ads", "tic002"),
+    ]
+
+
+def test_fr_inp_05_campaign_list_via_metrics(client: Any) -> None:
+    from app.metrics.cube_client import set_cube
+    from tests.test_metrics import FakeCube
+
+    fake = FakeCube()
+    set_cube(fake)
+    try:
+        r = client.get("/v1/inputs/ad-campaigns", headers=auth("owner_agency"))
+    finally:
+        set_cube(None)
+    assert r.status_code == 200, r.text
+    assert r.json() and r.json()[0]["campaign_id"]
+    assert all(t == "demo_agency" for t, _, _ in fake.calls)

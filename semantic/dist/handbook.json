@@ -239,6 +239,14 @@
       "description_vi": "Ngân sách tháng khách nhập trên cổng.",
       "dimensions": [
         {
+          "name": "campaign",
+          "name_vi": "Chiến dịch"
+        },
+        {
+          "name": "campaign_name",
+          "name_vi": "Tên chiến dịch"
+        },
+        {
           "name": "date",
           "name_vi": "Ngày"
         },
@@ -259,6 +267,11 @@
           "change_vi": "Hiện trên dashboard và sổ tay (ADR 0004); công thức không đổi.",
           "date": "2026-10-17",
           "version": "1.0.1"
+        },
+        {
+          "change_vi": "Thêm chiều chiến dịch cho ngân sách nhập theo chiến dịch (FR-INP-05); công thức không đổi.",
+          "date": "2026-10-17",
+          "version": "1.0.2"
         }
       ],
       "metric": "budget",
@@ -275,11 +288,19 @@
         "month"
       ],
       "unit": "VND",
-      "version": "1.0.1"
+      "version": "1.0.2"
     },
     {
       "description_vi": "Đã chi trong tháng chia mức chi đúng tiến độ (ngân sách × số ngày đã qua ÷ số ngày của tháng). 1,0 là đúng tiến độ; trên 1 là chi nhanh hơn kế hoạch.",
       "dimensions": [
+        {
+          "name": "campaign",
+          "name_vi": "Chiến dịch"
+        },
+        {
+          "name": "campaign_name",
+          "name_vi": "Tên chiến dịch"
+        },
         {
           "name": "date",
           "name_vi": "Ngày"
@@ -296,6 +317,11 @@
           "change_vi": "Phiên bản đầu tiên.",
           "date": "2026-10-16",
           "version": "1.0.0"
+        },
+        {
+          "change_vi": "Thêm chiều chiến dịch cho ngân sách nhập theo chiến dịch (FR-INP-05); công thức không đổi.",
+          "date": "2026-10-17",
+          "version": "1.0.1"
         }
       ],
       "metric": "budget_pacing",
@@ -314,11 +340,19 @@
         "month"
       ],
       "unit": "ratio",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     {
       "description_vi": "Đã chi trong tháng chia ngân sách tháng.",
       "dimensions": [
+        {
+          "name": "campaign",
+          "name_vi": "Chiến dịch"
+        },
+        {
+          "name": "campaign_name",
+          "name_vi": "Tên chiến dịch"
+        },
         {
           "name": "date",
           "name_vi": "Ngày"
@@ -335,6 +369,11 @@
           "change_vi": "Phiên bản đầu tiên.",
           "date": "2026-10-16",
           "version": "1.0.0"
+        },
+        {
+          "change_vi": "Thêm chiều chiến dịch cho ngân sách nhập theo chiến dịch (FR-INP-05); công thức không đổi.",
+          "date": "2026-10-17",
+          "version": "1.0.1"
         }
       ],
       "metric": "budget_used_pct",
@@ -351,7 +390,7 @@
         "month"
       ],
       "unit": "percent",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     {
       "description_vi": "Số đơn hủy chia số đơn đã đặt.",
@@ -1915,6 +1954,14 @@
       "description_vi": "Chi quảng cáo từ đầu tháng đến hôm qua.",
       "dimensions": [
         {
+          "name": "campaign",
+          "name_vi": "Chiến dịch"
+        },
+        {
+          "name": "campaign_name",
+          "name_vi": "Tên chiến dịch"
+        },
+        {
           "name": "date",
           "name_vi": "Ngày"
         },
@@ -1935,6 +1982,11 @@
           "change_vi": "Hiện trên dashboard và sổ tay (ADR 0004); công thức không đổi.",
           "date": "2026-10-17",
           "version": "1.0.1"
+        },
+        {
+          "change_vi": "Thêm chiều chiến dịch cho ngân sách nhập theo chiến dịch (FR-INP-05); công thức không đổi.",
+          "date": "2026-10-17",
+          "version": "1.0.2"
         }
       ],
       "metric": "spend_mtd",
@@ -1949,7 +2001,7 @@
         "month"
       ],
       "unit": "VND",
-      "version": "1.0.1"
+      "version": "1.0.2"
     },
     {
       "description_vi": "Chi quảng cáo Amazon chia tổng doanh thu Amazon.",

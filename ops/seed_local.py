@@ -145,12 +145,13 @@ def seed_postgres(samples: Path) -> str:
         for r in budgets:
             conn.execute(
                 text(
-                    "insert into ad_budgets (id, tenant_id, platform, month, budget_vnd, created_by, deleted_at,"
-                    " created_at, updated_at) values (:id, :tenant_id, :platform, :month, :budget_vnd, 'seed', null,"
-                    " :now, :now)"
+                    "insert into ad_budgets (id, tenant_id, platform, month, campaign_id, budget_vnd, created_by,"
+                    " deleted_at, created_at, updated_at) values (:id, :tenant_id, :platform, :month, :campaign_id,"
+                    " :budget_vnd, 'seed', null, :now, :now)"
                 ),
                 {
                     **{k: r[k] for k in ("tenant_id", "platform", "month", "budget_vnd")},
+                    "campaign_id": r.get("campaign_id"),
                     "id": "seed" + r["id"].upper().rjust(22, "0"),
                     "now": now,
                 },

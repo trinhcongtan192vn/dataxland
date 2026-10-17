@@ -1,5 +1,21 @@
 {
   "cubes": {
+    "mrt_agency__budget_campaign_monthly": {
+      "dimensions": {
+        "budget_campaign_monthly_id": "budget_campaign_monthly_id",
+        "campaign": "campaign_id",
+        "campaign_name": "campaign_name",
+        "date": "month",
+        "platform": "platform"
+      },
+      "measures": [
+        "budget",
+        "budget_expected",
+        "budget_pacing",
+        "budget_used_pct",
+        "spend_mtd"
+      ]
+    },
     "mrt_agency__budget_monthly": {
       "dimensions": {
         "budget_monthly_id": "budget_monthly_id",
@@ -150,6 +166,7 @@
     },
     "campaign": {
       "columns": {
+        "mrt_agency__budget_campaign_monthly": "campaign_id",
         "mrt_common__ad_daily": "campaign_id"
       },
       "name_vi": "Chiến dịch",
@@ -157,6 +174,7 @@
     },
     "campaign_name": {
       "columns": {
+        "mrt_agency__budget_campaign_monthly": "campaign_name",
         "mrt_common__ad_daily": "campaign_name"
       },
       "name_vi": "Tên chiến dịch",
@@ -182,6 +200,7 @@
     },
     "date": {
       "columns": {
+        "mrt_agency__budget_campaign_monthly": "month",
         "mrt_agency__budget_monthly": "month",
         "mrt_common__ad_daily": "date",
         "mrt_common__sales_daily": "date",
@@ -209,6 +228,7 @@
     },
     "platform": {
       "columns": {
+        "mrt_agency__budget_campaign_monthly": "platform",
         "mrt_agency__budget_monthly": "platform",
         "mrt_common__ad_daily": "platform",
         "mrt_common__sales_daily": "platform",
@@ -240,7 +260,7 @@
       "type": "string"
     }
   },
-  "library_version": "7cbdac129d8db28d",
+  "library_version": "65effb4f376dfe60",
   "metrics": {
     "acos": {
       "anomaly": null,
@@ -589,6 +609,8 @@
       "cube": "mrt_agency__budget_monthly",
       "description_vi": "Ngân sách tháng khách nhập trên cổng.",
       "dimensions": [
+        "campaign",
+        "campaign_name",
         "date",
         "platform"
       ],
@@ -604,6 +626,7 @@
       ],
       "per_entity": null,
       "realizations": {
+        "mrt_agency__budget_campaign_monthly": "mrt_agency__budget_campaign_monthly.budget",
         "mrt_agency__budget_monthly": "mrt_agency__budget_monthly.budget"
       },
       "required_dimensions": [],
@@ -616,7 +639,7 @@
       ],
       "type": "simple",
       "unit": "VND",
-      "version": "1.0.1"
+      "version": "1.0.2"
     },
     "budget_expected": {
       "anomaly": null,
@@ -624,6 +647,8 @@
       "cube": "mrt_agency__budget_monthly",
       "description_vi": "Ngân sách tháng nhân số ngày đã qua chia số ngày của tháng.",
       "dimensions": [
+        "campaign",
+        "campaign_name",
         "date",
         "platform"
       ],
@@ -639,6 +664,7 @@
       ],
       "per_entity": null,
       "realizations": {
+        "mrt_agency__budget_campaign_monthly": "mrt_agency__budget_campaign_monthly.budget_expected",
         "mrt_agency__budget_monthly": "mrt_agency__budget_monthly.budget_expected"
       },
       "required_dimensions": [],
@@ -649,7 +675,7 @@
       ],
       "type": "simple",
       "unit": "VND",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     "budget_pacing": {
       "anomaly": null,
@@ -660,6 +686,8 @@
       "cube": "mrt_agency__budget_monthly",
       "description_vi": "Đã chi trong tháng chia mức chi đúng tiến độ (ngân sách × số ngày đã qua ÷ số ngày của tháng). 1,0 là đúng tiến độ; trên 1 là chi nhanh hơn kế hoạch.",
       "dimensions": [
+        "campaign",
+        "campaign_name",
         "date",
         "platform"
       ],
@@ -675,6 +703,7 @@
       ],
       "per_entity": null,
       "realizations": {
+        "mrt_agency__budget_campaign_monthly": "mrt_agency__budget_campaign_monthly.budget_pacing",
         "mrt_agency__budget_monthly": "mrt_agency__budget_monthly.budget_pacing"
       },
       "required_dimensions": [],
@@ -689,7 +718,7 @@
       ],
       "type": "derived",
       "unit": "ratio",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     "budget_used_pct": {
       "anomaly": null,
@@ -700,6 +729,8 @@
       "cube": "mrt_agency__budget_monthly",
       "description_vi": "Đã chi trong tháng chia ngân sách tháng.",
       "dimensions": [
+        "campaign",
+        "campaign_name",
         "date",
         "platform"
       ],
@@ -715,6 +746,7 @@
       ],
       "per_entity": null,
       "realizations": {
+        "mrt_agency__budget_campaign_monthly": "mrt_agency__budget_campaign_monthly.budget_used_pct",
         "mrt_agency__budget_monthly": "mrt_agency__budget_monthly.budget_used_pct"
       },
       "required_dimensions": [],
@@ -727,7 +759,7 @@
       ],
       "type": "ratio",
       "unit": "percent",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     "cancel_rate": {
       "anomaly": null,
@@ -2609,6 +2641,8 @@
       "cube": "mrt_agency__budget_monthly",
       "description_vi": "Chi quảng cáo từ đầu tháng đến hôm qua.",
       "dimensions": [
+        "campaign",
+        "campaign_name",
         "date",
         "platform"
       ],
@@ -2624,6 +2658,7 @@
       ],
       "per_entity": null,
       "realizations": {
+        "mrt_agency__budget_campaign_monthly": "mrt_agency__budget_campaign_monthly.spend_mtd",
         "mrt_agency__budget_monthly": "mrt_agency__budget_monthly.spend_mtd"
       },
       "required_dimensions": [],
@@ -2634,7 +2669,7 @@
       ],
       "type": "simple",
       "unit": "VND",
-      "version": "1.0.1"
+      "version": "1.0.2"
     },
     "tacos": {
       "anomaly": null,

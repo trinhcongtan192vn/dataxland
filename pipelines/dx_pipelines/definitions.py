@@ -5,6 +5,7 @@ from __future__ import annotations
 import dagster as dg
 
 from dx_common.logging import configure_logging
+from dx_pipelines.jobs.costs import gcp_costs
 from dx_pipelines.jobs.fixed import (
     SCHEDULES,
     decision_reminders,
@@ -32,7 +33,11 @@ defs = dg.Definitions(
         healthcheck_cleanup,
         decision_reminders,
         events_cleanup,
+        gcp_costs,
     ],
-    schedules=SCHEDULES,
+    schedules=[
+        *SCHEDULES,
+        dg.ScheduleDefinition(job=gcp_costs, cron_schedule="0 6 * * *", execution_timezone="Asia/Ho_Chi_Minh"),
+    ],
     sensors=[tenant_partitions, tenant_schedule, events_sensor],
 )

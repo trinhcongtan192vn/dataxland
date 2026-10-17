@@ -24,6 +24,7 @@ ROUTERS = [
     "internal",
     "ask",
     "identity",
+    "costs",
 ]
 
 

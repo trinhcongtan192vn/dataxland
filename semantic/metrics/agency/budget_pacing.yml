@@ -2,10 +2,12 @@ metric: budget_pacing
 name_vi: Tiến độ ngân sách
 description_vi: Đã chi trong tháng chia mức chi đúng tiến độ (ngân sách × số ngày đã qua ÷ số ngày của tháng). 1,0 là đúng
   tiến độ; trên 1 là chi nhanh hơn kế hoạch.
-version: 1.0.0
+version: 1.0.1
 type: derived
 formula: spend_mtd / budget_expected
 dimensions:
+- campaign
+- campaign_name
 - date
 - platform
 time_grains:
@@ -24,3 +26,6 @@ history:
 - version: 1.0.0
   date: '2026-10-16'
   change_vi: Phiên bản đầu tiên.
+- version: 1.0.1
+  date: '2026-10-17'
+  change_vi: Thêm chiều chiến dịch cho ngân sách nhập theo chiến dịch (FR-INP-05); công thức không đổi.

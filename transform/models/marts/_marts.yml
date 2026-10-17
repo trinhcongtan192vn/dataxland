@@ -41,6 +41,12 @@ models:
       - name: budget_monthly_id
         data_tests: [unique, not_null]
 
+  - name: mrt_agency__budget_campaign_monthly
+    description: Ngân sách và chi tiêu theo chiến dịch (FR-INP-05); ngân sách cả nền tảng ở dòng `campaign_id` trống.
+    columns:
+      - name: budget_campaign_monthly_id
+        data_tests: [unique, not_null]
+
   - name: mrt_common__data_status
     columns:
       - name: tenant_id
@@ -156,3 +162,31 @@ unit_tests:
       rows:
         - {month: '2026-10-01', platform: meta_ads, budget_vnd: 310, spend_mtd_vnd: 100, days_in_month: 31, days_elapsed: 15}
         - {month: '2026-09-01', platform: meta_ads, budget_vnd: 300, spend_mtd_vnd: 280, days_in_month: 30, days_elapsed: 30}
+
+  - name: test_fr_inp_05_budget_by_campaign
+    config:
+      enabled: "{{ var('pack') == 'agency' }}"
+    description: Ngân sách chiến dịch ghép với chi tiêu cùng chiến dịch; ngân sách cả nền tảng ở dòng chiến dịch trống.
+    model: mrt_agency__budget_campaign_monthly
+    overrides:
+      vars: {pack: agency, today: '2026-10-16'}
+    given:
+      - input: ref('dim_ad_budget')
+        rows:
+          - {platform: tiktok_ads, month: '2026-10-01', campaign_id: c1, budget_vnd: 200}
+          - {platform: meta_ads, month: '2026-10-01', campaign_id: null, budget_vnd: 310}
+      - input: ref('fct_ad_performance_daily')
+        rows:
+          - {channel_id: T, campaign_id: c1, campaign_name: Bán chạy, date: '2026-10-15', spend_vnd: 120}
+          - {channel_id: T, campaign_id: c2, campaign_name: Khách mới, date: '2026-10-15', spend_vnd: 30}
+          - {channel_id: M, campaign_id: m1, campaign_name: Meta 1, date: '2026-10-15', spend_vnd: 90}
+      - input: ref('dim_channel')
+        rows:
+          - {channel_id: T, platform: tiktok_ads}
+          - {channel_id: M, platform: meta_ads}
+    expect:
+      rows:
+        - {platform: tiktok_ads, campaign_id: c1, campaign_name: Bán chạy, budget_vnd: 200, spend_mtd_vnd: 120}
+        - {platform: tiktok_ads, campaign_id: c2, campaign_name: Khách mới, budget_vnd: 0, spend_mtd_vnd: 30}
+        - {platform: meta_ads, campaign_id: null, campaign_name: null, budget_vnd: 310, spend_mtd_vnd: 0}
+        - {platform: meta_ads, campaign_id: m1, campaign_name: Meta 1, budget_vnd: 0, spend_mtd_vnd: 90}

@@ -46,16 +46,18 @@ models:
   - name: dim_ad_budget
     description: >
       Ngân sách nhập theo `platform`; nếu khách có nhiều tài khoản trên một nền tảng thì gán cho các `channel_id`
-      của nền tảng đó và chia đều (spec 02 §4).
+      của nền tảng đó và chia đều (spec 02 §4). Ngân sách theo chiến dịch (FR-INP-05) gán cho tài khoản chạy
+      chiến dịch, `campaign_id` có giá trị.
     columns:
       - name: channel_id
         data_tests: [not_null]
       - name: month
         data_tests: [not_null]
+      - name: campaign_id
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           arguments:
-            combination_of_columns: [channel_id, month]
+            combination_of_columns: [channel_id, month, campaign_id]
 
   - name: dim_customer
     description: Người mua sau khi ghép; chỉ có dạng băm (NFR-03).
@@ -396,17 +398,42 @@ unit_tests:
     given:
       - input: ref('stg_portal__ad_budgets')
         rows:
-          - {source_id: b1, platform: meta_ads, month: '2026-10-01', budget_vnd: 100, deleted: false}
-          - {source_id: b2, platform: google_ads, month: '2026-10-01', budget_vnd: 50, deleted: false}
+          - {source_id: b1, platform: meta_ads, month: '2026-10-01', campaign_id: null, budget_vnd: 100, deleted: false}
+          - {source_id: b2, platform: google_ads, month: '2026-10-01', campaign_id: null, budget_vnd: 50, deleted: false}
       - input: ref('dim_channel')
         rows:
           - {channel_id: M1, platform: meta_ads, channel_type: ads}
           - {channel_id: M2, platform: meta_ads, channel_type: ads}
+      - input: ref('fct_ad_performance_daily')
+        rows:
+          - {channel_id: M1, campaign_id: c1}
     expect:
       rows:
         - {platform: meta_ads, budget_vnd: 50}
         - {platform: meta_ads, budget_vnd: 50}
         - {platform: google_ads, budget_vnd: 50}
+
+  - name: test_fr_inp_05_campaign_budget_not_split
+    description: Ngân sách theo chiến dịch gán cho tài khoản chạy chiến dịch, không chia đều (FR-INP-05).
+    model: dim_ad_budget
+    overrides:
+      vars: {sources: [portal]}
+    given:
+      - input: ref('stg_portal__ad_budgets')
+        rows:
+          - {source_id: b1, platform: meta_ads, month: '2026-10-01', campaign_id: c1, budget_vnd: 70, deleted: false}
+          - {source_id: b2, platform: meta_ads, month: '2026-10-01', campaign_id: c9, budget_vnd: 30, deleted: false}
+      - input: ref('dim_channel')
+        rows:
+          - {channel_id: M1, platform: meta_ads, channel_type: ads}
+          - {channel_id: M2, platform: meta_ads, channel_type: ads}
+      - input: ref('fct_ad_performance_daily')
+        rows:
+          - {channel_id: M2, campaign_id: c1}
+    expect:
+      rows:
+        - {channel_id: M2, campaign_id: c1, budget_vnd: 70}
+        - {channel_id: fb5c89c9e8ecb44319ba09fefaa42bd0, campaign_id: c9, budget_vnd: 30}
 
   - name: test_dim_customer_first_order
     model: dim_customer

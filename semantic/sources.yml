@@ -25,3 +25,8 @@ mrt_agency__budget_monthly:
   primary_key: budget_monthly_id
   packs:
   - agency
+mrt_agency__budget_campaign_monthly:
+  name_vi: Ngân sách quảng cáo theo chiến dịch và tháng
+  primary_key: budget_campaign_monthly_id
+  packs:
+  - agency
