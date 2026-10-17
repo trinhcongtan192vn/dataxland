@@ -109,26 +109,31 @@ export default function OpsTenant() {
         title={t.name}
         subtitle={`${t.tenant_id} · gói ${t.pack} · ${t.status} · đồng bộ cấu hình ${formatDateTime(t.synced_at)}`}
         actions={
-          canWrite && (
-            <>
-              <button
-                type="button"
-                className="btn-primary"
-                disabled={rerun.isPending}
-                onClick={() => rerun.mutate(false)}
-              >
-                Chạy lại
-              </button>
-              <button
-                type="button"
-                className="btn-secondary"
-                disabled={rerun.isPending}
-                onClick={() => confirm("Chạy lại toàn bộ (full refresh) dbt?") && rerun.mutate(true)}
-              >
-                Chạy lại toàn bộ
-              </button>
-            </>
-          )
+          <>
+            <Link className="btn-secondary" href={`/ops/tenants/${t.tenant_id}/matches`}>
+              Ghép sản phẩm
+            </Link>
+            {canWrite && (
+              <>
+                <button
+                  type="button"
+                  className="btn-primary"
+                  disabled={rerun.isPending}
+                  onClick={() => rerun.mutate(false)}
+                >
+                  Chạy lại
+                </button>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  disabled={rerun.isPending}
+                  onClick={() => confirm("Chạy lại toàn bộ (full refresh) dbt?") && rerun.mutate(true)}
+                >
+                  Chạy lại toàn bộ
+                </button>
+              </>
+            )}
+          </>
         }
       />
       {connected && (

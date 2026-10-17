@@ -45,6 +45,7 @@ export default function OpsOverview() {
                 <th>Lần chạy gần nhất</th>
                 <th className="text-right">Test</th>
                 <th>Báo cáo tuần</th>
+                <th className="text-right">Cặp ghép chờ duyệt</th>
                 <th className="text-right">Chi phí / giờ tháng này</th>
               </tr>
             </thead>
@@ -125,6 +126,18 @@ export default function OpsOverview() {
                         </span>
                       )}
                     </div>
+                  </td>
+                  <td className="text-right text-xs">
+                    {t.pending_matches > 0 ? (
+                      <Link
+                        className="text-brand-600 hover:underline"
+                        href={`/ops/tenants/${t.tenant_id}/matches`}
+                      >
+                        {t.pending_matches}
+                      </Link>
+                    ) : (
+                      "—"
+                    )}
                   </td>
                   <td className="text-right text-xs tabular-nums">
                     {t.costs_month_vnd != null ? formatVnd(t.costs_month_vnd) : "—"}

@@ -108,6 +108,7 @@ def erase(
     tables = set(warehouse.list_tables(raw))
     enabled = {s.type for s in tenant.enabled_sources()}
     touched_sources: list[str] = []
+    matched: dict[str, set[str]] = {}
     for table, cfg in pii_config().items():
         if table not in tables or cfg["source"] not in enabled:
             continue
@@ -135,6 +136,7 @@ def erase(
         n = sum(1 for r in rows if str(r[0]) in keys)
         res.rows[table] = n
         touched_sources.append(cfg["source"])
+        matched.setdefault(cfg["source"], set()).update(keys)
         if dry_run:
             continue
         sets = ", ".join(f"{_q(warehouse, c)} = null" for c in cols)
@@ -146,13 +148,15 @@ def erase(
         )
     if dry_run or not touched_sources:
         return res
-    # identity_map (spec 10 §7): bỏ các dòng ghép của người này theo mã nguồn của đơn bị xóa thông tin.
+    # identity_map (spec 10 §8): bỏ các dòng ghép người mua theo mã nguồn của đơn bị xóa thông tin.
     core = f"{tenant.dataset_prefix}_core"
     if "identity_map" in set(warehouse.list_tables(core)):
-        warehouse.execute(
-            f"delete from {_q(warehouse, core)}.{_q(warehouse, 'identity_map')} "
-            f"where entity = 'customer' and canonical_id = {_lit(res.identifier_hash)}"
-        )
+        for source, ids in sorted(matched.items()):
+            warehouse.execute(
+                f"delete from {_q(warehouse, core)}.{_q(warehouse, 'identity_map')} "
+                f"where entity = 'customer' and source = {_lit(source)} "
+                f"and source_id in ({', '.join(_lit(k) for k in sorted(ids))})"
+            )
     if run_dbt is not None:
         res.dbt_ok = run_dbt(tenant, sorted(set(touched_sources)))
     return res

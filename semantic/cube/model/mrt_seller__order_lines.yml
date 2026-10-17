@@ -55,7 +55,7 @@ cubes:
     type: number
   - meta:
       unit: VND
-      version: 1.0.0
+      version: 1.0.1
     name: cogs
     sql: cogs_vnd
     title: Giá vốn hàng bán

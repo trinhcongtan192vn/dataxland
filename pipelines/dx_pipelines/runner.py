@@ -17,6 +17,7 @@ from typing import Any
 
 from connectors.base import SourceError, SyncContext
 from connectors.registry import connector_for
+from dx_common.config import get_settings
 from dx_common.logging import get_logger, run_id_var, tenant_id_var
 from dx_common.secrets import SecretNotFound, get_secret_store
 from dx_common.tenants import TenantConfig
@@ -35,6 +36,7 @@ STEPS = (
     "load_overrides",
     "sync_sources",
     "check_windsor_freshness",
+    "resolve_identity",
     "dbt_build",
     "evaluate_tests",
     "swap_marts",
@@ -43,7 +45,7 @@ STEPS = (
     "emit_finished",
     "detect_anomalies",
 )
-WARN_ONLY = frozenset({"upload_run_metadata", "detect_anomalies"})
+WARN_ONLY = frozenset({"upload_run_metadata", "detect_anomalies", "resolve_identity"})
 PRODUCER = "s1-core"
 
 
@@ -232,6 +234,32 @@ class TenantPipeline:
                     stale.append(f"{t}: {'không có dữ liệu' if ts is None else f'cũ {age}'}")
         if stale:
             raise StepFailed("windsor_stale", "; ".join(stale)[:500], source="windsor")
+
+    def resolve_identity(self) -> None:
+        """Ghép định danh (spec 10 §1): khách bật `features.identity` hoặc bán trên hơn một kênh. Ghi `identity_map`
+        trước dbt; gợi ý sản phẩm (có thể gọi Claude) tối đa một lần mỗi ngày. Lỗi chỉ cảnh báo."""
+        sales = [t for t in self.tenant.source_types() if t in ("shopee", "tiktok_shop", "lazada", "amazon_seller")]
+        if not (self.tenant.features.identity or len(sales) > 1):
+            return
+        from identity_worker.judge import anthropic_caller
+        from identity_worker.worker import run as run_identity
+
+        s = get_settings()
+        call = anthropic_caller(s.anthropic_api_key, s.anthropic_model_agent) if s.anthropic_api_key else None
+        stats = run_identity(
+            self.tenant.tenant_id,
+            self.tenant.dataset_prefix,
+            sales,
+            self.tenant.identity.suggest_threshold,
+            self.s.warehouse,
+            self.s.api,
+            today_vn().isoformat(),
+            call,
+            self.run_id,
+            suggest=None,
+            publish_change=False,
+        )
+        log.info("identity: %s", stats)
 
     def dbt_build(self) -> None:
         env = self._env()

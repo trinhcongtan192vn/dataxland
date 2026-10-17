@@ -1,0 +1,31 @@
+metric: repeat_customer_rate
+name_vi: Tỷ lệ khách quay lại
+description_vi: Phần người mua có từ 2 đơn trở lên trong kỳ trên tổng người mua có đơn trong kỳ.
+version: 1.0.0
+type: ratio
+numerator: repeat_customers
+denominator: active_customers
+dimensions:
+- channel
+- date
+- platform
+synonyms_vi:
+- khách quay lại
+- khách mua lại
+- tỷ lệ mua lại
+source_note_vi: Chỉ có khi khách bật ghép định danh; số đơn và người mua sau khi gộp hồ sơ người mua.
+unit: percent
+good_direction: up
+packs:
+- seller
+requires:
+- identity
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-17'
+  change_vi: Phiên bản đầu tiên (giai đoạn 2, spec 10 §7).

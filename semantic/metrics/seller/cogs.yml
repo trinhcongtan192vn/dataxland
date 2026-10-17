@@ -1,7 +1,7 @@
 metric: cogs
 name_vi: Giá vốn hàng bán
 description_vi: Số lượng bán nhân giá vốn hiệu lực tại ngày đặt. SKU chưa có giá vốn tạm tính là 0.
-version: 1.0.0
+version: 1.0.1
 type: simple
 source: mrt_seller__orders
 measure:
@@ -29,7 +29,7 @@ synonyms_vi:
 - giá vốn
 - cogs
 - tiền hàng
-source_note_vi: Giá vốn khách nhập trên cổng DataxLand.
+source_note_vi: Giá vốn khách nhập trên cổng DataxLand. Khi nhiều SKU được ghép thành một sản phẩm, mỗi SKU vẫn dùng giá vốn của chính nó.
 time_grains:
 - day
 - week
@@ -39,3 +39,6 @@ history:
 - version: 1.0.0
   date: '2026-10-16'
   change_vi: Phiên bản đầu tiên.
+- version: 1.0.1
+  date: '2026-10-17'
+  change_vi: Ghi chú giá vốn khi ghép sản phẩm (spec 10 §7); công thức không đổi.

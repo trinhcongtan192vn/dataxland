@@ -66,3 +66,10 @@ is_provisional:
   columns:
     mrt_seller__orders: is_provisional
     mrt_seller__order_lines: is_provisional
+customer:
+  name_vi: Người mua
+  type: string
+  # Chiều nội bộ: mã người mua đã băm, chỉ bộ máy dùng để tính chỉ số hai bậc; không mở cho truy vấn công khai.
+  internal: true
+  columns:
+    mrt_seller__orders: customer_id

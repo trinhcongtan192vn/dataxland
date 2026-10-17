@@ -109,6 +109,7 @@
     "mrt_seller__orders": {
       "dimensions": {
         "channel": "channel_id",
+        "customer": "customer_id",
         "date": "order_date",
         "is_provisional": "is_provisional",
         "order_id": "order_id",
@@ -116,6 +117,7 @@
         "platform": "platform"
       },
       "measures": [
+        "active_customers",
         "allocated_ad_spend",
         "aov",
         "cancel_rate",
@@ -168,6 +170,14 @@
         "mrt_seller__orders": "channel_id"
       },
       "name_vi": "Kênh",
+      "type": "string"
+    },
+    "customer": {
+      "columns": {
+        "mrt_seller__orders": "customer_id"
+      },
+      "internal": true,
+      "name_vi": "Người mua",
       "type": "string"
     },
     "date": {
@@ -230,7 +240,7 @@
       "type": "string"
     }
   },
-  "library_version": "4e4385ba334726b3",
+  "library_version": "7cbdac129d8db28d",
   "metrics": {
     "acos": {
       "anomaly": null,
@@ -258,6 +268,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__ad_daily": "mrt_common__ad_daily.acos"
       },
@@ -275,6 +286,44 @@
       ],
       "type": "ratio",
       "unit": "percent",
+      "version": "1.0.0"
+    },
+    "active_customers": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__orders",
+      "description_vi": "Số người mua (sau khi gộp định danh) có ít nhất một đơn không hủy trong kỳ.",
+      "dimensions": [
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "up",
+      "hidden": true,
+      "measure": "mrt_seller__orders.active_customers",
+      "metric": "active_customers",
+      "mode": "cube",
+      "name_vi": "Số người mua có đơn",
+      "packs": [
+        "seller"
+      ],
+      "per_entity": null,
+      "realizations": {
+        "mrt_seller__orders": "mrt_seller__orders.active_customers"
+      },
+      "required_dimensions": [],
+      "requires": [
+        "identity"
+      ],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "count",
       "version": "1.0.0"
     },
     "ad_spend": {
@@ -305,6 +354,7 @@
         "agency",
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__ad_daily": "mrt_common__ad_daily.ad_spend"
       },
@@ -351,6 +401,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.allocated_ad_spend",
         "mrt_seller__orders": "mrt_seller__orders.allocated_ad_spend"
@@ -390,6 +441,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__ad_daily": "mrt_common__ad_daily.amazon_ad_sales"
       },
@@ -430,6 +482,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__ad_daily": "mrt_common__ad_daily.amazon_ad_spend"
       },
@@ -467,6 +520,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__sales_daily": "mrt_common__sales_daily.amazon_total_sales"
       },
@@ -509,6 +563,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.aov",
         "mrt_seller__orders": "mrt_seller__orders.aov"
@@ -547,6 +602,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_agency__budget_monthly": "mrt_agency__budget_monthly.budget"
       },
@@ -581,6 +637,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_agency__budget_monthly": "mrt_agency__budget_monthly.budget_expected"
       },
@@ -616,6 +673,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_agency__budget_monthly": "mrt_agency__budget_monthly.budget_pacing"
       },
@@ -655,6 +713,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_agency__budget_monthly": "mrt_agency__budget_monthly.budget_used_pct"
       },
@@ -695,6 +754,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__orders": "mrt_seller__orders.cancel_rate"
       },
@@ -735,6 +795,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__orders": "mrt_seller__orders.cancelled_orders"
       },
@@ -773,6 +834,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__ad_daily": "mrt_common__ad_daily.clicks"
       },
@@ -816,6 +878,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.cogs",
         "mrt_seller__orders": "mrt_seller__orders.cogs"
@@ -834,7 +897,7 @@
       ],
       "type": "simple",
       "unit": "VND",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     "contribution_margin": {
       "anomaly": null,
@@ -868,6 +931,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.contribution_margin",
         "mrt_seller__orders": "mrt_seller__orders.contribution_margin"
@@ -910,6 +974,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__ad_daily": "mrt_common__ad_daily.conversion_value"
       },
@@ -948,6 +1013,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__ad_daily": "mrt_common__ad_daily.conversions"
       },
@@ -993,6 +1059,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__ad_daily": "mrt_common__ad_daily.cpa"
       },
@@ -1037,6 +1104,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__ad_daily": "mrt_common__ad_daily.cpc"
       },
@@ -1081,6 +1149,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__ad_daily": "mrt_common__ad_daily.cpm"
       },
@@ -1124,6 +1193,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__ad_daily": "mrt_common__ad_daily.ctr"
       },
@@ -1164,6 +1234,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__orders": "mrt_seller__orders.gmv"
       },
@@ -1204,6 +1275,7 @@
         "agency",
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__sales_daily": "mrt_common__sales_daily.gross_sales"
       },
@@ -1242,6 +1314,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__ad_daily": "mrt_common__ad_daily.impressions"
       },
@@ -1284,6 +1357,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.line_allocated_ad_spend"
       },
@@ -1323,6 +1397,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.line_cogs"
       },
@@ -1362,6 +1437,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.line_net_revenue"
       },
@@ -1401,6 +1477,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.line_other_costs"
       },
@@ -1440,6 +1517,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.line_payment_fees"
       },
@@ -1479,6 +1557,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.line_platform_fees"
       },
@@ -1518,6 +1597,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.line_return_cost"
       },
@@ -1557,6 +1637,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.line_shipping_cost"
       },
@@ -1593,6 +1674,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {},
       "required_dimensions": [],
       "requires": [],
@@ -1633,6 +1715,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.missing_cogs_revenue"
       },
@@ -1676,6 +1759,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.net_margin_pct",
         "mrt_seller__orders": "mrt_seller__orders.net_margin_pct"
@@ -1729,6 +1813,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.net_profit_after_fees",
         "mrt_seller__orders": "mrt_seller__orders.net_profit_after_fees"
@@ -1780,6 +1865,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.net_revenue",
         "mrt_seller__orders": "mrt_seller__orders.net_revenue"
@@ -1822,6 +1908,7 @@
         "agency",
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__sales_daily": "mrt_common__sales_daily.net_revenue_sales"
       },
@@ -1866,6 +1953,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.order_count",
         "mrt_seller__orders": "mrt_seller__orders.order_count"
@@ -1908,6 +1996,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__orders": "mrt_seller__orders.orders_placed"
       },
@@ -1948,6 +2037,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.other_costs",
         "mrt_seller__orders": "mrt_seller__orders.other_costs"
@@ -1992,6 +2082,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.payment_fees",
         "mrt_seller__orders": "mrt_seller__orders.payment_fees"
@@ -2036,6 +2127,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.platform_fees",
         "mrt_seller__orders": "mrt_seller__orders.platform_fees"
@@ -2078,6 +2170,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {},
       "required_dimensions": [],
       "requires": [],
@@ -2092,6 +2185,89 @@
       ],
       "type": "derived",
       "unit": "percent",
+      "version": "1.0.0"
+    },
+    "repeat_customer_rate": {
+      "anomaly": null,
+      "components": [
+        "repeat_customers",
+        "active_customers"
+      ],
+      "cube": null,
+      "description_vi": "Phần người mua có từ 2 đơn trở lên trong kỳ trên tổng người mua có đơn trong kỳ.",
+      "dimensions": [
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": "repeat_customers / active_customers",
+      "good_direction": "up",
+      "hidden": false,
+      "measure": null,
+      "metric": "repeat_customer_rate",
+      "mode": "engine",
+      "name_vi": "Tỷ lệ khách quay lại",
+      "packs": [
+        "seller"
+      ],
+      "per_entity": null,
+      "realizations": {},
+      "required_dimensions": [],
+      "requires": [
+        "identity"
+      ],
+      "synonyms_vi": [
+        "khách quay lại",
+        "khách mua lại",
+        "tỷ lệ mua lại"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "ratio",
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    "repeat_customers": {
+      "anomaly": null,
+      "components": [],
+      "cube": null,
+      "description_vi": "Số người mua có từ 2 đơn không hủy trở lên trong kỳ.",
+      "dimensions": [
+        "channel",
+        "date",
+        "platform"
+      ],
+      "formula": null,
+      "good_direction": "up",
+      "hidden": true,
+      "measure": null,
+      "metric": "repeat_customers",
+      "mode": "engine",
+      "name_vi": "Số người mua quay lại",
+      "packs": [
+        "seller"
+      ],
+      "per_entity": {
+        "base": "order_count",
+        "dimension": "customer",
+        "min": 2
+      },
+      "realizations": {},
+      "required_dimensions": [],
+      "requires": [
+        "identity"
+      ],
+      "synonyms_vi": [],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "count",
       "version": "1.0.0"
     },
     "return_cost": {
@@ -2119,6 +2295,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.return_cost",
         "mrt_seller__orders": "mrt_seller__orders.return_cost"
@@ -2170,6 +2347,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.return_rate",
         "mrt_seller__orders": "mrt_seller__orders.return_rate"
@@ -2215,6 +2393,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.returned_orders",
         "mrt_seller__orders": "mrt_seller__orders.returned_orders"
@@ -2257,6 +2436,7 @@
         "agency",
         "seller"
       ],
+      "per_entity": null,
       "realizations": {},
       "required_dimensions": [],
       "requires": [],
@@ -2301,6 +2481,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_common__ad_daily": "mrt_common__ad_daily.roas_platform"
       },
@@ -2346,6 +2527,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.shipping_cost",
         "mrt_seller__orders": "mrt_seller__orders.shipping_cost"
@@ -2398,6 +2580,7 @@
       "packs": [
         "seller"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_seller__order_lines": "mrt_seller__order_lines.sku_profit"
       },
@@ -2439,6 +2622,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {
         "mrt_agency__budget_monthly": "mrt_agency__budget_monthly.spend_mtd"
       },
@@ -2473,6 +2657,7 @@
       "packs": [
         "agency"
       ],
+      "per_entity": null,
       "realizations": {},
       "required_dimensions": [],
       "requires": [

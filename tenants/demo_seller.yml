@@ -32,6 +32,11 @@ quality:
   reconcile_tolerance_pct: {default: 1.0}
   provisional_window_days: {default: 14}
 cost_allocation: by_revenue
+# Ghép định danh (spec 10): gộp người mua xuyên sàn, mở chỉ số khách quay lại.
+features:
+  identity: true
+identity:
+  suggest_threshold: 0.7
 overrides:
   status_map: tenants/overrides/demo_seller_status_map.csv
 notify:

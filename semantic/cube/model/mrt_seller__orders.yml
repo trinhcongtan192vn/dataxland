@@ -10,6 +10,10 @@ cubes:
     sql: channel_id
     title: Kênh
     type: string
+  - name: customer
+    sql: customer_id
+    title: Người mua
+    type: string
   - name: date
     sql: order_date
     title: Ngày
@@ -27,6 +31,16 @@ cubes:
     title: Nền tảng
     type: string
   measures:
+  - filters:
+    - sql: '{CUBE}.row_type = ''order'''
+    - sql: '{CUBE}.is_cancelled = false'
+    meta:
+      unit: count
+      version: 1.0.0
+    name: active_customers
+    sql: customer_id
+    title: Số người mua có đơn
+    type: count_distinct
   - meta:
       unit: VND
       version: 1.0.1
@@ -60,7 +74,7 @@ cubes:
     type: count
   - meta:
       unit: VND
-      version: 1.0.0
+      version: 1.0.1
     name: cogs
     sql: cogs_vnd
     title: Giá vốn hàng bán

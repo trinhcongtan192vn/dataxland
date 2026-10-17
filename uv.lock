@@ -1051,6 +1051,7 @@ dependencies = [
     { name = "dlt", extra = ["bigquery", "duckdb", "sql-database"] },
     { name = "duckdb" },
     { name = "dx-common" },
+    { name = "dx-identity-worker" },
     { name = "httpx" },
     { name = "openpyxl" },
 ]
@@ -1075,6 +1076,7 @@ requires-dist = [
     { name = "dlt", extras = ["bigquery", "duckdb", "sql-database"], specifier = ">=1.4" },
     { name = "duckdb", specifier = ">=1.1" },
     { name = "dx-common", editable = "libs/dx_common" },
+    { name = "dx-identity-worker", editable = "services/identity_worker" },
     { name = "google-cloud-bigquery", marker = "extra == 'gcp'", specifier = ">=3.27" },
     { name = "google-cloud-storage", marker = "extra == 'gcp'", specifier = ">=2.18" },
     { name = "httpx", specifier = ">=0.28" },
