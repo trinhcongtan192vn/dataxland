@@ -170,6 +170,10 @@ sources:
         config:
           enabled: "{{ 'shopee_file' in var('sources', []) }}"
           freshness: null
+      - name: shopee_file__returns
+        config:
+          enabled: "{{ 'shopee_file' in var('sources', []) }}"
+          freshness: null
       - name: tiktok_shop_file__orders
         config:
           enabled: "{{ 'tiktok_shop_file' in var('sources', []) }}"
@@ -182,6 +186,10 @@ sources:
         config:
           enabled: "{{ 'tiktok_shop_file' in var('sources', []) }}"
           freshness: null
+      - name: tiktok_shop_file__returns
+        config:
+          enabled: "{{ 'tiktok_shop_file' in var('sources', []) }}"
+          freshness: null
       - name: lazada_file__orders
         config:
           enabled: "{{ 'lazada_file' in var('sources', []) }}"
@@ -191,6 +199,10 @@ sources:
           enabled: "{{ 'lazada_file' in var('sources', []) }}"
           freshness: null
       - name: lazada_file__fees
+        config:
+          enabled: "{{ 'lazada_file' in var('sources', []) }}"
+          freshness: null
+      - name: lazada_file__returns
         config:
           enabled: "{{ 'lazada_file' in var('sources', []) }}"
           freshness: null

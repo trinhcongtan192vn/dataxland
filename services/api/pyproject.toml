@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "services/api – FastAPI: chỉ số, báo cáo, nhập liệu, quyết định, thông báo, sự kiện (spec 05)"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-  "dx-common",
+  "dx-common[gcp]",
   "fastapi>=0.115",
   "uvicorn[standard]>=0.32",
   "sqlalchemy>=2.0.36",

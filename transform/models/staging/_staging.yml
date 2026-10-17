@@ -1098,6 +1098,43 @@ models:
       - name: amount_vnd
         data_type: numeric
         data_tests: [not_null]
+  - name: stg_shopee_file__returns
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+        data_tests: [not_null]
+      - name: order_line_source_id
+        data_type: string
+      - name: returned_at
+        data_type: timestamp
+      - name: return_date
+        data_type: date
+        data_tests: [not_null]
+      - name: reason_raw
+        data_type: string
+      - name: reason
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['buyer_changed_mind', 'damaged', 'wrong_item', 'not_received', 'quality', 'failed_delivery', 'other']
+      - name: refund_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: return_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: status
+        data_type: string
   - name: stg_shopee_file__products
     config:
       contract: {enforced: true}
@@ -1233,6 +1270,43 @@ models:
       - name: amount_vnd
         data_type: numeric
         data_tests: [not_null]
+  - name: stg_tiktok_shop_file__returns
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+        data_tests: [not_null]
+      - name: order_line_source_id
+        data_type: string
+      - name: returned_at
+        data_type: timestamp
+      - name: return_date
+        data_type: date
+        data_tests: [not_null]
+      - name: reason_raw
+        data_type: string
+      - name: reason
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['buyer_changed_mind', 'damaged', 'wrong_item', 'not_received', 'quality', 'failed_delivery', 'other']
+      - name: refund_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: return_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: status
+        data_type: string
   - name: stg_tiktok_shop_file__products
     config:
       contract: {enforced: true}
@@ -1368,6 +1442,43 @@ models:
       - name: amount_vnd
         data_type: numeric
         data_tests: [not_null]
+  - name: stg_lazada_file__returns
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: source
+        data_type: string
+        data_tests: [not_null]
+      - name: source_id
+        data_type: string
+        data_tests: [unique, not_null]
+      - name: order_source_id
+        data_type: string
+        data_tests: [not_null]
+      - name: order_line_source_id
+        data_type: string
+      - name: returned_at
+        data_type: timestamp
+      - name: return_date
+        data_type: date
+        data_tests: [not_null]
+      - name: reason_raw
+        data_type: string
+      - name: reason
+        data_type: string
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['buyer_changed_mind', 'damaged', 'wrong_item', 'not_received', 'quality', 'failed_delivery', 'other']
+      - name: refund_amount_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: return_fee_vnd
+        data_type: numeric
+        data_tests: [not_null]
+      - name: status
+        data_type: string
   - name: stg_lazada_file__products
     config:
       contract: {enforced: true}

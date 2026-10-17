@@ -1,0 +1,109 @@
+# Nhận diện loại file theo tên cột tiêu đề (spec 07 §4.2). Mỗi nhóm là các tên chấp nhận được của một cột
+# (tiếng Việt và tiếng Anh vì sàn đổi ngôn ngữ xuất theo cài đặt). Khớp khi tỷ lệ nhóm có mặt ≥ 80%.
+shopee_orders:
+  label_vi: Đơn hàng Shopee
+  columns:
+    - [Mã đơn hàng, Order ID]
+    - [Ngày đặt hàng, Order Creation Date]
+    - [Trạng Thái Đơn Hàng, Trạng thái đơn hàng, Order Status]
+    - [SKU phân loại hàng, SKU Reference No., Variation SKU]
+    - [Tên sản phẩm, Product Name]
+    - [Giá gốc, Original Price]
+    - [Giá ưu đãi, Deal Price]
+    - [Số lượng, Quantity]
+    - [Mã giảm giá của Shop, Seller Voucher]
+    - [Mã giảm giá của Shopee, Shopee Voucher]
+shopee_income:
+  label_vi: Báo cáo doanh thu Shopee
+  columns:
+    - [Mã đơn hàng, Order ID]
+    - [Ngày hoàn thành thanh toán, Payout Completed Date]
+    - [Giá sản phẩm, Product Price]
+    - [Phí cố định, Commission Fee]
+    - [Phí Dịch Vụ, Phí dịch vụ, Service Fee]
+    - [Phí thanh toán, Transaction Fee]
+    - [Phí vận chuyển thực tế, Actual Shipping Fee]
+    - [Phí vận chuyển được trợ giá từ Shopee, Shopee Shipping Rebate]
+    - [Phí vận chuyển Người mua trả, Shipping Fee Paid by Buyer]
+    - [Tổng tiền đã thanh toán, Total Released Amount]
+tiktok_shop_orders:
+  label_vi: Đơn hàng TikTok Shop
+  columns:
+    - [Order ID, Mã đơn hàng]
+    - [Order Status, Trạng thái đơn hàng]
+    - [Seller SKU, SKU người bán]
+    - [Product Name, Tên sản phẩm]
+    - [Quantity, Số lượng]
+    - [SKU Unit Original Price, Giá gốc đơn vị SKU]
+    - [SKU Seller Discount, Giảm giá của người bán]
+    - [SKU Platform Discount, Giảm giá của nền tảng]
+    - [Created Time, Thời gian tạo]
+tiktok_shop_settlement:
+  label_vi: Báo cáo quyết toán TikTok Shop
+  columns:
+    - [Order/adjustment ID, Mã đơn hàng/điều chỉnh]
+    - [Order settled time, Thời gian quyết toán]
+    - [Total Revenue, Tổng doanh thu]
+    - [Platform commission fee, Phí hoa hồng nền tảng]
+    - [Transaction fee, Phí giao dịch]
+    - [Shipping cost, Chi phí vận chuyển]
+    - [Total settlement amount, Tổng tiền quyết toán]
+lazada_orders:
+  label_vi: Đơn hàng Lazada
+  columns:
+    - [Order Item Id, Mã sản phẩm đơn hàng]
+    - [Order Number, Mã đơn hàng]
+    - [Seller SKU, SKU người bán]
+    - [Item Name, Tên sản phẩm]
+    - [Unit Price, Đơn giá]
+    - [Paid Price, Giá đã trả]
+    - [Status, Trạng thái]
+    - [Created at, Ngày tạo]
+lazada_transactions:
+  label_vi: Báo cáo giao dịch Lazada
+  columns:
+    - [Transaction Date, Ngày giao dịch]
+    - [Transaction Type, Loại giao dịch]
+    - [Fee Name, Tên phí]
+    - [Amount, Số tiền]
+    - [Order No., Mã đơn hàng]
+meta_ads:
+  label_vi: Báo cáo Meta Ads
+  columns:
+    - [Day, Ngày]
+    - [Campaign name, Tên chiến dịch]
+    - [Campaign ID, ID chiến dịch]
+    - [Ad set name, Tên nhóm quảng cáo]
+    - [Amount spent (VND), Số tiền đã chi tiêu (VND)]
+    - [Impressions, Lượt hiển thị]
+    - [Results, Kết quả]
+    - [Purchases conversion value, Giá trị chuyển đổi mua hàng]
+tiktok_ads:
+  label_vi: Báo cáo TikTok Ads
+  columns:
+    - [Date, Ngày]
+    - [Campaign name, Tên chiến dịch]
+    - [Campaign ID, ID chiến dịch]
+    - [Ad group name, Tên nhóm quảng cáo]
+    - [Cost, Chi phí]
+    - [Impressions, Lượt hiển thị]
+    - [Conversions, Chuyển đổi]
+    - [Total purchase value, Tổng giá trị mua hàng]
+google_ads:
+  label_vi: Báo cáo Google Ads
+  columns:
+    - [Day, Ngày]
+    - [Campaign, Chiến dịch]
+    - [Campaign ID, ID chiến dịch]
+    - [Ad group, Nhóm quảng cáo]
+    - [Cost, Chi phí]
+    - [Impr., Lượt hiển thị]
+    - [Clicks, Lượt nhấp]
+    - [Conversions, Lượt chuyển đổi]
+    - [Conv. value, Giá trị chuyển đổi]
+product_costs:
+  label_vi: Mẫu giá vốn DataxLand
+  columns:
+    - [ma_sku, Mã SKU, SKU]
+    - [gia_von, Giá vốn]
+    - [ap_dung_tu, Áp dụng từ]

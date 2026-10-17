@@ -54,6 +54,74 @@
     "title": "AnomalyRunIn",
     "type": "object"
    },
+   "Body_submit_v1_health_checks_post": {
+    "properties": {
+     "consent_version": {
+      "title": "Consent Version",
+      "type": "string"
+     },
+     "email": {
+      "title": "Email",
+      "type": "string"
+     },
+     "files": {
+      "items": {
+       "contentMediaType": "application/octet-stream",
+       "type": "string"
+      },
+      "title": "Files",
+      "type": "array"
+     },
+     "kinds": {
+      "items": {
+       "type": "string"
+      },
+      "title": "Kinds",
+      "type": "array"
+     },
+     "shop_name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Shop Name"
+     },
+     "started_at": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Started At"
+     },
+     "website": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Website"
+     }
+    },
+    "required": [
+     "email",
+     "consent_version",
+     "kinds",
+     "files"
+    ],
+    "title": "Body_submit_v1_health_checks_post",
+    "type": "object"
+   },
    "Body_upload_costs_v1_inputs_product_costs_upload_post": {
     "properties": {
      "file": {
@@ -155,6 +223,24 @@
      "budget_vnd"
     ],
     "title": "BudgetUpdate",
+    "type": "object"
+   },
+   "BuildHcIn": {
+    "properties": {
+     "file_ranges": {
+      "additionalProperties": true,
+      "title": "File Ranges",
+      "type": "object"
+     },
+     "mapping_issues": {
+      "items": {
+       "type": "string"
+      },
+      "title": "Mapping Issues",
+      "type": "array"
+     }
+    },
+    "title": "BuildHcIn",
     "type": "object"
    },
    "BuildIn": {
@@ -269,6 +355,37 @@
      }
     },
     "title": "CleanupIn",
+    "type": "object"
+   },
+   "ConvertIn": {
+    "properties": {
+     "name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Name"
+     },
+     "pack": {
+      "pattern": "^(seller|agency)$",
+      "title": "Pack",
+      "type": "string"
+     },
+     "tenant_id": {
+      "pattern": "^[a-z][a-z0-9_]{2,30}$",
+      "title": "Tenant Id",
+      "type": "string"
+     }
+    },
+    "required": [
+     "tenant_id",
+     "pack"
+    ],
+    "title": "ConvertIn",
     "type": "object"
    },
    "CostIn": {
@@ -856,6 +973,52 @@
     "title": "EventOut",
     "type": "object"
    },
+   "ExpiredIn": {
+    "properties": {
+     "files": {
+      "default": 0,
+      "title": "Files",
+      "type": "integer"
+     },
+     "tables": {
+      "default": 0,
+      "title": "Tables",
+      "type": "integer"
+     }
+    },
+    "title": "ExpiredIn",
+    "type": "object"
+   },
+   "FailIn": {
+    "properties": {
+     "reason": {
+      "title": "Reason",
+      "type": "string"
+     }
+    },
+    "required": [
+     "reason"
+    ],
+    "title": "FailIn",
+    "type": "object"
+   },
+   "FileStatusIn": {
+    "properties": {
+     "files": {
+      "items": {
+       "additionalProperties": true,
+       "type": "object"
+      },
+      "title": "Files",
+      "type": "array"
+     }
+    },
+    "required": [
+     "files"
+    ],
+    "title": "FileStatusIn",
+    "type": "object"
+   },
    "FilterIn": {
     "properties": {
      "dimension": {
@@ -986,6 +1149,202 @@
      }
     },
     "title": "HTTPValidationError",
+    "type": "object"
+   },
+   "HcDetail": {
+    "properties": {
+     "approved_at": {
+      "anyOf": [
+       {
+        "format": "date-time",
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Approved At"
+     },
+     "check_id": {
+      "title": "Check Id",
+      "type": "string"
+     },
+     "consent_convert_at": {
+      "anyOf": [
+       {
+        "format": "date-time",
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Consent Convert At"
+     },
+     "converted_tenant_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Converted Tenant Id"
+     },
+     "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+     },
+     "email": {
+      "title": "Email",
+      "type": "string"
+     },
+     "expires_at": {
+      "format": "date-time",
+      "title": "Expires At",
+      "type": "string"
+     },
+     "file_list": {
+      "items": {
+       "additionalProperties": true,
+       "type": "object"
+      },
+      "title": "File List",
+      "type": "array"
+     },
+     "files": {
+      "title": "Files",
+      "type": "integer"
+     },
+     "files_rejected": {
+      "title": "Files Rejected",
+      "type": "integer"
+     },
+     "result": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Result"
+     },
+     "reviewer_notes_md": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Reviewer Notes Md"
+     },
+     "shop_name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Shop Name"
+     },
+     "status": {
+      "title": "Status",
+      "type": "string"
+     },
+     "status_vi": {
+      "title": "Status Vi",
+      "type": "string"
+     }
+    },
+    "required": [
+     "check_id",
+     "email",
+     "shop_name",
+     "status",
+     "status_vi",
+     "created_at",
+     "expires_at",
+     "files",
+     "files_rejected",
+     "result",
+     "reviewer_notes_md",
+     "approved_at",
+     "consent_convert_at",
+     "converted_tenant_id",
+     "file_list"
+    ],
+    "title": "HcDetail",
+    "type": "object"
+   },
+   "HcSummary": {
+    "properties": {
+     "check_id": {
+      "title": "Check Id",
+      "type": "string"
+     },
+     "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+     },
+     "email": {
+      "title": "Email",
+      "type": "string"
+     },
+     "expires_at": {
+      "format": "date-time",
+      "title": "Expires At",
+      "type": "string"
+     },
+     "files": {
+      "title": "Files",
+      "type": "integer"
+     },
+     "files_rejected": {
+      "title": "Files Rejected",
+      "type": "integer"
+     },
+     "shop_name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Shop Name"
+     },
+     "status": {
+      "title": "Status",
+      "type": "string"
+     },
+     "status_vi": {
+      "title": "Status Vi",
+      "type": "string"
+     }
+    },
+    "required": [
+     "check_id",
+     "email",
+     "shop_name",
+     "status",
+     "status_vi",
+     "created_at",
+     "expires_at",
+     "files",
+     "files_rejected"
+    ],
+    "title": "HcSummary",
     "type": "object"
    },
    "HoursIn": {
@@ -1892,6 +2251,20 @@
     "title": "MissingCostsOut",
     "type": "object"
    },
+   "NotesIn": {
+    "properties": {
+     "reviewer_notes_md": {
+      "maxLength": 4000,
+      "title": "Reviewer Notes Md",
+      "type": "string"
+     }
+    },
+    "required": [
+     "reviewer_notes_md"
+    ],
+    "title": "NotesIn",
+    "type": "object"
+   },
    "OpenRow": {
     "properties": {
      "channel": {
@@ -2100,6 +2473,29 @@
      "name"
     ],
     "title": "PartnerOut",
+    "type": "object"
+   },
+   "PurgedIn": {
+    "properties": {
+     "copied": {
+      "items": {
+       "type": "string"
+      },
+      "title": "Copied",
+      "type": "array"
+     },
+     "files": {
+      "default": 0,
+      "title": "Files",
+      "type": "integer"
+     },
+     "tables": {
+      "default": 0,
+      "title": "Tables",
+      "type": "integer"
+     }
+    },
+    "title": "PurgedIn",
     "type": "object"
    },
    "QueryIn": {
@@ -4066,6 +4462,222 @@
     ]
    }
   },
+  "/v1/health-checks": {
+   "post": {
+    "operationId": "submit_v1_health_checks_post",
+    "requestBody": {
+     "content": {
+      "multipart/form-data": {
+       "schema": {
+        "$ref": "#/components/schemas/Body_submit_v1_health_checks_post"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "202": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Submit V1 Health Checks Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Submit",
+    "tags": [
+     "health_checks"
+    ]
+   }
+  },
+  "/v1/health-checks/consent": {
+   "get": {
+    "operationId": "get_consent_v1_health_checks_consent_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Get Consent V1 Health Checks Consent Get",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Get Consent",
+    "tags": [
+     "health_checks"
+    ]
+   }
+  },
+  "/v1/health-checks/verify": {
+   "get": {
+    "operationId": "verify_v1_health_checks_verify_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "token",
+      "required": true,
+      "schema": {
+       "title": "Token",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Verify V1 Health Checks Verify Get",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Verify",
+    "tags": [
+     "health_checks"
+    ]
+   }
+  },
+  "/v1/health-checks/{check_id}/consent-convert": {
+   "post": {
+    "operationId": "consent_convert_v1_health_checks__check_id__consent_convert_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "check_id",
+      "required": true,
+      "schema": {
+       "title": "Check Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "k",
+      "required": true,
+      "schema": {
+       "title": "K",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Consent Convert V1 Health Checks  Check Id  Consent Convert Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Consent Convert",
+    "tags": [
+     "health_checks"
+    ]
+   }
+  },
+  "/v1/health-checks/{check_id}/result": {
+   "get": {
+    "operationId": "public_result_v1_health_checks__check_id__result_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "check_id",
+      "required": true,
+      "schema": {
+       "title": "Check Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "k",
+      "required": true,
+      "schema": {
+       "title": "K",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Public Result V1 Health Checks  Check Id  Result Get",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Public Result",
+    "tags": [
+     "health_checks"
+    ]
+   }
+  },
   "/v1/inputs/ad-budgets": {
    "get": {
     "operationId": "list_budgets_v1_inputs_ad_budgets_get",
@@ -5141,6 +5753,665 @@
     "summary": "Events Cleanup",
     "tags": [
      "internal"
+    ]
+   }
+  },
+  "/v1/internal/health-checks/expired": {
+   "post": {
+    "description": "Lượt quá hạn, chưa chuyển đổi, chưa xóa (spec 07 §7).",
+    "operationId": "internal_expired_v1_internal_health_checks_expired_post",
+    "parameters": [
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-service",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Service"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Internal Expired V1 Internal Health Checks Expired Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Internal Expired",
+    "tags": [
+     "health_checks"
+    ]
+   }
+  },
+  "/v1/internal/health-checks/{check_id}/build": {
+   "post": {
+    "operationId": "internal_build_v1_internal_health_checks__check_id__build_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "check_id",
+      "required": true,
+      "schema": {
+       "title": "Check Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-service",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Service"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/BuildHcIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Internal Build V1 Internal Health Checks  Check Id  Build Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Internal Build",
+    "tags": [
+     "health_checks"
+    ]
+   }
+  },
+  "/v1/internal/health-checks/{check_id}/convert-info": {
+   "post": {
+    "operationId": "internal_convert_info_v1_internal_health_checks__check_id__convert_info_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "check_id",
+      "required": true,
+      "schema": {
+       "title": "Check Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-service",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Service"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Internal Convert Info V1 Internal Health Checks  Check Id  Convert Info Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Internal Convert Info",
+    "tags": [
+     "health_checks"
+    ]
+   }
+  },
+  "/v1/internal/health-checks/{check_id}/expired": {
+   "post": {
+    "operationId": "internal_mark_expired_v1_internal_health_checks__check_id__expired_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "check_id",
+      "required": true,
+      "schema": {
+       "title": "Check Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-service",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Service"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ExpiredIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": {
+          "type": "string"
+         },
+         "title": "Response Internal Mark Expired V1 Internal Health Checks  Check Id  Expired Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Internal Mark Expired",
+    "tags": [
+     "health_checks"
+    ]
+   }
+  },
+  "/v1/internal/health-checks/{check_id}/fail": {
+   "post": {
+    "operationId": "internal_fail_v1_internal_health_checks__check_id__fail_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "check_id",
+      "required": true,
+      "schema": {
+       "title": "Check Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-service",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Service"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/FailIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": {
+          "type": "string"
+         },
+         "title": "Response Internal Fail V1 Internal Health Checks  Check Id  Fail Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Internal Fail",
+    "tags": [
+     "health_checks"
+    ]
+   }
+  },
+  "/v1/internal/health-checks/{check_id}/files": {
+   "post": {
+    "operationId": "internal_files_v1_internal_health_checks__check_id__files_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "check_id",
+      "required": true,
+      "schema": {
+       "title": "Check Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-service",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Service"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/FileStatusIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": {
+          "type": "integer"
+         },
+         "title": "Response Internal Files V1 Internal Health Checks  Check Id  Files Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Internal Files",
+    "tags": [
+     "health_checks"
+    ]
+   }
+  },
+  "/v1/internal/health-checks/{check_id}/purged": {
+   "post": {
+    "description": "Dữ liệu tạm của lượt đã chuyển đổi đã được sao chép sang khách mới và xóa (spec 07 §8 bước 2).",
+    "operationId": "internal_purged_v1_internal_health_checks__check_id__purged_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "check_id",
+      "required": true,
+      "schema": {
+       "title": "Check Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-service",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Service"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/PurgedIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": {
+          "type": "string"
+         },
+         "title": "Response Internal Purged V1 Internal Health Checks  Check Id  Purged Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Internal Purged",
+    "tags": [
+     "health_checks"
+    ]
+   }
+  },
+  "/v1/internal/health-checks/{check_id}/start": {
+   "post": {
+    "operationId": "internal_start_v1_internal_health_checks__check_id__start_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "check_id",
+      "required": true,
+      "schema": {
+       "title": "Check Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-service",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Service"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Internal Start V1 Internal Health Checks  Check Id  Start Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Internal Start",
+    "tags": [
+     "health_checks"
     ]
    }
   },
@@ -6283,6 +7554,330 @@
     "summary": "Get Metric",
     "tags": [
      "metrics"
+    ]
+   }
+  },
+  "/v1/ops/health-checks": {
+   "get": {
+    "operationId": "ops_list_v1_ops_health_checks_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "status",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Status"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/HcSummary"
+         },
+         "title": "Response Ops List V1 Ops Health Checks Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Ops List",
+    "tags": [
+     "health_checks"
+    ]
+   }
+  },
+  "/v1/ops/health-checks/{check_id}": {
+   "get": {
+    "operationId": "ops_detail_v1_ops_health_checks__check_id__get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "check_id",
+      "required": true,
+      "schema": {
+       "title": "Check Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HcDetail"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Ops Detail",
+    "tags": [
+     "health_checks"
+    ]
+   },
+   "put": {
+    "operationId": "ops_notes_v1_ops_health_checks__check_id__put",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "check_id",
+      "required": true,
+      "schema": {
+       "title": "Check Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/NotesIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HcDetail"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Ops Notes",
+    "tags": [
+     "health_checks"
+    ]
+   }
+  },
+  "/v1/ops/health-checks/{check_id}/approve": {
+   "post": {
+    "operationId": "ops_approve_v1_ops_health_checks__check_id__approve_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "check_id",
+      "required": true,
+      "schema": {
+       "title": "Check Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Ops Approve V1 Ops Health Checks  Check Id  Approve Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Ops Approve",
+    "tags": [
+     "health_checks"
+    ]
+   }
+  },
+  "/v1/ops/health-checks/{check_id}/convert": {
+   "post": {
+    "description": "Sinh bản nháp `tenants/<id>.yml` từ loại file (spec 07 §8). Data lead mở PR với nội dung này.",
+    "operationId": "ops_convert_v1_ops_health_checks__check_id__convert_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "check_id",
+      "required": true,
+      "schema": {
+       "title": "Check Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ConvertIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Ops Convert V1 Ops Health Checks  Check Id  Convert Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Ops Convert",
+    "tags": [
+     "health_checks"
     ]
    }
   },

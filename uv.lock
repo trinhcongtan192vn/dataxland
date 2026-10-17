@@ -915,7 +915,7 @@ source = { editable = "services/api" }
 dependencies = [
     { name = "alembic" },
     { name = "anthropic" },
-    { name = "dx-common" },
+    { name = "dx-common", extra = ["gcp"] },
     { name = "email-validator" },
     { name = "fastapi" },
     { name = "firebase-admin" },
@@ -935,7 +935,7 @@ dependencies = [
 requires-dist = [
     { name = "alembic", specifier = ">=1.14" },
     { name = "anthropic", specifier = ">=0.40" },
-    { name = "dx-common", editable = "libs/dx_common" },
+    { name = "dx-common", extras = ["gcp"], editable = "libs/dx_common" },
     { name = "email-validator", specifier = ">=2.2" },
     { name = "fastapi", specifier = ">=0.115" },
     { name = "firebase-admin", specifier = ">=6.6" },
