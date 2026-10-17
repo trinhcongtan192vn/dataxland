@@ -188,6 +188,10 @@ def main() -> int:
         print(f"{scope}: " + ", ".join(f"{t}={n}" for t, n in sorted(tables.items())))
     if not args.skip_postgres:
         print(seed_postgres(samples))
+        sys.path.insert(0, str(REPO / "ops"))
+        from seed_users import seed_demo_users
+
+        print(seed_demo_users())
     return 0
 
 

@@ -21,7 +21,7 @@ up:
 down:
 	$(COMPOSE) down
 
-seed-local:
+seed-local: sync-tenants
 	$(PY) python ops/seed_local.py
 
 dbt-build:

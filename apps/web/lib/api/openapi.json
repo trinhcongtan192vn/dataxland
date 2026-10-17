@@ -2475,6 +2475,97 @@
     "title": "PartnerOut",
     "type": "object"
    },
+   "PartnerTenant": {
+    "properties": {
+     "ad_spend_mtd": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Ad Spend Mtd"
+     },
+     "budget_pacing": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Budget Pacing"
+     },
+     "data_as_of": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Data As Of"
+     },
+     "error": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Error"
+     },
+     "flags": {
+      "items": {
+       "additionalProperties": true,
+       "type": "object"
+      },
+      "title": "Flags",
+      "type": "array"
+     },
+     "name": {
+      "title": "Name",
+      "type": "string"
+     },
+     "pack": {
+      "title": "Pack",
+      "type": "string"
+     },
+     "roas_blended": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Roas Blended"
+     },
+     "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+     }
+    },
+    "required": [
+     "tenant_id",
+     "name",
+     "pack",
+     "ad_spend_mtd",
+     "budget_pacing",
+     "roas_blended",
+     "flags",
+     "data_as_of"
+    ],
+    "title": "PartnerTenant",
+    "type": "object"
+   },
    "PurgedIn": {
     "properties": {
      "copied": {
@@ -8396,6 +8487,59 @@
     "summary": "Tenant Sources",
     "tags": [
      "ops"
+    ]
+   }
+  },
+  "/v1/partner/tenants": {
+   "get": {
+    "operationId": "partner_tenants_v1_partner_tenants_get",
+    "parameters": [
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/PartnerTenant"
+         },
+         "title": "Response Partner Tenants V1 Partner Tenants Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Partner Tenants",
+    "tags": [
+     "partner"
     ]
    }
   },
