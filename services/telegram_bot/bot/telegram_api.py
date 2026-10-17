@@ -96,6 +96,9 @@ class TelegramApi:
                 payload["reply_markup"] = kb
             await self.call("sendMessage", payload)
 
+    async def typing(self, chat_id: int) -> None:
+        await self.call("sendChatAction", {"chat_id": chat_id, "action": "typing"})
+
     async def answer_callback(self, callback_id: str, text: str | None = None) -> None:
         payload: dict[str, Any] = {"callback_query_id": callback_id}
         if text:

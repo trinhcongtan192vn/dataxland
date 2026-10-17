@@ -151,11 +151,25 @@ def test_callback_runs_command_for_tenant(env: dict[str, Any]) -> None:
     assert env["api"][1][:2] == ("/v1/telegram/unlink", {"tenant_id": None})
 
 
-def test_fr_tg_06_free_text_gets_help(env: dict[str, Any]) -> None:
+def test_fr_tg_06_free_text_goes_to_ask(env: dict[str, Any]) -> None:
     post(env, msg("doanh thu hôm qua bao nhiêu?"))
-    assert env["api"][0][:2] == ("/v1/telegram/messages/help", {"free_text": True})
+    assert env["api"][0][:2] == ("/v1/telegram/messages/ask", {"question": "doanh thu hôm qua bao nhiêu?"})
+    # Nhóm: tin thường bị bỏ qua; chỉ /ask hoặc nhắc tên bot mới hỏi.
     post(env, msg("chào cả nhóm", chat_id=-100, chat_type="group"))
     assert len(env["api"]) == 1
+    post(env, msg("/ask lãi tuần này?", chat_id=-100, chat_type="group"))
+    post(env, msg("@dataxland_bot ROAS tháng này", chat_id=-100, chat_type="group"))
+    assert [c[1] for c in env["api"][1:]] == [{"question": "lãi tuần này?"}, {"question": "ROAS tháng này"}]
+    assert env["sent"][-1]["text"] == "tin cho /v1/telegram/messages/ask"
+
+
+def test_fr_tg_06_choose_tenant_callback(env: dict[str, Any]) -> None:
+    cb = {
+        "update_id": 2,
+        "callback_query": {"id": "cb", "data": "ka:01ASK:demo_seller", "message": {"chat": {"id": 111}}},
+    }
+    post(env, cb)
+    assert env["api"][0][:2] == ("/v1/telegram/messages/ask", {"ask_id": "01ASK", "tenant_id": "demo_seller"})
 
 
 def test_fr_tg_07_rate_limited_message_sent(env: dict[str, Any]) -> None:

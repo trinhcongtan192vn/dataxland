@@ -6,6 +6,7 @@ Vai trò hiệu lực đọc từ Postgres ở mỗi request, không cache, nên
 
 from __future__ import annotations
 
+import time
 from dataclasses import dataclass, field
 from typing import Literal
 
@@ -271,3 +272,80 @@ def bot_ctx_for_link(db: Session, link: TelegramLink) -> AuthContext:
     ctx.chat_id = link.chat_id
     tenant_id_var.set(link.tenant_id)
     return ctx
+
+
+# --------------------------------------------------------------------------- phiên MCP (spec 09 §2)
+
+MCP_SESSION_TTL_SECONDS = 300
+_MCP_AUD = "dx-mcp"
+
+
+def _mcp_secret() -> str:
+    from dx_common.config import get_settings
+
+    secret = get_settings().mcp_session_secret
+    if not secret:
+        raise ApiError(503, "MCP_NOT_CONFIGURED", "Chưa cấu hình MCP_SESSION_SECRET")
+    return secret
+
+
+def sign_mcp_session(ctx: AuthContext) -> str:
+    """Token phiên 5 phút chứa `AuthContext` rút gọn. Model không bao giờ thấy hay truyền khách và quyền."""
+    import jwt
+
+    now = int(time.time())  # đồng hồ thật: JWT kiểm hạn bằng giờ hệ thống, không theo DX_NOW
+    payload = {
+        "aud": _MCP_AUD,
+        "iat": now,
+        "exp": now + MCP_SESSION_TTL_SECONDS,
+        "tid": ctx.tenant_id,
+        "role": ctx.role,
+        "scope": ctx.metric_scope,
+        "uid": ctx.user_id,
+        "pid": ctx.partner_id,
+        "tl": ctx.telegram_link_id,
+        "caller": ctx.caller,
+    }
+    return str(jwt.encode(payload, _mcp_secret(), algorithm="HS256"))
+
+
+def ctx_from_mcp_session(db: Session, token: str) -> AuthContext:
+    import jwt
+
+    try:
+        p = jwt.decode(token, _mcp_secret(), algorithms=["HS256"], audience=_MCP_AUD)
+    except jwt.PyJWTError as exc:
+        raise ApiError(401, "MCP_SESSION_INVALID", "Phiên MCP không hợp lệ hoặc đã hết hạn") from exc
+    _, cfg = load_tenant(db, str(p["tid"]))
+    tenant_id_var.set(cfg.tenant_id)
+    scope = p.get("scope")
+    return AuthContext(
+        tenant_id=cfg.tenant_id,
+        role=str(p["role"]),
+        pack=cfg.pack,
+        dataset_prefix=cfg.dataset_prefix,
+        tenant=cfg,
+        caller="bot" if p.get("caller") == "bot" else "user",
+        user_id=p.get("uid"),
+        metric_scope=list(scope) if isinstance(scope, list) else "all",
+        partner_id=p.get("pid"),
+        telegram_link_id=p.get("tl"),
+    )
+
+
+def get_metrics_ctx(
+    request: Request,
+    authorization: str | None = Header(default=None),
+    x_tenant_id: str | None = Header(default=None),
+    x_service: str | None = Header(default=None),
+    x_dx_session: str | None = Header(default=None),
+    db: Session = Depends(get_db),
+) -> AuthContext:
+    """Như `get_ctx`, thêm đường cho MCP server: token nội bộ + `X-Service: mcp` + `X-Dx-Session`.
+    Khách lấy từ token phiên do API ký, không từ tham số hay header khách."""
+    if x_dx_session:
+        if not is_internal_token(bearer(authorization)) or x_service != "mcp":
+            raise ApiError(401, "UNAUTHENTICATED", "Phiên MCP cần token nội bộ của dịch vụ mcp")
+        return ctx_from_mcp_session(db, x_dx_session)
+    user = get_current_user(request, authorization, db)
+    return get_ctx(x_tenant_id, user, db)

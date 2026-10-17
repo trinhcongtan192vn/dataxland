@@ -25,6 +25,7 @@ const APP_NAV: NavItem[] = [
   },
   { href: "/app/reports", label: "Báo cáo tuần", show: (t) => can(t, "reports.read") },
   { href: "/app/metrics", label: "Sổ tay chỉ số", show: (t) => can(t, "metrics.read") },
+  { href: "/app/ask", label: "Hỏi đáp AI", show: (t) => can(t, "metrics.read") },
   {
     href: "/app/inputs/costs",
     label: "Giá vốn",

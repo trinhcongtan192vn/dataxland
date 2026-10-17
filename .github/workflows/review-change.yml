@@ -1,0 +1,41 @@
+# Agent review-change (spec 09 §8): rà PR theo CLAUDE.md, liệt kê chỉ số và khách bị ảnh hưởng, bình luận lên PR.
+# Chỉ đọc; không đẩy commit. Bỏ qua khi repo chưa có secret ANTHROPIC_API_KEY.
+name: review-change
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    if: ${{ !github.event.pull_request.draft }}
+    runs-on: ubuntu-24.04
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        if: ${{ env.ANTHROPIC_API_KEY != '' }}
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v4
+        if: ${{ env.ANTHROPIC_API_KEY != '' }}
+        with:
+          version: "0.5.11"
+      - name: dbt parse để có manifest.json
+        if: ${{ env.ANTHROPIC_API_KEY != '' }}
+        run: |
+          uv sync --frozen
+          cd transform && uv run dbt deps --profiles-dir . && uv run dbt parse --profiles-dir . --target local
+        continue-on-error: true
+      - uses: anthropics/claude-code-action@v1
+        if: ${{ env.ANTHROPIC_API_KEY != '' }}
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Làm theo agents/review-change/SKILL.md cho PR #${{ github.event.pull_request.number }}
+            (base ${{ github.event.pull_request.base.ref }}). Viết một bình luận tiếng Việt lên PR.
+          claude_args: --allowedTools "Read,Grep,Glob,Bash(git diff:*),Bash(git log:*),Bash(gh pr comment:*)"

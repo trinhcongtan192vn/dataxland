@@ -12,6 +12,7 @@ const NAV = [
   { href: "/ops", label: "Tổng quan", exact: true },
   { href: "/ops/reports", label: "Báo cáo tuần" },
   { href: "/ops/health-checks", label: "Kiểm tra sức khỏe" },
+  { href: "/ops/metric-requests", label: "Chỉ số được hỏi" },
   { href: "/ops/integrations", label: "Hướng dẫn tích hợp" },
   { href: "/ops/fx-rates", label: "Tỷ giá" },
 ];

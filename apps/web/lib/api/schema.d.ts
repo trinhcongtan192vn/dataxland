@@ -25,6 +25,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/ask": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Ask */
+        post: operations["post_ask_v1_ask_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/ask/{ask_id}/feedback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Post Feedback */
+        post: operations["post_feedback_v1_ask__ask_id__feedback_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/connect/{source}/callback": {
         parameters: {
             query?: never;
@@ -1052,6 +1086,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/ops/metric-requests": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Metric Requests */
+        get: operations["list_metric_requests_v1_ops_metric_requests_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/ops/metric-requests/{request_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Patch Metric Request */
+        patch: operations["patch_metric_request_v1_ops_metric_requests__request_id__patch"];
+        trace?: never;
+    };
     "/v1/ops/overview": {
         parameters: {
             query?: never;
@@ -1491,6 +1559,36 @@ export interface components {
             /** Tenant Id */
             tenant_id: string;
         };
+        /** AskIn */
+        AskIn: {
+            /** Conversation Id */
+            conversation_id?: string | null;
+            /** Question */
+            question: string;
+        };
+        /** AskOut */
+        AskOut: {
+            /** Answer Md */
+            answer_md: string;
+            /** Answer Vi */
+            answer_vi: string;
+            /** Ask Id */
+            ask_id: string;
+            /** Cached */
+            cached: boolean;
+            /** Citations */
+            citations: {
+                [key: string]: unknown;
+            }[];
+            /** Conversation Id */
+            conversation_id: string;
+            /** Missing Metric */
+            missing_metric: {
+                [key: string]: string;
+            } | null;
+            /** Refused Reason */
+            refused_reason: string | null;
+        };
         /** Body_submit_v1_health_checks_post */
         Body_submit_v1_health_checks_post: {
             /** Consent Version */
@@ -1821,6 +1919,11 @@ export interface components {
         FailIn: {
             /** Reason */
             reason: string;
+        };
+        /** FeedbackIn */
+        FeedbackIn: {
+            /** Feedback */
+            feedback: ("up" | "down") | null;
         };
         /** FileStatusIn */
         FileStatusIn: {
@@ -2248,6 +2351,8 @@ export interface components {
         };
         /** MessageIn */
         MessageIn: {
+            /** Ask Id */
+            ask_id?: string | null;
             /** Command */
             command?: string | null;
             /**
@@ -2257,6 +2362,8 @@ export interface components {
             free_text: boolean;
             /** Period */
             period?: ("this_week" | "this_month" | "last_week" | "last_month") | null;
+            /** Question */
+            question?: string | null;
             /** Tenant Id */
             tenant_id?: string | null;
         };
@@ -2311,6 +2418,41 @@ export interface components {
             unit: string;
             /** Version */
             version: string;
+        };
+        /** MetricRequestOut */
+        MetricRequestOut: {
+            /** Count */
+            count: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Description Vi */
+            description_vi: string;
+            /** Id */
+            id: string;
+            /** Question */
+            question: string;
+            /** Status */
+            status: string;
+            /** Tenant Id */
+            tenant_id: string;
+            /** Tenant Name */
+            tenant_name: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** MetricRequestPatch */
+        MetricRequestPatch: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "new" | "planned" | "done" | "declined";
         };
         /** MissingCostOut */
         MissingCostOut: {
@@ -2922,6 +3064,78 @@ export interface operations {
                         [key: string]: unknown;
                     };
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_ask_v1_ask_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-tenant-id"?: string | null;
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AskIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AskOut"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    post_feedback_v1_ask__ask_id__feedback_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-tenant-id"?: string | null;
+                authorization?: string | null;
+            };
+            path: {
+                ask_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FeedbackIn"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {
@@ -4844,8 +5058,10 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                "x-tenant-id"?: string | null;
                 authorization?: string | null;
+                "x-tenant-id"?: string | null;
+                "x-service"?: string | null;
+                "x-dx-session"?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -4946,8 +5162,10 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                "x-tenant-id"?: string | null;
                 authorization?: string | null;
+                "x-tenant-id"?: string | null;
+                "x-service"?: string | null;
+                "x-dx-session"?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -4982,8 +5200,10 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                "x-tenant-id"?: string | null;
                 authorization?: string | null;
+                "x-tenant-id"?: string | null;
+                "x-service"?: string | null;
+                "x-dx-session"?: string | null;
             };
             path: {
                 metric: string;
@@ -5241,6 +5461,74 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["IntegrationDetail"];
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_metric_requests_v1_ops_metric_requests_get: {
+        parameters: {
+            query?: {
+                status?: ("new" | "planned" | "done" | "declined") | null;
+            };
+            header?: {
+                authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MetricRequestOut"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    patch_metric_request_v1_ops_metric_requests__request_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                authorization?: string | null;
+            };
+            path: {
+                request_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MetricRequestPatch"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {

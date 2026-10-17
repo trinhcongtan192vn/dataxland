@@ -45,7 +45,6 @@
 - `campaign`: Chiến dịch
 - `campaign_name`: Tên chiến dịch
 - `channel`: Kênh
-- `customer`: Người mua
 - `date`: Ngày
 - `is_provisional`: Tạm tính
 - `order_status`: Trạng thái đơn

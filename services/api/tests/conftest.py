@@ -25,6 +25,8 @@ os.environ.setdefault("DX_ENV", "local")
 os.environ["INTERNAL_API_TOKEN"] = "test-internal-token"
 os.environ["CUBE_API_SECRET"] = "test-cube-secret"
 os.environ["MCP_SESSION_SECRET"] = "test-mcp-secret"
+os.environ["MCP_URL"] = ""
+os.environ["ANTHROPIC_API_KEY"] = ""
 os.environ["TELEGRAM_WEBHOOK_SECRET"] = "test-webhook-secret"
 os.environ["DX_PUBLIC_BASE_URL"] = "https://app.test"
 os.environ["DX_TEAM_EMAIL"] = "team@dataxland.test"

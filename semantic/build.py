@@ -511,7 +511,9 @@ def build_ai_context(lib: Library) -> str:
             f"| `{name}` | {m['name_vi']} | {', '.join(m['packs'])} | {m['unit']} | {m['version']} | "
             f"{', '.join(m.get('synonyms_vi') or [])} | {describe_formula(lib, name)} |"
         )
-    lines += ["", "## Chiều", ""] + [f"- `{d}`: {v['name_vi']}" for d, v in sorted(lib.dimensions.items())]
+    lines += ["", "## Chiều", ""] + [
+        f"- `{d}`: {v['name_vi']}" for d, v in sorted(lib.dimensions.items()) if not v.get("internal")
+    ]
     return "\n".join(lines) + "\n"
 
 
