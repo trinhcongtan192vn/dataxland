@@ -663,3 +663,42 @@ class TenantHours(Timestamps, Base):
     note: Mapped[str | None] = mapped_column(Text)
     created_by: Mapped[str | None] = mapped_column(Text)
     __table_args__ = (UniqueConstraint("month", "tenant_id", name="uq_tenant_hours"),)
+
+
+# --------------------------------------------------------------------------- Hãng vận chuyển (FR-ING-09, ADR 0005)
+
+
+class CarrierEvent(Timestamps, Base):
+    """Trạng thái vận đơn hãng đẩy qua webhook (GHN, GHTK). Chỉ trường vận đơn, không có thông tin người nhận."""
+
+    __tablename__ = "carrier_events"
+    id: Mapped[str] = _id()
+    tenant_id: Mapped[str] = mapped_column(Text, nullable=False)
+    carrier: Mapped[str] = mapped_column(Text, nullable=False)
+    waybill: Mapped[str] = mapped_column(Text, nullable=False)
+    client_order_code: Mapped[str | None] = mapped_column(Text)
+    status_raw: Mapped[str] = mapped_column(Text, nullable=False)
+    event_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    shipping_fee: Mapped[Decimal | None] = mapped_column(Numeric(18, 2))
+    cod_amount: Mapped[Decimal | None] = mapped_column(Numeric(18, 2))
+    __table_args__ = (
+        UniqueConstraint("tenant_id", "carrier", "waybill", "status_raw", "event_at", name="uq_carrier_events"),
+        Index("ix_carrier_events_tenant", "tenant_id", "carrier", "waybill"),
+    )
+
+
+class CarrierFile(Timestamps, Base):
+    """File đối soát của hãng khách tải lên (J&T)."""
+
+    __tablename__ = "carrier_files"
+    id: Mapped[str] = _id()
+    tenant_id: Mapped[str] = mapped_column(Text, nullable=False)
+    carrier: Mapped[str] = mapped_column(Text, nullable=False)
+    filename: Mapped[str] = mapped_column(Text, nullable=False)
+    size_bytes: Mapped[int] = mapped_column(BigInteger, nullable=False)
+    storage_path: Mapped[str] = mapped_column(Text, nullable=False)
+    status: Mapped[str] = mapped_column(Text, nullable=False, server_default="received")
+    rows_loaded: Mapped[int | None] = mapped_column(Integer)
+    error_message_vi: Mapped[str | None] = mapped_column(Text)
+    uploaded_by: Mapped[str | None] = mapped_column(Text)
+    __table_args__ = (CheckConstraint("status in ('received', 'loaded', 'rejected')", name="ck_carrier_files_status"),)

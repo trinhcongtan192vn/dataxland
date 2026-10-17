@@ -13,7 +13,10 @@ SALES_SOURCES = frozenset({"shopee", "tiktok_shop", "lazada", "amazon_seller"})
 AD_SOURCES = frozenset({"meta_ads", "tiktok_ads", "google_ads", "amazon_ads"})
 AMAZON_SOURCES = frozenset({"amazon_ads", "amazon_seller"})
 WINDSOR_SOURCES = AD_SOURCES | {"amazon_seller"}
-DLT_SOURCES = frozenset({"shopee", "tiktok_shop", "lazada", "portal", "ghn", "ghtk", "jnt"})
+CARRIER_SOURCES = frozenset({"ghn", "ghtk", "jnt"})
+# J&T không có API công khai cho đơn của shop: nạp từ file đối soát khách tải lên (ADR 0005), không cần secret.
+FILE_SOURCES = frozenset({"jnt"})
+DLT_SOURCES = frozenset({"shopee", "tiktok_shop", "lazada", "portal"}) | CARRIER_SOURCES
 KNOWN_SOURCES = SALES_SOURCES | AD_SOURCES | DLT_SOURCES
 
 PACK_DEFAULTS: dict[str, dict[str, Any]] = {
@@ -156,7 +159,7 @@ class TenantConfig(_Base):
         if not any(s.type == "portal" for s in self.sources):
             self.sources.append(SourceConfig(type="portal", connector="dlt"))
         for s in self.sources:
-            if s.connector == "dlt" and s.type != "portal" and not s.secret_ref:
+            if s.connector == "dlt" and s.type != "portal" and s.type not in FILE_SOURCES and not s.secret_ref:
                 raise ValueError(f"nguồn {s.type}: secret_ref bắt buộc với connector dlt")
             if s.connector == "windsor" and s.type not in WINDSOR_SOURCES:
                 raise ValueError(f"nguồn {s.type} không nạp qua Windsor")
@@ -179,6 +182,12 @@ class TenantConfig(_Base):
 
     def source_types(self) -> list[str]:
         return sorted({s.type for s in self.enabled_sources()})
+
+    def has_carrier(self) -> bool:
+        return any(s.type in CARRIER_SOURCES for s in self.enabled_sources())
+
+    def carriers(self) -> list[str]:
+        return sorted({s.type for s in self.enabled_sources() if s.type in CARRIER_SOURCES})
 
     def has_amazon(self) -> bool:
         return any(s.type in AMAZON_SOURCES for s in self.enabled_sources())

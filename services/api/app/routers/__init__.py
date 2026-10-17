@@ -25,6 +25,7 @@ ROUTERS = [
     "ask",
     "identity",
     "costs",
+    "carriers",
 ]
 
 

@@ -1,0 +1,35 @@
+metric: carrier_fees
+name_vi: Phí hãng vận chuyển
+description_vi: Phí vận chuyển, phí hoàn và phí bảo hiểm hãng tính theo vận đơn, theo ngày gửi.
+version: 1.0.0
+type: simple
+hidden: false
+source: mrt_seller__shipments
+measure:
+  agg: sum
+  column: total_fee_vnd
+dimensions:
+- carrier
+- date
+- shipment_status
+time_grains:
+- day
+- week
+- month
+unit: VND
+good_direction: down
+packs:
+- seller
+requires:
+- carrier
+synonyms_vi:
+- phí hãng vận chuyển
+- phí ghn
+- phí j&t
+- phí giao hàng
+source_note_vi: Số do hãng vận chuyển báo qua webhook, API chi tiết vận đơn (GHN, GHTK) hoặc file đối soát (J&T).
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-17'
+  change_vi: Phiên bản đầu tiên (FR-ING-09).

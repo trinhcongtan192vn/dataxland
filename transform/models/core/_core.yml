@@ -144,6 +144,22 @@ models:
                 to: ref('fct_order')
                 field: order_id
 
+  - name: fct_shipment
+    description: Vận đơn của hãng vận chuyển (FR-ING-09); không có thông tin người nhận.
+    columns:
+      - name: shipment_id
+        data_tests: [unique, not_null]
+      - name: carrier
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [ghn, ghtk, jnt]
+      - name: ship_date
+        data_tests: [not_null]
+      - name: total_fee_vnd
+        data_tests: [not_null]
+
   - name: fct_return
     columns:
       - name: return_id
@@ -434,6 +450,22 @@ unit_tests:
       rows:
         - {channel_id: M2, campaign_id: c1, budget_vnd: 70}
         - {channel_id: fb5c89c9e8ecb44319ba09fefaa42bd0, campaign_id: c9, budget_vnd: 30}
+
+  - name: test_fr_ing_09_shipment_fees_and_order_link
+    description: Phí theo vận đơn cộng phí hoàn và bảo hiểm; gắn đơn sàn theo mã đơn shop (FR-ING-09).
+    model: fct_shipment
+    given:
+      - input: ref('int_union__shipments')
+        rows:
+          - {source: ghn, source_account: '1', source_id: W1, order_source_id: '2607180100001SP', status: delivered, ship_date: '2026-10-01', cod_vnd: 250000, shipping_fee_vnd: 22000, return_fee_vnd: 0, insurance_fee_vnd: 1000}
+          - {source: jnt, source_account: file, source_id: W2, order_source_id: null, status: returned, ship_date: '2026-10-02', cod_vnd: 0, shipping_fee_vnd: 18000, return_fee_vnd: 9000, insurance_fee_vnd: 0}
+      - input: ref('fct_order')
+        rows:
+          - {source_id: '2607180100001SP', order_id: O1, channel_id: C1}
+    expect:
+      rows:
+        - {waybill: W1, carrier: ghn, order_id: O1, channel_id: C1, total_fee_vnd: 23000}
+        - {waybill: W2, carrier: jnt, order_id: null, channel_id: null, total_fee_vnd: 27000}
 
   - name: test_dim_customer_first_order
     model: dim_customer

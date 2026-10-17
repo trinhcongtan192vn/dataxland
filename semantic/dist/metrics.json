@@ -154,6 +154,19 @@
         "returned_orders",
         "shipping_cost"
       ]
+    },
+    "mrt_seller__shipments": {
+      "dimensions": {
+        "carrier": "carrier",
+        "date": "ship_date",
+        "shipment_id": "shipment_id",
+        "shipment_status": "status"
+      },
+      "measures": [
+        "carrier_fees",
+        "cod_amount",
+        "shipment_count"
+      ]
     }
   },
   "dimensions": {
@@ -178,6 +191,13 @@
         "mrt_common__ad_daily": "campaign_name"
       },
       "name_vi": "Tên chiến dịch",
+      "type": "string"
+    },
+    "carrier": {
+      "columns": {
+        "mrt_seller__shipments": "carrier"
+      },
+      "name_vi": "Hãng vận chuyển",
       "type": "string"
     },
     "channel": {
@@ -205,7 +225,8 @@
         "mrt_common__ad_daily": "date",
         "mrt_common__sales_daily": "date",
         "mrt_seller__order_lines": "order_date",
-        "mrt_seller__orders": "order_date"
+        "mrt_seller__orders": "order_date",
+        "mrt_seller__shipments": "ship_date"
       },
       "name_vi": "Ngày",
       "type": "time"
@@ -252,6 +273,13 @@
       "name_vi": "Tên sản phẩm",
       "type": "string"
     },
+    "shipment_status": {
+      "columns": {
+        "mrt_seller__shipments": "status"
+      },
+      "name_vi": "Trạng thái vận đơn",
+      "type": "string"
+    },
     "sku": {
       "columns": {
         "mrt_seller__order_lines": "seller_sku"
@@ -260,7 +288,7 @@
       "type": "string"
     }
   },
-  "library_version": "65effb4f376dfe60",
+  "library_version": "3fef59bbff07d1cb",
   "metrics": {
     "acos": {
       "anomaly": null,
@@ -843,6 +871,49 @@
       "unit": "count",
       "version": "1.0.0"
     },
+    "carrier_fees": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__shipments",
+      "description_vi": "Phí vận chuyển, phí hoàn và phí bảo hiểm hãng tính theo vận đơn, theo ngày gửi.",
+      "dimensions": [
+        "carrier",
+        "date",
+        "shipment_status"
+      ],
+      "formula": null,
+      "good_direction": "down",
+      "hidden": false,
+      "measure": "mrt_seller__shipments.carrier_fees",
+      "metric": "carrier_fees",
+      "mode": "cube",
+      "name_vi": "Phí hãng vận chuyển",
+      "packs": [
+        "seller"
+      ],
+      "per_entity": null,
+      "realizations": {
+        "mrt_seller__shipments": "mrt_seller__shipments.carrier_fees"
+      },
+      "required_dimensions": [],
+      "requires": [
+        "carrier"
+      ],
+      "synonyms_vi": [
+        "phí hãng vận chuyển",
+        "phí ghn",
+        "phí j&t",
+        "phí giao hàng"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
+      "version": "1.0.0"
+    },
     "clicks": {
       "anomaly": null,
       "components": [],
@@ -883,6 +954,47 @@
       ],
       "type": "simple",
       "unit": "count",
+      "version": "1.0.0"
+    },
+    "cod_amount": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__shipments",
+      "description_vi": "Tiền hãng thu hộ người nhận theo vận đơn, theo ngày gửi.",
+      "dimensions": [
+        "carrier",
+        "date",
+        "shipment_status"
+      ],
+      "formula": null,
+      "good_direction": "up",
+      "hidden": false,
+      "measure": "mrt_seller__shipments.cod_amount",
+      "metric": "cod_amount",
+      "mode": "cube",
+      "name_vi": "Tiền thu hộ (COD)",
+      "packs": [
+        "seller"
+      ],
+      "per_entity": null,
+      "realizations": {
+        "mrt_seller__shipments": "mrt_seller__shipments.cod_amount"
+      },
+      "required_dimensions": [],
+      "requires": [
+        "carrier"
+      ],
+      "synonyms_vi": [
+        "cod",
+        "tiền thu hộ"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "VND",
       "version": "1.0.0"
     },
     "cogs": {
@@ -2532,6 +2644,47 @@
       ],
       "type": "ratio",
       "unit": "ratio",
+      "version": "1.0.0"
+    },
+    "shipment_count": {
+      "anomaly": null,
+      "components": [],
+      "cube": "mrt_seller__shipments",
+      "description_vi": "Số vận đơn hãng vận chuyển ghi nhận, theo ngày gửi.",
+      "dimensions": [
+        "carrier",
+        "date",
+        "shipment_status"
+      ],
+      "formula": null,
+      "good_direction": "none",
+      "hidden": false,
+      "measure": "mrt_seller__shipments.shipment_count",
+      "metric": "shipment_count",
+      "mode": "cube",
+      "name_vi": "Số vận đơn",
+      "packs": [
+        "seller"
+      ],
+      "per_entity": null,
+      "realizations": {
+        "mrt_seller__shipments": "mrt_seller__shipments.shipment_count"
+      },
+      "required_dimensions": [],
+      "requires": [
+        "carrier"
+      ],
+      "synonyms_vi": [
+        "số vận đơn",
+        "số đơn gửi hãng"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "type": "simple",
+      "unit": "count",
       "version": "1.0.0"
     },
     "shipping_cost": {

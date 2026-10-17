@@ -23,6 +23,13 @@ sources:
   - type: meta_ads
     connector: windsor
     account_id: "act_500001"
+  - type: ghn
+    connector: dlt
+    account_id: "2509001"
+    secret_ref: dx-demo_seller-ghn-2509001
+  - type: jnt
+    connector: dlt
+    account_id: file
   - type: portal
     connector: dlt
 schedule:

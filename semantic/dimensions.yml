@@ -8,6 +8,7 @@ date:
     mrt_common__sales_daily: date
     mrt_agency__budget_monthly: month
     mrt_agency__budget_campaign_monthly: month
+    mrt_seller__shipments: ship_date
 platform:
   name_vi: Nền tảng
   type: string
@@ -77,3 +78,13 @@ customer:
   internal: true
   columns:
     mrt_seller__orders: customer_id
+carrier:
+  name_vi: Hãng vận chuyển
+  type: string
+  columns:
+    mrt_seller__shipments: carrier
+shipment_status:
+  name_vi: Trạng thái vận đơn
+  type: string
+  columns:
+    mrt_seller__shipments: status

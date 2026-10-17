@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 STATUSES = ["pending", "confirmed", "shipping", "delivered", "completed", "cancelled", "returned", "failed_delivery"]
 REASONS = ["buyer_changed_mind", "damaged", "wrong_item", "not_received", "quality", "failed_delivery", "other"]
 COST_TYPES = ["platform_fee", "payment_fee", "shipping", "ad_spend", "other"]
+SHIP_STATUSES = ["pending", "in_transit", "delivered", "returning", "returned", "cancelled", "failed"]
 
 S, TS, D, N, INT, B = "string", "timestamp", "date", "numeric", "bigint", "boolean"
 
@@ -98,6 +99,22 @@ CONTRACTS: dict[str, list[tuple[str, str]]] = {
         ("conversion_value_vnd", N),
     ],
     "daily_totals": [("source", S), ("source_account", S), ("date", D), ("order_count", INT), ("gross_amount_vnd", N)],
+    # FR-ING-09: vận đơn của hãng vận chuyển, khóa mã vận đơn (spec 01 §9).
+    "shipments": [
+        ("source", S),
+        ("source_id", S),
+        ("source_account", S),
+        ("order_source_id", S),
+        ("status_raw", S),
+        ("status", S),
+        ("created_at", TS),
+        ("updated_at", TS),
+        ("ship_date", D),
+        ("cod_vnd", N),
+        ("shipping_fee_vnd", N),
+        ("return_fee_vnd", N),
+        ("insurance_fee_vnd", N),
+    ],
 }
 
 MODELS: dict[str, list[str]] = {
@@ -115,6 +132,9 @@ MODELS: dict[str, list[str]] = {
     "meta_ads_file": ["ad_insights_daily"],
     "tiktok_ads_file": ["ad_insights_daily"],
     "google_ads_file": ["ad_insights_daily"],
+    "ghn": ["shipments"],
+    "ghtk": ["shipments"],
+    "jnt": ["shipments"],
 }
 KEYS = {
     "daily_totals": ["source_account", "date"],
@@ -133,7 +153,7 @@ def model_yaml(source: str, obj: str) -> list[str]:
         if col.endswith("_vnd"):
             tests.append("not_null")
         if col in ("source", "date", "order_date", "fee_date", "return_date") or (
-            col == "order_source_id" and obj != "fees"
+            col == "order_source_id" and obj not in ("fees", "shipments")
         ):
             tests.append("not_null")
         line = f"      - name: {col}\n        data_type: {typ}"
@@ -141,6 +161,13 @@ def model_yaml(source: str, obj: str) -> list[str]:
             line += (
                 "\n        data_tests:\n          - not_null\n          - accepted_values:\n              arguments:\n"
                 f"                values: {STATUSES}\n              config: {{severity: error}}"
+            )
+            out.append(line)
+            continue
+        if col == "status" and obj == "shipments":
+            line += (
+                "\n        data_tests:\n          - not_null\n          - accepted_values:\n              arguments:\n"
+                f"                values: {SHIP_STATUSES}\n              config: {{severity: error}}"
             )
             out.append(line)
             continue
@@ -205,6 +232,7 @@ def main() -> None:
         "      - {name: source_id, data_type: string, data_tests: [not_null, unique]}",
         "      - {name: platform, data_type: string, data_tests: [not_null]}",
         "      - {name: month, data_type: date, data_tests: [not_null]}",
+        "      - {name: campaign_id, data_type: string}",
         "      - {name: budget_vnd, data_type: numeric, data_tests: [not_null]}",
         "      - {name: deleted, data_type: boolean}",
         "  - name: stg_portal_file__product_costs",

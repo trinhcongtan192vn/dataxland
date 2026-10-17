@@ -8,6 +8,7 @@
         'products': {'source': dbt.type_string(), 'source_id': dbt.type_string(), 'seller_sku': dbt.type_string(), 'name': dbt.type_string(), 'barcode': dbt.type_string(), 'category_raw': dbt.type_string()},
         'ad_insights_daily': {'source': dbt.type_string(), 'source_account': dbt.type_string(), 'date': 'date', 'campaign_id': dbt.type_string(), 'campaign_name': dbt.type_string(), 'adgroup_id': dbt.type_string(), 'adgroup_name': dbt.type_string(), 'currency': dbt.type_string(), 'spend_original': 'numeric', 'spend_vnd': 'numeric', 'impressions': dbt.type_bigint(), 'clicks': dbt.type_bigint(), 'conversions': 'numeric', 'conversion_value_original': 'numeric', 'conversion_value_vnd': 'numeric'},
         'daily_totals': {'source': dbt.type_string(), 'source_account': dbt.type_string(), 'date': 'date', 'order_count': dbt.type_bigint(), 'gross_amount_vnd': 'numeric'},
+        'shipments': {'source': dbt.type_string(), 'source_id': dbt.type_string(), 'source_account': dbt.type_string(), 'order_source_id': dbt.type_string(), 'status_raw': dbt.type_string(), 'status': dbt.type_string(), 'created_at': dbt.type_timestamp(), 'updated_at': dbt.type_timestamp(), 'ship_date': 'date', 'cod_vnd': 'numeric', 'shipping_fee_vnd': 'numeric', 'return_fee_vnd': 'numeric', 'insurance_fee_vnd': 'numeric'},
     } -%}
     {{ return(c[object]) }}
 {%- endmacro %}

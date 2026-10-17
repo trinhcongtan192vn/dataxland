@@ -87,7 +87,7 @@ class HealthCheckRef(_P):
 
 
 class InputsChanged(_P):
-    kind: Literal["product_costs", "ad_budgets"]
+    kind: Literal["product_costs", "ad_budgets", "carrier_files"]
 
 
 class MatchProposed(_P):

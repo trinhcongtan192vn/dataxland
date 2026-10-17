@@ -36,6 +36,12 @@ models:
       - name: sales_daily_id
         data_tests: [unique, not_null]
 
+  - name: mrt_seller__shipments
+    description: Vận đơn của hãng vận chuyển theo ngày gửi (FR-ING-09).
+    columns:
+      - name: shipment_id
+        data_tests: [unique, not_null]
+
   - name: mrt_agency__budget_monthly
     columns:
       - name: budget_monthly_id

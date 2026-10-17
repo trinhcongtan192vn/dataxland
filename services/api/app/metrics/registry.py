@@ -98,6 +98,8 @@ class Registry:
                 return False
             if req == "amazon" and not cfg.has_amazon():
                 return False
+            if req == "carrier" and not cfg.has_carrier():
+                return False
         return True
 
     def visible_for_tenant(self, cfg: TenantConfig) -> list[MetricDef]:

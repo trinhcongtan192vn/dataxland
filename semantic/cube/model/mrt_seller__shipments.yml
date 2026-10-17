@@ -1,0 +1,56 @@
+# SINH RA bởi semantic/build.py – không sửa tay.
+cubes:
+- dimensions:
+  - name: shipment_id
+    primary_key: true
+    public: false
+    sql: shipment_id
+    type: string
+  - name: carrier
+    sql: carrier
+    title: Hãng vận chuyển
+    type: string
+  - name: date
+    sql: ship_date
+    title: Ngày
+    type: time
+  - name: shipment_status
+    sql: status
+    title: Trạng thái vận đơn
+    type: string
+  measures:
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: carrier_fees
+    sql: total_fee_vnd
+    title: Phí hãng vận chuyển
+    type: sum
+  - meta:
+      unit: VND
+      version: 1.0.0
+    name: cod_amount
+    sql: cod_vnd
+    title: Tiền thu hộ (COD)
+    type: sum
+  - meta:
+      unit: count
+      version: 1.0.0
+    name: shipment_count
+    sql: shipment_id
+    title: Số vận đơn
+    type: count
+  name: mrt_seller__shipments
+  pre_aggregations:
+  - dimensions: []
+    granularity: day
+    measures:
+    - carrier_fees
+    - cod_amount
+    - shipment_count
+    name: daily
+    refresh_key:
+      sql: SELECT MAX(_dx_updated_at) FROM {{ COMPILE_CONTEXT.securityContext.dataset_prefix | safe }}_marts.mrt_seller__shipments
+    time_dimension: date
+  sql_table: '{{ COMPILE_CONTEXT.securityContext.dataset_prefix | safe }}_marts.mrt_seller__shipments'
+  title: Vận đơn hãng vận chuyển

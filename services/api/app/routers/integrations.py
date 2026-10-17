@@ -45,7 +45,7 @@ class Check:
 class Platform:
     key: str
     name_vi: str
-    category: Literal["marketplace", "ads", "messaging", "auth", "email", "reference", "ai", "warehouse"]
+    category: Literal["marketplace", "ads", "logistics", "messaging", "auth", "email", "reference", "ai", "warehouse"]
     checks: tuple[Check, ...]
     sources: tuple[str, ...] = ()  # loại nguồn trong `tenants/*.yml` dùng nền tảng này
 
@@ -81,6 +81,9 @@ PLATFORMS: tuple[Platform, ...] = (
         ),
         ("lazada",),
     ),
+    Platform("ghn", "Giao Hàng Nhanh (GHN)", "logistics", (), ("ghn",)),
+    Platform("ghtk", "Giao Hàng Tiết Kiệm (GHTK)", "logistics", (), ("ghtk",)),
+    Platform("jnt", "J&T Express (file đối soát)", "logistics", (), ("jnt",)),
     Platform(
         "windsor",
         "Windsor.ai (Meta, TikTok, Google, Amazon Ads; Amazon Seller)",

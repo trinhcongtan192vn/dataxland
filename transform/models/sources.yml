@@ -104,6 +104,21 @@ sources:
         config:
           enabled: "{{ 'lazada' in var('sources', []) }}"
           freshness: null
+      - name: ghn__shipments
+        description: Vận đơn ghn (FR-ING-09); không có thông tin người nhận.
+        config:
+          enabled: "{{ 'ghn' in var('sources', []) }}"
+          freshness: null
+      - name: ghtk__shipments
+        description: Vận đơn ghtk (FR-ING-09); không có thông tin người nhận.
+        config:
+          enabled: "{{ 'ghtk' in var('sources', []) }}"
+          freshness: null
+      - name: jnt__shipments
+        description: Vận đơn jnt (FR-ING-09); không có thông tin người nhận.
+        config:
+          enabled: "{{ 'jnt' in var('sources', []) }}"
+          freshness: null
       - name: amazon_seller__orders
         config:
           enabled: "{{ 'amazon_seller' in var('sources', []) }}"

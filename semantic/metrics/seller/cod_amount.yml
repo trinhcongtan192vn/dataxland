@@ -1,0 +1,33 @@
+metric: cod_amount
+name_vi: Tiền thu hộ (COD)
+description_vi: Tiền hãng thu hộ người nhận theo vận đơn, theo ngày gửi.
+version: 1.0.0
+type: simple
+hidden: false
+source: mrt_seller__shipments
+measure:
+  agg: sum
+  column: cod_vnd
+dimensions:
+- carrier
+- date
+- shipment_status
+time_grains:
+- day
+- week
+- month
+unit: VND
+good_direction: up
+packs:
+- seller
+requires:
+- carrier
+synonyms_vi:
+- cod
+- tiền thu hộ
+source_note_vi: Số do hãng vận chuyển báo qua webhook, API chi tiết vận đơn (GHN, GHTK) hoặc file đối soát (J&T).
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-17'
+  change_vi: Phiên bản đầu tiên (FR-ING-09).
