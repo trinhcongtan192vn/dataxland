@@ -58,4 +58,10 @@ def extra_jobs(db_factory: DbFactory) -> dict[str, Any]:
     with db_factory() as db:
         dead = alert_dead_letters(db)
         cleanup(db)
-    return {"dead_letter_alerts": dead}
+    out: dict[str, Any] = {"dead_letter_alerts": dead}
+    # Agent nội bộ (spec 09 §8): bản nháp nhận định tuần, phân tích sự cố. Không có khóa API thì bỏ qua.
+    from app.ask.agents import run_agents
+
+    with db_factory() as db:
+        out["agents"] = run_agents(db)
+    return out

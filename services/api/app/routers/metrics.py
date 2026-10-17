@@ -9,7 +9,7 @@ from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from app.auth.context import AuthContext, get_ctx
+from app.auth.context import AuthContext, get_ctx, get_metrics_ctx
 from app.auth.permissions import require
 from app.db import get_db
 from app.errors import ApiError
@@ -38,7 +38,9 @@ class QueryOut(BaseModel):
 
 
 @router.post("/query", response_model=QueryOut)
-def metrics_query(body: QueryIn, ctx: AuthContext = Depends(get_ctx), db: Session = Depends(get_db)) -> dict[str, Any]:
+def metrics_query(
+    body: QueryIn, ctx: AuthContext = Depends(get_metrics_ctx), db: Session = Depends(get_db)
+) -> dict[str, Any]:
     require(ctx, "metrics.read")
     return query(ctx, body, db=db, caller=ctx.caller)
 
@@ -86,7 +88,7 @@ def _info(name: str) -> MetricInfo:
 
 
 @router.get("", response_model=list[MetricInfo])
-def list_metrics(ctx: AuthContext = Depends(get_ctx)) -> list[MetricInfo]:
+def list_metrics(ctx: AuthContext = Depends(get_metrics_ctx)) -> list[MetricInfo]:
     """Chỉ số người gọi được xem, kèm dữ liệu sổ tay (spec 03 §4.5, FR-DSH-04)."""
     require(ctx, "metrics.read")
     return [_info(m.metric) for m in sorted(visible_metrics(ctx), key=lambda x: (x.packs, x.name_vi))]
@@ -109,7 +111,7 @@ def get_flags(ctx: AuthContext = Depends(get_ctx), db: Session = Depends(get_db)
 
 
 @router.get("/{metric}", response_model=MetricInfo)
-def get_metric(metric: str, ctx: AuthContext = Depends(get_ctx)) -> MetricInfo:
+def get_metric(metric: str, ctx: AuthContext = Depends(get_metrics_ctx)) -> MetricInfo:
     require(ctx, "metrics.read")
     try:
         check_metric(ctx, metric)

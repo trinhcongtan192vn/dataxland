@@ -398,6 +398,8 @@ class MessageIn(BaseModel):
     period: Literal["this_week", "this_month", "last_week", "last_month"] | None = None
     command: str | None = Field(default=None, max_length=32)
     free_text: bool = False
+    question: str | None = Field(default=None, max_length=1000)
+    ask_id: str | None = Field(default=None, max_length=32)
 
 
 PERIOD_VI = {"this_week": "Tuần này", "this_month": "Tháng này", "last_week": "Tuần trước", "last_month": "Tháng trước"}
@@ -420,11 +422,18 @@ def bot_message(
     _bot(caller)
     chat = _chat(x_telegram_chat_id)
     s = get_settings()
-    if kind == "help":
-        return _msg("bot_help", {"free_text_note": body.free_text, "ask_enabled": False, "portal_url": _portal("/app")})
+    ask_enabled = bool(s.anthropic_api_key)
+    if kind == "help" or (kind == "ask" and not ask_enabled):
+        free = body.free_text or kind == "ask"
+        return _msg(
+            "bot_help",
+            {"free_text_note": free and not ask_enabled, "ask_enabled": ask_enabled, "portal_url": _portal("/app")},
+        )
     links = _active_links(db, chat)
     if kind == "not_linked" or not links:
         return _msg("bot_not_linked", {"settings_url": _portal("/app/settings/telegram")})
+    if kind == "ask":
+        return _ask_msg(db, chat, links, body)
     n, window = _limit(s.tg_rate_commands)
     wait = _rate(db, str(chat), "command", n, window)
     if wait is not None:
@@ -447,6 +456,66 @@ def bot_message(
     if kind == "latest_report":
         return _latest_report_msg(db, ctx, link)
     raise ApiError(404, "MESSAGE_KIND_UNKNOWN", f"Không có loại tin {kind}")
+
+
+def _limited(minutes: int) -> ApiError:
+    return ApiError(
+        429,
+        "RATE_LIMITED",
+        f"Thử lại sau {minutes} phút",
+        extra={"message": _msg("bot_rate_limited", {"minutes": minutes})},
+    )
+
+
+def _ask_msg(db: Session, chat: int, links: list[TelegramLink], body: MessageIn) -> dict[str, Any]:
+    """Câu hỏi tự do (spec 08 §5, spec 09 §3): giới hạn 10 câu/giờ mỗi chat, 50 câu/ngày mỗi khách, trước khi gọi
+    model. Chat liên kết nhiều khách: giữ câu hỏi ở `ask_logs` (`awaiting_tenant`) và hỏi chọn shop."""
+    from app.ask.engine import ask
+    from app.ask.guard import mask
+    from app.ask.render import to_telegram
+    from app.db.models import AskLog
+    from dx_common.timeutil import today_vn
+
+    s = get_settings()
+    question = (body.question or "").strip()
+    if body.ask_id:
+        pending = db.get(AskLog, body.ask_id)
+        link_ids = {lk.id for lk in links}
+        if pending is None or pending.refused_reason != "awaiting_tenant" or pending.telegram_link_id not in link_ids:
+            return _msg("bot_help", {"free_text_note": False, "ask_enabled": True, "portal_url": _portal("/app")})
+        question = pending.question_masked
+        db.delete(pending)
+    else:
+        n, window = _limit(s.tg_rate_ask_chat)
+        wait = _rate(db, str(chat), "ask", n, window)
+        if wait is not None:
+            raise _limited(wait)
+    if not question:
+        return _msg("bot_help", {"free_text_note": False, "ask_enabled": True, "portal_url": _portal("/app")})
+    if body.tenant_id:
+        links = [lk for lk in links if lk.tenant_id == body.tenant_id] or links
+    if len(links) > 1:
+        pending = AskLog(
+            tenant_id=links[0].tenant_id,
+            telegram_link_id=links[0].id,
+            conversation_id="pending",
+            channel="telegram",
+            question_masked=mask(question),
+            refused_reason="awaiting_tenant",
+        )
+        db.add(pending)
+        db.flush()
+        names = {lk.tenant_id: (t.name if (t := db.get(Tenant, lk.tenant_id)) else lk.tenant_id) for lk in links}
+        buttons = [Button(names[lk.tenant_id], callback_data=f"ka:{pending.id}:{lk.tenant_id}") for lk in links]
+        return _msg("bot_choose_tenant", {"action_vi": "trả lời câu hỏi"}, buttons)
+    link = links[0]
+    n, window = _limit(s.tg_rate_ask_tenant)
+    wait = _rate(db, f"tenant:{link.tenant_id}", "ask", n, window)
+    if wait is not None:
+        raise _limited(wait)
+    ctx = bot_ctx_for_link(db, link)
+    res = ask(db, ctx, question, "telegram", f"tg-{link.id}-{today_vn().isoformat()}")
+    return {"text_html": "\n".join(to_telegram(res.answer_vi, res.citations)), "buttons": []}
 
 
 def _choose(db: Session, links: list[TelegramLink], kind: str, body: MessageIn) -> dict[str, Any]:

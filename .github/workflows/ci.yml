@@ -64,15 +64,19 @@ jobs:
       - name: "8. Bộ đánh giá AI (khi đổi semantic/ hoặc ai/)"
         if: ${{ env.ANTHROPIC_API_KEY != '' }}
         run: |
-          if git diff --name-only origin/main...HEAD | grep -qE '^(semantic|ai|knowledge/playbooks|services/api/app/ask)/'; then
-            uv run python ai/run_evals.py --out .local/evals.json
+          if git diff --name-only origin/main...HEAD | grep -qE '^(semantic|ai|knowledge/playbooks|services/api/app/ask)/|ANTHROPIC_MODEL'; then
+            (cd services/api && uv run alembic upgrade head)
+            make sync-tenants
+            uv run python ai/run_evals.py seller agency --out .local/evals
           fi
+        env:
+          DATABASE_URL: postgresql+psycopg://dx:dx@localhost:5432/dx
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: ci-artifacts
           path: |
-            .local/evals.json
+            .local/evals/
             .local/cube.log
             transform/target/run_results.json
           if-no-files-found: ignore

@@ -207,9 +207,10 @@ def build_report(
             actions=[],
         )
         db.add(r)
-    else:  # bản nháp đã có: thay snapshot, giữ nhận định
+    else:  # bản nháp đã có: thay snapshot, giữ nhận định; bản nháp AI dựng lại theo snapshot mới
         r = existing
         r.snapshot, r.data_stale, r.run_id, r.built_at = snap, data_stale, run_id, now_utc()
+        r.insight_draft_md, r.actions_draft = None, None
     db.flush()
     publish("report.built", tenant_id, {"report_id": r.id, "period": start.isoformat()}, "s6-reports", bind=db)
     audit(

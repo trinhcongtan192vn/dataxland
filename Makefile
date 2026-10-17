@@ -6,7 +6,7 @@ TENANT ?= demo_seller
 PY := uv run
 export PYTHONUTF8 := 1
 
-.PHONY: setup up down seed-local dbt-build semantic test test-py test-dbt test-web lint e2e sync-tenants api bot web cube dagster
+.PHONY: setup up down seed-local dbt-build semantic test test-py test-dbt test-web lint e2e evals sync-tenants api bot web cube dagster mcp
 
 setup:
 	uv sync
@@ -36,7 +36,7 @@ sync-tenants:
 test: test-py test-dbt test-web
 
 test-py:
-	$(PY) pytest libs services pipelines semantic ops/tests
+	$(PY) pytest libs services pipelines semantic ai
 
 test-dbt:
 	$(PY) python ops/dbt_build.py demo_seller --fixed-samples
@@ -60,6 +60,10 @@ lint:
 e2e:
 	pnpm --filter web e2e
 
+# Bộ đánh giá AI hỏi đáp (spec 09 §7): cần ANTHROPIC_API_KEY, Postgres, Cube và dữ liệu mẫu
+evals:
+	$(PY) python ai/run_evals.py seller agency --out .local/evals
+
 # Chạy từng dịch vụ trực tiếp, không cần Docker (xem docs/local-dev.md)
 api:
 	cd services/api && $(PY) uvicorn app.main:app --reload --port 8000
@@ -72,6 +76,9 @@ web:
 
 cube:
 	cd cube && npm run dev
+
+mcp:
+	cd services/mcp && $(PY) python -m dx_mcp.server
 
 dagster:
 	cd pipelines && $(PY) dagster dev -m dx_pipelines.definitions -p 3001

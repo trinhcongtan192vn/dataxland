@@ -6,7 +6,8 @@
 | `/week`, `/month`, `/report`, `/help`, `/unlink` | Gọi `POST /v1/telegram/messages/<kind>` |
 | Nút `kt:<lệnh>:<khách>` | Chạy lệnh cho khách đã chọn (chat liên kết nhiều khách) |
 | Nút `ku:<khách>` / `ku:*` | Gỡ liên kết sau khi xác nhận |
-| Tin tự do trong chat riêng | GĐ1: trả `help` kèm ghi chú; không gọi AI |
+| Tin tự do trong chat riêng, `/ask <câu>`, nhắc tên bot trong nhóm | `POST /v1/telegram/messages/ask` (spec 09); API trả `help` khi chưa bật AI |
+| Nút `ka:<câu hỏi chờ>:<khách>` | Trả lời câu hỏi đang chờ cho khách đã chọn |
 | `my_chat_member` bị xóa/chặn | `POST /v1/telegram/chat-left` |
 """
 
@@ -83,10 +84,19 @@ class Handler:
             extra={"chat": chat_hash(chat_id), "command": parsed[0] if parsed else None, "chat_type": chat.get("type")},
         )
         if parsed is None:
+            mention = f"@{self.bot_username}".lower()
             if chat.get("type") == "private" and text:
-                await self.reply(chat_id, await self.api.message("help", chat_id, free_text=True))
+                await self.ask(chat_id, text)
+            elif text and mention in text.lower():
+                await self.ask(chat_id, text.replace(f"@{self.bot_username}", "").strip())
             return
         cmd, arg = parsed
+        if cmd == "ask":
+            if arg:
+                await self.ask(chat_id, arg)
+            else:
+                await self.reply(chat_id, await self.api.message("help", chat_id))
+            return
         if cmd == "start":
             if arg:
                 user = (m.get("from") or {}).get("id")
@@ -98,6 +108,14 @@ class Handler:
             return
         kind, body = COMMANDS[cmd]
         await self.reply(chat_id, await self.api.message(kind, chat_id, **body))
+
+    async def ask(self, chat_id: int, question: str) -> None:
+        """Câu hỏi tự do (spec 08 §5): báo đang gõ trong lúc chờ API trả lời."""
+        try:
+            await self.tg.typing(chat_id)
+        except BotApiError:
+            log.warning("không gửi được typing", extra={"chat": chat_hash(chat_id)})
+        await self.reply(chat_id, await self.api.message("ask", chat_id, question=question[:1000]))
 
     async def on_callback(self, q: dict[str, Any]) -> None:
         data = str(q.get("data") or "")
@@ -111,6 +129,10 @@ class Handler:
                     await self.reply(chat_id, await self.api.unlink(chat_id, tenant_id))
                 else:
                     await self.reply(chat_id, await self.api.message(kind, chat_id, tenant_id=tenant_id, **body))
+        elif data.startswith("ka:"):
+            _, ask_id, tenant_id = [*data.split(":", 2), "", ""][:3]
+            await self.tg.typing(chat_id)
+            await self.reply(chat_id, await self.api.message("ask", chat_id, ask_id=ask_id, tenant_id=tenant_id))
         elif data.startswith("ku:"):
             target = data[3:]
             await self.reply(chat_id, await self.api.unlink(chat_id, None if target == "*" else target))

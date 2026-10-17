@@ -39,8 +39,8 @@ export default function OpsReportDetail() {
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   useEffect(() => {
     if (q.data) {
-      setInsight(q.data.insight_md ?? q.data.insight_draft_md ?? "");
-      setActions((q.data.actions.length ? q.data.actions : (q.data.actions_draft ?? [])).join("\n"));
+      setInsight(q.data.insight_md ?? "");
+      setActions(q.data.actions.join("\n"));
     }
   }, [q.data]);
   const refresh = (data?: unknown) => {
@@ -127,6 +127,38 @@ export default function OpsReportDetail() {
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_380px]">
         <ReportView report={preview} />
         <aside className="space-y-4">
+          {draft && r.insight_draft_md && (
+            <div className="card space-y-2 border-violet-200 bg-violet-50">
+              <div className="flex items-center justify-between">
+                <h2 className="font-semibold text-violet-900">Bản nháp AI</h2>
+                <Badge tone="yellow">Chưa duyệt</Badge>
+              </div>
+              <p className="whitespace-pre-wrap text-sm text-slate-700">{r.insight_draft_md}</p>
+              {(r.actions_draft ?? []).length > 0 && (
+                <ul className="list-disc pl-5 text-sm text-slate-700">
+                  {(r.actions_draft ?? []).map((a) => (
+                    <li key={a}>{a}</li>
+                  ))}
+                </ul>
+              )}
+              <p className="text-xs text-slate-500">
+                AI chỉ dùng số trong báo cáo này. Kiểm tra, sửa rồi mới duyệt; bản nháp không tự gửi cho
+                khách.
+              </p>
+              {canApprove && (
+                <button
+                  type="button"
+                  className="btn-secondary text-sm"
+                  onClick={() => {
+                    setInsight(r.insight_draft_md ?? "");
+                    setActions((r.actions_draft ?? []).join("\n"));
+                  }}
+                >
+                  Dùng bản nháp
+                </button>
+              )}
+            </div>
+          )}
           {draft ? (
             <div className="card space-y-3">
               <label className="block">

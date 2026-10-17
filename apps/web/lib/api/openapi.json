@@ -54,6 +54,102 @@
     "title": "AnomalyRunIn",
     "type": "object"
    },
+   "AskIn": {
+    "properties": {
+     "conversation_id": {
+      "anyOf": [
+       {
+        "maxLength": 64,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Conversation Id"
+     },
+     "question": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Question",
+      "type": "string"
+     }
+    },
+    "required": [
+     "question"
+    ],
+    "title": "AskIn",
+    "type": "object"
+   },
+   "AskOut": {
+    "properties": {
+     "answer_md": {
+      "title": "Answer Md",
+      "type": "string"
+     },
+     "answer_vi": {
+      "title": "Answer Vi",
+      "type": "string"
+     },
+     "ask_id": {
+      "title": "Ask Id",
+      "type": "string"
+     },
+     "cached": {
+      "title": "Cached",
+      "type": "boolean"
+     },
+     "citations": {
+      "items": {
+       "additionalProperties": true,
+       "type": "object"
+      },
+      "title": "Citations",
+      "type": "array"
+     },
+     "conversation_id": {
+      "title": "Conversation Id",
+      "type": "string"
+     },
+     "missing_metric": {
+      "anyOf": [
+       {
+        "additionalProperties": {
+         "type": "string"
+        },
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Missing Metric"
+     },
+     "refused_reason": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Refused Reason"
+     }
+    },
+    "required": [
+     "ask_id",
+     "conversation_id",
+     "answer_vi",
+     "answer_md",
+     "citations",
+     "missing_metric",
+     "refused_reason",
+     "cached"
+    ],
+    "title": "AskOut",
+    "type": "object"
+   },
    "Body_submit_v1_health_checks_post": {
     "properties": {
      "consent_version": {
@@ -1027,6 +1123,30 @@
      "reason"
     ],
     "title": "FailIn",
+    "type": "object"
+   },
+   "FeedbackIn": {
+    "properties": {
+     "feedback": {
+      "anyOf": [
+       {
+        "enum": [
+         "up",
+         "down"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Feedback"
+     }
+    },
+    "required": [
+     "feedback"
+    ],
+    "title": "FeedbackIn",
     "type": "object"
    },
    "FileStatusIn": {
@@ -2219,6 +2339,18 @@
    },
    "MessageIn": {
     "properties": {
+     "ask_id": {
+      "anyOf": [
+       {
+        "maxLength": 32,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Ask Id"
+     },
      "command": {
       "anyOf": [
        {
@@ -2252,6 +2384,18 @@
        }
       ],
       "title": "Period"
+     },
+     "question": {
+      "anyOf": [
+       {
+        "maxLength": 1000,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Question"
      },
      "tenant_id": {
       "anyOf": [
@@ -2406,6 +2550,80 @@
      "unit"
     ],
     "title": "MetricMeta",
+    "type": "object"
+   },
+   "MetricRequestOut": {
+    "properties": {
+     "count": {
+      "title": "Count",
+      "type": "integer"
+     },
+     "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+     },
+     "description_vi": {
+      "title": "Description Vi",
+      "type": "string"
+     },
+     "id": {
+      "title": "Id",
+      "type": "string"
+     },
+     "question": {
+      "title": "Question",
+      "type": "string"
+     },
+     "status": {
+      "title": "Status",
+      "type": "string"
+     },
+     "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+     },
+     "tenant_name": {
+      "title": "Tenant Name",
+      "type": "string"
+     },
+     "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "tenant_id",
+     "tenant_name",
+     "question",
+     "description_vi",
+     "count",
+     "status",
+     "created_at",
+     "updated_at"
+    ],
+    "title": "MetricRequestOut",
+    "type": "object"
+   },
+   "MetricRequestPatch": {
+    "properties": {
+     "status": {
+      "enum": [
+       "new",
+       "planned",
+       "done",
+       "declined"
+      ],
+      "title": "Status",
+      "type": "string"
+     }
+    },
+    "required": [
+     "status"
+    ],
+    "title": "MetricRequestPatch",
     "type": "object"
    },
    "MissingCostOut": {
@@ -4159,6 +4377,158 @@
     "summary": "Manual Fx",
     "tags": [
      "ops"
+    ]
+   }
+  },
+  "/v1/ask": {
+   "post": {
+    "operationId": "post_ask_v1_ask_post",
+    "parameters": [
+     {
+      "in": "header",
+      "name": "x-tenant-id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/AskIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AskOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Post Ask",
+    "tags": [
+     "ask"
+    ]
+   }
+  },
+  "/v1/ask/{ask_id}/feedback": {
+   "post": {
+    "operationId": "post_feedback_v1_ask__ask_id__feedback_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "ask_id",
+      "required": true,
+      "schema": {
+       "title": "Ask Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-tenant-id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/FeedbackIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Post Feedback",
+    "tags": [
+     "ask"
     ]
    }
   },
@@ -8142,6 +8512,22 @@
     "parameters": [
      {
       "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "in": "header",
       "name": "x-tenant-id",
       "required": false,
       "schema": {
@@ -8158,7 +8544,7 @@
      },
      {
       "in": "header",
-      "name": "authorization",
+      "name": "x-service",
       "required": false,
       "schema": {
        "anyOf": [
@@ -8169,7 +8555,23 @@
          "type": "null"
         }
        ],
-       "title": "Authorization"
+       "title": "X-Service"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-dx-session",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Dx-Session"
       }
      }
     ],
@@ -8358,6 +8760,22 @@
     "parameters": [
      {
       "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "in": "header",
       "name": "x-tenant-id",
       "required": false,
       "schema": {
@@ -8374,7 +8792,7 @@
      },
      {
       "in": "header",
-      "name": "authorization",
+      "name": "x-service",
       "required": false,
       "schema": {
        "anyOf": [
@@ -8385,7 +8803,23 @@
          "type": "null"
         }
        ],
-       "title": "Authorization"
+       "title": "X-Service"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-dx-session",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Dx-Session"
       }
      }
     ],
@@ -8442,6 +8876,22 @@
      },
      {
       "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "in": "header",
       "name": "x-tenant-id",
       "required": false,
       "schema": {
@@ -8458,7 +8908,7 @@
      },
      {
       "in": "header",
-      "name": "authorization",
+      "name": "x-service",
       "required": false,
       "schema": {
        "anyOf": [
@@ -8469,7 +8919,23 @@
          "type": "null"
         }
        ],
-       "title": "Authorization"
+       "title": "X-Service"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-dx-session",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Dx-Session"
       }
      }
     ],
@@ -8933,6 +9399,142 @@
     "summary": "Get Integration",
     "tags": [
      "integrations"
+    ]
+   }
+  },
+  "/v1/ops/metric-requests": {
+   "get": {
+    "operationId": "list_metric_requests_v1_ops_metric_requests_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "status",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "enum": [
+          "new",
+          "planned",
+          "done",
+          "declined"
+         ],
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Status"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/MetricRequestOut"
+         },
+         "title": "Response List Metric Requests V1 Ops Metric Requests Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "List Metric Requests",
+    "tags": [
+     "ask"
+    ]
+   }
+  },
+  "/v1/ops/metric-requests/{request_id}": {
+   "patch": {
+    "operationId": "patch_metric_request_v1_ops_metric_requests__request_id__patch",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "request_id",
+      "required": true,
+      "schema": {
+       "title": "Request Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/MetricRequestPatch"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Patch Metric Request",
+    "tags": [
+     "ask"
     ]
    }
   },
