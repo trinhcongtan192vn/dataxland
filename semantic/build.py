@@ -59,6 +59,7 @@ OPTIONAL = {
     "synonyms_vi",
     "variants",
     "required_dimensions",
+    "per_entity",
 }
 TYPES = {"simple", "ratio", "derived"}
 UNITS = {"VND", "ratio", "percent", "count"}
@@ -171,7 +172,17 @@ def validate(lib: Library) -> None:
         for dname in m.get("dimensions") or []:
             if dname not in lib.dimensions:
                 e.append(f"{f}: chiều '{dname}' không có trong dimensions.yml")
-        if t == "simple":
+        if t == "simple" and m.get("per_entity"):
+            pe = m["per_entity"]
+            dim = lib.dimensions.get(str(pe.get("dimension")), {})
+            base = lib.metrics.get(str(pe.get("base")), {})
+            if not dim.get("internal"):
+                e.append(f"{f}: per_entity.dimension phải là chiều nội bộ (internal) trong dimensions.yml")
+            if base.get("type") != "simple" or base.get("per_entity"):
+                e.append(f"{f}: per_entity.base phải là chỉ số simple khác")
+            if not isinstance(pe.get("min"), int) or pe["min"] < 1:
+                e.append(f"{f}: per_entity.min phải là số nguyên ≥ 1")
+        elif t == "simple":
             for part in [{"source": m.get("source"), "measure": m.get("measure")}, *(m.get("variants") or [])]:
                 src, ms = part.get("source"), part.get("measure")
                 if src not in lib.sources:
@@ -243,7 +254,9 @@ def realization_cubes(lib: Library, name: str, memo: dict[str, list[str]] | None
     if name in memo:
         return memo[name]
     m = lib.metrics[name]
-    if m["type"] == "simple":
+    if m["type"] == "simple" and m.get("per_entity"):
+        out = []  # tổng hợp hai bậc: bộ máy tính từ measure gốc, không có measure Cube riêng
+    elif m["type"] == "simple":
         out = [m["source"], *[v["source"] for v in m.get("variants") or []]]
     else:
         sets = [set(realization_cubes(lib, r, memo)) for r in refs(m)]
@@ -396,6 +409,10 @@ def build_cubes(lib: Library) -> dict[str, dict[str, Any]]:
 
 def describe_formula(lib: Library, name: str) -> str:
     m = lib.metrics[name]
+    if m["type"] == "simple" and m.get("per_entity"):
+        pe = m["per_entity"]
+        dim = lib.dimensions[pe["dimension"]]["name_vi"].lower()
+        return f"Số {dim} có {lib.metrics[pe['base']]['name_vi'].lower()} từ {pe['min']} trở lên trong kỳ"
     if m["type"] == "simple":
         ms = m["measure"]
         col = ms["column"]
@@ -447,6 +464,7 @@ def build_registry(lib: Library) -> dict[str, Any]:
             "components": refs(m),
             "anomaly": m.get("anomaly"),
             "synonyms_vi": m.get("synonyms_vi") or [],
+            "per_entity": m.get("per_entity"),
         }
     return out
 

@@ -43,6 +43,7 @@ class MetricDef:
     synonyms_vi: tuple[str, ...]
     realizations: tuple[str, ...] = ()
     handbook: dict[str, Any] = field(default_factory=dict)
+    per_entity: dict[str, Any] | None = None  # tổng hợp hai bậc: đếm thực thể có `base` ≥ `min`
 
     @classmethod
     def from_json(cls, d: dict[str, Any], handbook: dict[str, Any] | None = None) -> MetricDef:
@@ -71,6 +72,7 @@ class MetricDef:
                 dict.fromkeys([*([d["cube"]] if d.get("cube") else []), *sorted(d.get("realizations") or {})])
             ),
             handbook=handbook or {},
+            per_entity=d.get("per_entity"),
         )
 
 
@@ -105,6 +107,9 @@ class Registry:
         cols = self.dimensions.get(dim, {}).get("columns", {})
         col = cols.get(cube)
         return str(col) if col else None
+
+    def is_internal_dimension(self, dim: str) -> bool:
+        return bool(self.dimensions.get(dim, {}).get("internal"))
 
     def dimension_type(self, dim: str) -> str:
         return str(self.dimensions.get(dim, {}).get("type", "string"))

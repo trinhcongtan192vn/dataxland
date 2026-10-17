@@ -76,6 +76,7 @@ class DataStatus:
 class Leaf:
     name: str
     cube: str
+    per_entity: dict[str, Any] | None = None
 
 
 @dataclass
@@ -138,6 +139,12 @@ def build_node(reg: Registry, name: str, dims: set[str]) -> Node:
     m = reg.get(name)
     if m is None:
         raise ApiError(400, "METRIC_UNKNOWN", f"Không có chỉ số {name}")
+    if m.per_entity:
+        base = reg.get(str(m.per_entity["base"]))
+        base_cube = _cube_for(reg, base, dims | {str(m.per_entity["dimension"])}) if base else None
+        if base_cube is None:
+            raise ApiError(400, "DIMENSION_NOT_ALLOWED", f"Chỉ số {name} không cắt được theo {', '.join(sorted(dims))}")
+        return Node(name, leaf=Leaf(name, base_cube, m.per_entity))
     cube = _cube_for(reg, m, dims)
     if cube:
         return Node(name, leaf=Leaf(name, cube))
@@ -182,6 +189,8 @@ def run_period(
     filters: list[FilterIn],
 ) -> dict[tuple[Any, ...], dict[str, Decimal | None]]:
     by_cube: dict[str, list[str]] = {}
+    per_entity = [lf for lf in leaf_list if lf.per_entity]
+    leaf_list = [lf for lf in leaf_list if not lf.per_entity]
     for lf in leaf_list:
         by_cube.setdefault(lf.cube, [])
         if lf.name not in by_cube[lf.cube]:
@@ -217,7 +226,34 @@ def run_period(
             vals = merged.setdefault(key, {})
             for m in measures:
                 vals[m] = _to_dec(row.get(f"{cube_name}.{m}"))
+    for lf in per_entity:
+        _run_per_entity(ctx, reg, lf, dims, period, grain, filters, merged)
     return merged
+
+
+def _run_per_entity(
+    ctx: AuthContext,
+    reg: Registry,
+    lf: Leaf,
+    dims: list[str],
+    period: Period,
+    grain: str,
+    filters: list[FilterIn],
+    merged: dict[tuple[Any, ...], dict[str, Decimal | None]],
+) -> None:
+    """Tổng hợp hai bậc: lấy `base` theo từng thực thể (vd. số đơn mỗi người mua) rồi đếm thực thể đạt `min`."""
+    pe = lf.per_entity or {}
+    base, entity, minimum = str(pe["base"]), str(pe["dimension"]), Decimal(str(pe["min"]))
+    sub = run_period(ctx, reg, [Leaf(base, lf.cube)], [*dims, entity], period, grain, filters)
+    counts: dict[tuple[Any, ...], int] = {}
+    for key, vals in sub.items():
+        outer = key[:-1]  # bỏ phần thực thể ở cuối khóa
+        counts.setdefault(outer, 0)
+        v = vals.get(base)
+        if key[-1] is not None and v is not None and v >= minimum:
+            counts[outer] += 1
+    for outer, n in counts.items():
+        merged.setdefault(outer, {})[lf.name] = Decimal(n)
 
 
 def evaluate(node: Node, vals: dict[str, Decimal | None], reg: Registry) -> Decimal | None:
@@ -326,6 +362,9 @@ def query(
         raise ApiError(400, "TOO_MANY_DIMENSIONS", f"Tối đa {MAX_DIMS} chiều mỗi truy vấn")
     defs = [check_metric(ctx, m, allow_hidden=allow_hidden) for m in dict.fromkeys(body.metrics)]
     filter_dims = {f.dimension for f in body.filters}
+    internal = [d for d in [*body.dimensions, *filter_dims] if reg.is_internal_dimension(d)]
+    if internal:
+        raise ApiError(400, "DIMENSION_NOT_ALLOWED", f"Không cắt được theo {', '.join(internal)}")
     for m in defs:
         bad = [d for d in [*body.dimensions, *filter_dims] if d not in m.dimensions]
         if bad:

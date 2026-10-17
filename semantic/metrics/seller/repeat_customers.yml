@@ -1,0 +1,30 @@
+metric: repeat_customers
+name_vi: Số người mua quay lại
+description_vi: Số người mua có từ 2 đơn không hủy trở lên trong kỳ.
+version: 1.0.0
+type: simple
+hidden: true
+per_entity:
+  dimension: customer
+  base: order_count
+  min: 2
+dimensions:
+- channel
+- date
+- platform
+source_note_vi: Đếm theo người mua đã gộp định danh.
+unit: count
+good_direction: up
+packs:
+- seller
+requires:
+- identity
+time_grains:
+- day
+- week
+- month
+owner: data-lead
+history:
+- version: 1.0.0
+  date: '2026-10-17'
+  change_vi: Phiên bản đầu tiên (giai đoạn 2, spec 10 §7).

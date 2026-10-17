@@ -283,6 +283,33 @@
     "title": "BuildIn",
     "type": "object"
    },
+   "BulkIn": {
+    "properties": {
+     "action": {
+      "enum": [
+       "approve",
+       "reject"
+      ],
+      "title": "Action",
+      "type": "string"
+     },
+     "ids": {
+      "items": {
+       "type": "string"
+      },
+      "maxItems": 500,
+      "minItems": 1,
+      "title": "Ids",
+      "type": "array"
+     }
+    },
+    "required": [
+     "ids",
+     "action"
+    ],
+    "title": "BulkIn",
+    "type": "object"
+   },
    "ChatLeftIn": {
     "properties": {
      "chat_id": {
@@ -1840,6 +1867,204 @@
      "mine"
     ],
     "title": "LinkOut",
+    "type": "object"
+   },
+   "MatchIn": {
+    "properties": {
+     "entity": {
+      "const": "product",
+      "title": "Entity",
+      "type": "string"
+     },
+     "left": {
+      "additionalProperties": true,
+      "title": "Left",
+      "type": "object"
+     },
+     "method": {
+      "title": "Method",
+      "type": "string"
+     },
+     "pair_key": {
+      "title": "Pair Key",
+      "type": "string"
+     },
+     "reason_vi": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Reason Vi"
+     },
+     "right": {
+      "additionalProperties": true,
+      "title": "Right",
+      "type": "object"
+     },
+     "score": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Score"
+     },
+     "status": {
+      "enum": [
+       "proposed",
+       "approved"
+      ],
+      "title": "Status",
+      "type": "string"
+     }
+    },
+    "required": [
+     "entity",
+     "left",
+     "right",
+     "pair_key",
+     "method",
+     "status"
+    ],
+    "title": "MatchIn",
+    "type": "object"
+   },
+   "MatchOut": {
+    "properties": {
+     "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+     },
+     "decided_at": {
+      "anyOf": [
+       {
+        "format": "date-time",
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Decided At"
+     },
+     "decided_by": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Decided By"
+     },
+     "entity": {
+      "title": "Entity",
+      "type": "string"
+     },
+     "id": {
+      "title": "Id",
+      "type": "string"
+     },
+     "left": {
+      "additionalProperties": true,
+      "title": "Left",
+      "type": "object"
+     },
+     "method": {
+      "title": "Method",
+      "type": "string"
+     },
+     "reason_vi": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Reason Vi"
+     },
+     "right": {
+      "additionalProperties": true,
+      "title": "Right",
+      "type": "object"
+     },
+     "score": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Score"
+     },
+     "status": {
+      "title": "Status",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "entity",
+     "left",
+     "right",
+     "method",
+     "score",
+     "reason_vi",
+     "status",
+     "decided_by",
+     "decided_at",
+     "created_at"
+    ],
+    "title": "MatchOut",
+    "type": "object"
+   },
+   "MatchesIn": {
+    "properties": {
+     "matches": {
+      "items": {
+       "$ref": "#/components/schemas/MatchIn"
+      },
+      "title": "Matches",
+      "type": "array"
+     },
+     "run_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Run Id"
+     },
+     "suggest_run": {
+      "default": false,
+      "title": "Suggest Run",
+      "type": "boolean"
+     },
+     "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+     }
+    },
+    "required": [
+     "tenant_id"
+    ],
+    "title": "MatchesIn",
     "type": "object"
    },
    "MeOut": {
@@ -3496,6 +3721,19 @@
     "title": "SourceStatusIn",
     "type": "object"
    },
+   "TenantIn": {
+    "properties": {
+     "tenant_id": {
+      "title": "Tenant Id",
+      "type": "string"
+     }
+    },
+    "required": [
+     "tenant_id"
+    ],
+    "title": "TenantIn",
+    "type": "object"
+   },
    "TenantOut": {
     "properties": {
      "config": {
@@ -4766,6 +5004,386 @@
     "summary": "Public Result",
     "tags": [
      "health_checks"
+    ]
+   }
+  },
+  "/v1/identity/matches": {
+   "get": {
+    "operationId": "list_matches_v1_identity_matches_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "status",
+      "required": false,
+      "schema": {
+       "default": "proposed",
+       "title": "Status",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-tenant-id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/MatchOut"
+         },
+         "title": "Response List Matches V1 Identity Matches Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "List Matches",
+    "tags": [
+     "identity"
+    ]
+   }
+  },
+  "/v1/identity/matches/bulk": {
+   "post": {
+    "operationId": "bulk_v1_identity_matches_bulk_post",
+    "parameters": [
+     {
+      "in": "header",
+      "name": "x-tenant-id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/BulkIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/MatchOut"
+         },
+         "title": "Response Bulk V1 Identity Matches Bulk Post",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Bulk",
+    "tags": [
+     "identity"
+    ]
+   }
+  },
+  "/v1/identity/matches/{match_id}/approve": {
+   "post": {
+    "operationId": "approve_v1_identity_matches__match_id__approve_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "match_id",
+      "required": true,
+      "schema": {
+       "title": "Match Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-tenant-id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/MatchOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Approve",
+    "tags": [
+     "identity"
+    ]
+   }
+  },
+  "/v1/identity/matches/{match_id}/reject": {
+   "post": {
+    "operationId": "reject_v1_identity_matches__match_id__reject_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "match_id",
+      "required": true,
+      "schema": {
+       "title": "Match Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-tenant-id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/MatchOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Reject",
+    "tags": [
+     "identity"
+    ]
+   }
+  },
+  "/v1/identity/matches/{match_id}/undo": {
+   "post": {
+    "operationId": "undo_v1_identity_matches__match_id__undo_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "match_id",
+      "required": true,
+      "schema": {
+       "title": "Match Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-tenant-id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Tenant-Id"
+      }
+     },
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/MatchOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Undo",
+    "tags": [
+     "identity"
     ]
    }
   },
@@ -6503,6 +7121,241 @@
     "summary": "Internal Start",
     "tags": [
      "health_checks"
+    ]
+   }
+  },
+  "/v1/internal/identity/approved": {
+   "post": {
+    "operationId": "internal_approved_v1_internal_identity_approved_post",
+    "parameters": [
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-service",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Service"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/TenantIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Internal Approved V1 Internal Identity Approved Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Internal Approved",
+    "tags": [
+     "identity"
+    ]
+   }
+  },
+  "/v1/internal/identity/matches": {
+   "post": {
+    "description": "Ghi cặp theo quy tắc (`approved`, `system`) và gợi ý (`proposed`); cặp đã có thì giữ quyết định của người.",
+    "operationId": "internal_upsert_v1_internal_identity_matches_post",
+    "parameters": [
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-service",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Service"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/MatchesIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": {
+          "type": "integer"
+         },
+         "title": "Response Internal Upsert V1 Internal Identity Matches Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Internal Upsert",
+    "tags": [
+     "identity"
+    ]
+   }
+  },
+  "/v1/internal/identity/matches/keys": {
+   "post": {
+    "description": "Cặp đã có (mọi trạng thái) để worker không gợi ý lại; thời điểm lần gợi ý gần nhất (tối đa một lần/ngày).",
+    "operationId": "internal_keys_v1_internal_identity_matches_keys_post",
+    "parameters": [
+     {
+      "in": "header",
+      "name": "authorization",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Authorization"
+      }
+     },
+     {
+      "in": "header",
+      "name": "x-service",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "X-Service"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/TenantIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Internal Keys V1 Internal Identity Matches Keys Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Internal Keys",
+    "tags": [
+     "identity"
     ]
    }
   },

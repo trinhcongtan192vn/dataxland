@@ -11,7 +11,7 @@
 | `budget_used_pct` | Tỷ lệ ngân sách đã dùng | agency | percent | 1.0.0 | đã dùng bao nhiêu ngân sách | Đã chi trong tháng ÷ Ngân sách quảng cáo |
 | `cancel_rate` | Tỷ lệ hủy | seller | percent | 1.0.0 | tỷ lệ hủy, đơn hủy | Số đơn hủy ÷ Số đơn đặt |
 | `clicks` | Lượt nhấp | agency | count | 1.0.0 | click, nhấp | Tổng clicks trên quảng cáo theo ngày |
-| `cogs` | Giá vốn hàng bán | seller | VND | 1.0.0 | giá vốn, cogs, tiền hàng | Tổng cogs trên đơn hàng (gói seller) |
+| `cogs` | Giá vốn hàng bán | seller | VND | 1.0.1 | giá vốn, cogs, tiền hàng | Tổng cogs trên đơn hàng (gói seller) |
 | `contribution_margin` | Biên đóng góp | seller | VND | 1.0.0 | biên đóng góp, lãi gộp sau phí | Doanh thu thực nhận - Giá vốn hàng bán - Phí sàn - Phí thanh toán - Phí vận chuyển - Chi phí hoàn hàng |
 | `conversions` | Chuyển đổi | agency | count | 1.0.0 | chuyển đổi, conversion, kết quả | Tổng conversions trên quảng cáo theo ngày |
 | `cpa` | Chi phí mỗi chuyển đổi (CPA) | agency | VND | 1.0.0 | cpa, giá mỗi chuyển đổi | Chi phí quảng cáo ÷ Chuyển đổi |
@@ -29,6 +29,7 @@
 | `payment_fees` | Phí thanh toán | seller | VND | 1.0.0 | phí thanh toán, phí giao dịch | Tổng payment fee trên đơn hàng (gói seller) |
 | `platform_fees` | Phí sàn | seller | VND | 1.0.0 | phí sàn, hoa hồng, phí cố định | Tổng platform fee trên đơn hàng (gói seller) |
 | `platform_vs_actual_gap` | Chênh lệch nền tảng báo và thực tế | agency | percent | 1.0.0 | chênh lệch roas, nền tảng báo cao | (Giá trị chuyển đổi (nền tảng báo) - Doanh thu thực nhận (theo ngày bán)) ÷ Doanh thu thực nhận (theo ngày bán) |
+| `repeat_customer_rate` | Tỷ lệ khách quay lại | seller | percent | 1.0.0 | khách quay lại, khách mua lại, tỷ lệ mua lại | Số người mua quay lại ÷ Số người mua có đơn |
 | `return_cost` | Chi phí hoàn hàng | seller | VND | 1.0.0 | chi phí hoàn, phí trả hàng | Tổng return cost trên đơn hàng (gói seller) |
 | `return_rate` | Tỷ lệ hoàn | seller | percent | 1.0.0 | tỷ lệ hoàn, hoàn hàng, trả hàng | Số đơn hoàn ÷ Số đơn |
 | `roas_blended` | ROAS thật | seller, agency | ratio | 1.0.0 | roas thật, roas tổng, hiệu quả quảng cáo thật, blended roas | Doanh thu thực nhận (theo ngày bán) ÷ Chi phí quảng cáo |
@@ -44,6 +45,7 @@
 - `campaign`: Chiến dịch
 - `campaign_name`: Tên chiến dịch
 - `channel`: Kênh
+- `customer`: Người mua
 - `date`: Ngày
 - `is_provisional`: Tạm tính
 - `order_status`: Trạng thái đơn

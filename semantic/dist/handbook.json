@@ -504,6 +504,11 @@
           "change_vi": "Phiên bản đầu tiên.",
           "date": "2026-10-16",
           "version": "1.0.0"
+        },
+        {
+          "change_vi": "Ghi chú giá vốn khi ghép sản phẩm (spec 10 §7); công thức không đổi.",
+          "date": "2026-10-17",
+          "version": "1.0.1"
         }
       ],
       "metric": "cogs",
@@ -512,7 +517,7 @@
         "seller"
       ],
       "requires": [],
-      "source_note_vi": "Giá vốn khách nhập trên cổng DataxLand.",
+      "source_note_vi": "Giá vốn khách nhập trên cổng DataxLand. Khi nhiều SKU được ghép thành một sản phẩm, mỗi SKU vẫn dùng giá vốn của chính nó.",
       "synonyms_vi": [
         "giá vốn",
         "cogs",
@@ -524,7 +529,7 @@
         "month"
       ],
       "unit": "VND",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     {
       "description_vi": "Doanh thu thực nhận trừ giá vốn, phí sàn, phí thanh toán, vận chuyển và hoàn hàng (chưa trừ quảng cáo).",
@@ -1498,6 +1503,53 @@
       "synonyms_vi": [
         "chênh lệch roas",
         "nền tảng báo cao"
+      ],
+      "time_grains": [
+        "day",
+        "week",
+        "month"
+      ],
+      "unit": "percent",
+      "version": "1.0.0"
+    },
+    {
+      "description_vi": "Phần người mua có từ 2 đơn trở lên trong kỳ trên tổng người mua có đơn trong kỳ.",
+      "dimensions": [
+        {
+          "name": "channel",
+          "name_vi": "Kênh"
+        },
+        {
+          "name": "date",
+          "name_vi": "Ngày"
+        },
+        {
+          "name": "platform",
+          "name_vi": "Nền tảng"
+        }
+      ],
+      "formula_vi": "Số người mua quay lại ÷ Số người mua có đơn",
+      "good_direction": "up",
+      "history": [
+        {
+          "change_vi": "Phiên bản đầu tiên (giai đoạn 2, spec 10 §7).",
+          "date": "2026-10-17",
+          "version": "1.0.0"
+        }
+      ],
+      "metric": "repeat_customer_rate",
+      "name_vi": "Tỷ lệ khách quay lại",
+      "packs": [
+        "seller"
+      ],
+      "requires": [
+        "identity"
+      ],
+      "source_note_vi": "Chỉ có khi khách bật ghép định danh; số đơn và người mua sau khi gộp hồ sơ người mua.",
+      "synonyms_vi": [
+        "khách quay lại",
+        "khách mua lại",
+        "tỷ lệ mua lại"
       ],
       "time_grains": [
         "day",

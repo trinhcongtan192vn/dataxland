@@ -34,6 +34,9 @@ class FakeApi:
         self.anomalies += 1
         return {}
 
+    def post(self, path: str, body: dict[str, Any] | None = None) -> dict[str, Any]:
+        return {"pair_keys": [], "pairs": [], "last_suggest_at": None}
+
 
 class FakeDbt:
     def __init__(self, fail_tests: bool = False, runtime_error: bool = False, swap_ok: bool = True) -> None:

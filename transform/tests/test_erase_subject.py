@@ -61,6 +61,40 @@ def test_fr_ops_09_erase_subject(db: Path, monkeypatch: pytest.MonkeyPatch) -> N
     }
     assert dry.identifier_hash == _hash(PHONE)
 
+    # Dòng ghép người mua của đơn này phải bị xóa (spec 10 §8); dòng của đơn khác giữ nguyên.
+    wh.write_rows(
+        "t_demo_seller_core",
+        "identity_map",
+        {
+            "entity": "string",
+            "source": "string",
+            "source_id": "string",
+            "canonical_id": "string",
+            "method": "string",
+            "approved_by": "string",
+            "approved_at": "timestamp",
+        },
+        [
+            {
+                "entity": "customer",
+                "source": "shopee",
+                "source_id": "2607180100001SP",
+                "canonical_id": "c1",
+                "method": "rule_phone",
+                "approved_by": "system",
+                "approved_at": None,
+            },
+            {
+                "entity": "customer",
+                "source": "shopee",
+                "source_id": "OTHER_ORDER",
+                "canonical_id": "c2",
+                "method": "rule_phone",
+                "approved_by": "system",
+                "approved_at": None,
+            },
+        ],
+    )
     res = es.erase(tenant, ident, SALT, wh, run_dbt=lambda t, s: es.dbt_full_refresh(t, s, SALT))
     assert res.rows == dry.rows and res.dbt_ok is True
 
@@ -78,6 +112,9 @@ def test_fr_ops_09_erase_subject(db: Path, monkeypatch: pytest.MonkeyPatch) -> N
                 ).fetchone()[0]
                 == 0
             )
+        assert c.execute(
+            "select source_id from t_demo_seller_core.identity_map where entity = 'customer' order by 1"
+        ).fetchall() == [("OTHER_ORDER",)]
         # Đơn vẫn còn (không sai doanh thu), chỉ mất thông tin cá nhân.
         assert (
             c.execute(

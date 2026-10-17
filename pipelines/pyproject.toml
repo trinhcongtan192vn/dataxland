@@ -15,6 +15,7 @@ dependencies = [
   "dbt-bigquery>=1.9",
   "duckdb>=1.1",
   "httpx>=0.28",
+  "dx-identity-worker",
   "openpyxl>=3.1",
   "croniter>=5.0",
   "defusedxml>=0.7",
